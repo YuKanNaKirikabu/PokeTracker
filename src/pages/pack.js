@@ -217,7 +217,6 @@ export function renderPack(packTitle, subpack) {
   state.filters.pack = packTitle;
 
   if (!state.data || !state.data.cards || state.data.cards.length === 0) {
-    console.warn("renderPack вызван, но данные не загружены. state.data:", state.data);
     app.innerHTML = `
       <section class="placeholder">
         <h1 class="section-title">${t("pack.loadErrorTitle")}</h1>

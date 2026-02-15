@@ -1,8 +1,5 @@
 import { state } from "./state.js";
 
-let autoSaveTimeout;
-let autoSaveSettingsTimeout;
-
 export function getStorageSet(key) {
   try {
     const raw = localStorage.getItem(key);
@@ -58,12 +55,9 @@ export async function saveGamePokedexToFile() {
     pokedexes: {},
   };
 
-  console.log("Saving game pokedex. Current state.ui.gamePokedex:", state.ui.gamePokedex);
-
   if (state.ui.gamePokedex) {
     for (const [gameId, marks] of Object.entries(state.ui.gamePokedex)) {
       const cleanId = gameId.replace(/-v\d+$/, "");
-      console.log(`Processing key "${gameId}" -> cleanId "${cleanId}"`);
 
       if (!pokedexData.pokedexes[cleanId]) {
         pokedexData.pokedexes[cleanId] = {
@@ -75,7 +69,6 @@ export async function saveGamePokedexToFile() {
 
       const versionMatch = gameId.match(/-v(\d+)$/);
       const versionKey = versionMatch ? `v${versionMatch[1]}` : "v0";
-      console.log(`  versionMatch=${versionMatch?.[1]}, versionKey="${versionKey}"`);
 
       const markedArray =
         marks.blue instanceof Set
@@ -96,8 +89,6 @@ export async function saveGamePokedexToFile() {
       };
     }
   }
-
-  console.log("Saving pokedex data:", pokedexData);
 
   try {
     const response = await fetch("/api/save-game-pokedex", {
@@ -125,7 +116,6 @@ export async function loadGamePokedexFromFile() {
     }
 
     const data = await response.json();
-    console.log("Loaded game pokedex data from file:", data);
 
     if (data.pokedexes) {
       if (!state.ui.gamePokedex) state.ui.gamePokedex = {};
@@ -147,14 +137,8 @@ export async function loadGamePokedexFromFile() {
             red: new Set(versionData.unmarked || []),
             sort: "found",
           };
-
-          console.log(
-            `Loaded state key "${stateKey}": marked=${versionData.marked?.length || 0}, unmarked=${versionData.unmarked?.length || 0}`
-          );
         }
       }
-
-      console.log("Final gamePokedex state:", state.ui.gamePokedex);
     }
   } catch (err) {
     console.error(`Game pokedex load error: ${err.message}`);
@@ -289,31 +273,4 @@ export async function loadSettingsFromFile() {
   } catch (err) {
     console.error(`Settings load error: ${err.message}`);
   }
-}
-
-export async function autoSaveToServer() {
-  if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
-
-  autoSaveTimeout = setTimeout(async () => {
-    try {
-      await saveDataToFile();
-      console.log("Auto-saved to server");
-    } catch (err) {
-      console.error("Auto-save failed:", err.message);
-    }
-  }, 1000);
-}
-
-export async function autoSaveSettings() {
-  if (autoSaveSettingsTimeout) clearTimeout(autoSaveSettingsTimeout);
-
-  autoSaveSettingsTimeout = setTimeout(async () => {
-    try {
-      await saveSettingsToFile();
-      await saveGamePokedexToFile();
-      console.log("Settings auto-saved");
-    } catch (err) {
-      console.error("Settings auto-save failed:", err.message);
-    }
-  }, 1000);
 }

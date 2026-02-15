@@ -1,4 +1,4 @@
-﻿import { RARITY_ICONS, TYPE_ICONS } from "../config/packs.js";
+import { RARITY_ICONS, TYPE_ICONS } from "../config/packs.js";
 import {
     GAME_POKEDEXES,
     POKEDEX_DESCRIPTIONS,
@@ -17,23 +17,10 @@ const POKEDEX_CARD_CACHE = new Map();
 const GAME_POKEDEX_LOADING = new Map();
 let POKEDEX_NAMES_LOADING = null;
 
-function fixCommonMojibakeSymbols(value) {
-  return String(value || "")
-    .replace(/в™‚/g, "♂")
-    .replace(/в™Ђ/g, "♀")
-    .replace(/вЂ№/g, "‹")
-    .replace(/вЂє/g, "›");
-}
-
-function looksLikeMojibake(value) {
-  const text = String(value || "");
-  return /(?:Р.|С.){2,}|в™|вЂ/.test(text);
-}
-
 function resolveDisplayName(nameEn, nameRu) {
-  const safeNameEn = fixCommonMojibakeSymbols(nameEn).trim();
-  const safeNameRu = fixCommonMojibakeSymbols(nameRu).trim();
-  if (!safeNameRu || looksLikeMojibake(safeNameRu)) {
+  const safeNameEn = String(nameEn || "").trim();
+  const safeNameRu = String(nameRu || "").trim();
+  if (!safeNameRu) {
     return safeNameEn;
   }
   return safeNameRu;
@@ -42,11 +29,11 @@ function resolveDisplayName(nameEn, nameRu) {
 export function getPokemonDisplayName(entryOrNameEn, maybeNameRu) {
   const lang = getCurrentLanguage();
   const nameEn = typeof entryOrNameEn === "object"
-    ? fixCommonMojibakeSymbols(entryOrNameEn?.nameEn || "").trim()
-    : fixCommonMojibakeSymbols(entryOrNameEn || "").trim();
+    ? String(entryOrNameEn?.nameEn || "").trim()
+    : String(entryOrNameEn || "").trim();
   const nameRu = typeof entryOrNameEn === "object"
-    ? fixCommonMojibakeSymbols(entryOrNameEn?.nameRu || "").trim()
-    : fixCommonMojibakeSymbols(maybeNameRu || "").trim();
+    ? String(entryOrNameEn?.nameRu || "").trim()
+    : String(maybeNameRu || "").trim();
 
   if (lang === "ru") {
     const resolved = resolveDisplayName(nameEn, nameRu);
@@ -112,8 +99,8 @@ export function parsePokedexText(raw, padLength = 4) {
       const matchWithRu = line.match(/^#(\d{3,4})\s+(.+?)\s+\|\s+(.+)$/);
       if (matchWithRu) {
         const number = Number(matchWithRu[1]);
-        const nameEn = fixCommonMojibakeSymbols(matchWithRu[2].trim());
-        const parsedNameRu = fixCommonMojibakeSymbols(matchWithRu[3].trim());
+        const nameEn = String(matchWithRu[2] || "").trim();
+        const parsedNameRu = String(matchWithRu[3] || "").trim();
         return {
           number,
           numberStr: String(number).padStart(padLength, "0"),
@@ -125,7 +112,7 @@ export function parsePokedexText(raw, padLength = 4) {
       const matchWithoutRu = line.match(/^#(\d{3,4})\s+(.+?)(?:\s+-\s+(.+))?$/);
       if (matchWithoutRu) {
         const number = Number(matchWithoutRu[1]);
-        const nameEn = fixCommonMojibakeSymbols(matchWithoutRu[2].trim());
+        const nameEn = String(matchWithoutRu[2] || "").trim();
         const types = parsePokedexTypes(matchWithoutRu[3]);
         return {
           number,

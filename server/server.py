@@ -6,6 +6,14 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 import sys
 
+
+def env_flag(name: str, default: bool = False) -> bool:
+    raw = str(os.getenv(name, "1" if default else "0")).strip().lower()
+    return raw in ("1", "true", "yes", "on")
+
+
+SAFE_MODE = env_flag("POKETRACKER_SAFE_MODE", False)
+
 class APIHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
@@ -34,6 +42,9 @@ class APIHandler(SimpleHTTPRequestHandler):
             self.send_error(404)
     
     def handle_save(self):
+        if SAFE_MODE:
+            return self.handle_read_only_error()
+
         content_length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(content_length)
         
@@ -105,6 +116,9 @@ class APIHandler(SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
     
     def handle_save_settings(self):
+        if SAFE_MODE:
+            return self.handle_read_only_error()
+
         content_length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(content_length)
         
@@ -171,6 +185,9 @@ class APIHandler(SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
     
     def handle_save_game_pokedex(self):
+        if SAFE_MODE:
+            return self.handle_read_only_error()
+
         content_length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(content_length)
         
@@ -308,14 +325,37 @@ class APIHandler(SimpleHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
+    def handle_read_only_error(self):
+        self.send_response(403)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps({'success': False, 'error': 'SAFE_MODE is enabled: writes are disabled'}).encode('utf-8'))
+
 if __name__ == '__main__':
     project_root = Path(__file__).resolve().parent.parent
     os.chdir(project_root)
     
-    PORT = 1025
-    server = HTTPServer(('localhost', PORT), APIHandler)
+    try:
+        PORT = int(str(os.getenv("POKETRACKER_PORT", "1025")))
+    except ValueError:
+        PORT = 1025
+
+    if PORT < 1 or PORT > 65535:
+        PORT = 1025
+
+    HOST = str(os.getenv("POKETRACKER_HOST", "localhost")).strip().lower()
+    if HOST not in ("localhost", "0.0.0.0", "127.0.0.1"):
+        HOST = "localhost"
+    if HOST == "127.0.0.1":
+        HOST = "localhost"
+
+    server = HTTPServer((HOST, PORT), APIHandler)
     
     print(f"PokeTracker server running on http://localhost:{PORT}")
+    if HOST == "0.0.0.0":
+        print("Host mode: 0.0.0.0 (LAN access enabled)")
+    if SAFE_MODE:
+        print("SAFE_MODE enabled: save endpoints are read-only")
     print("Press Ctrl+C to stop")
     
     try:

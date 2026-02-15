@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
@@ -16,7 +16,7 @@
   <body>
     <div class="app">
       <header class="site-header">
-        <a class="brand" href="#/" id="brandLink" aria-label="РџРµСЂРµР№С‚Рё Рє СЃРїРёСЃРєСѓ РїР°РєРѕРІ" data-i18n-aria="header.brandAria">
+        <a class="brand" href="#/" id="brandLink" aria-label="Перейти к списку паков" data-i18n-aria="header.brandAria">
           <div class="brand-logo" id="brandLogo">
             <img id="brandLogoImg" src="https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.png" alt="PokeTracker" />
             <span id="brandLogoText" class="brand-logo-text">TCG</span>
@@ -31,13 +31,13 @@
           <input
             type="text"
             id="pokedexSearchInput"
-            placeholder="РџРѕРёСЃРє РїРѕРєРµРјРѕРЅР° РёР»Рё в„–"
-            aria-label="РџРѕРёСЃРє РїРѕ РїРѕРєРµРґРµРєСЃСѓ"
+            placeholder="Поиск покемона или №"
+            aria-label="Поиск по покедексу"
             data-i18n-placeholder="header.searchPlaceholder"
             data-i18n-aria="header.searchAria"
           />
         </div>
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="РћС‚РєСЂС‹С‚СЊ РјРµРЅСЋ" data-i18n-aria="header.openMenu">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Открыть меню" data-i18n-aria="header.openMenu">
           <img src="https://storage.yandexcloud.net/poketracker/Images/Icons/right_panel.png" alt="Меню" data-i18n-alt="header.menuAlt" />
         </button>
       </header>
@@ -46,27 +46,27 @@
       <aside class="side-panel" id="sidePanel" aria-hidden="true">
         <div class="side-panel-header">
           <div>
-            <div class="side-panel-title" data-i18n="nav.title">РќР°РІРёРіР°С†РёСЏ</div>
+            <div class="side-panel-title" data-i18n="nav.title">Навигация</div>
             <div class="side-panel-subtitle">PokeTracker</div>
           </div>
-          <button class="side-close" id="sideClose" type="button" aria-label="Р—Р°РєСЂС‹С‚СЊ РјРµРЅСЋ" data-i18n-aria="header.closeMenu">вњ•</button>
+          <button class="side-close" id="sideClose" type="button" aria-label="Закрыть меню" data-i18n-aria="header.closeMenu">✕</button>
         </div>
         <nav class="side-nav">
-          <a href="#/" class="nav-link" data-i18n="nav.home">Р“Р»Р°РІРЅР°СЏ</a>
-          <a href="#/mobile" class="nav-link" data-i18n="nav.mobile">РњРѕР±РёР»СЊРЅР°СЏ РІРµСЂСЃРёСЏ</a>
-          <a href="#/physical" class="nav-link" data-i18n="nav.physical">Р¤РёР·РёС‡РµСЃРєРѕРµ РёР·РґР°РЅРёРµ</a>
-          <a href="#/collection" class="nav-link" data-i18n="nav.collection">РљРѕР»Р»РµРєС†РёСЏ</a>
-          <a href="#/wishlist" class="nav-link" data-i18n="nav.wishlist">Р’РёС€Р»РёСЃС‚</a>
-          <a href="#/pokedex" class="nav-link" data-i18n="nav.pokedex">РџРѕРєРµРґРµРєСЃ</a>
-          <a href="#/projects" class="nav-link" data-i18n="nav.projects">РџСЂРѕРµРєС‚С‹</a>
-          <a href="#/settings" class="nav-link" data-i18n="nav.settings">РќР°СЃС‚СЂРѕР№РєРё</a>
+          <a href="#/" class="nav-link" data-i18n="nav.home">Главная</a>
+          <a href="#/mobile" class="nav-link" data-i18n="nav.mobile">Мобильная версия</a>
+          <a href="#/physical" class="nav-link" data-i18n="nav.physical">Физическое издание</a>
+          <a href="#/collection" class="nav-link" data-i18n="nav.collection">Коллекция</a>
+          <a href="#/wishlist" class="nav-link" data-i18n="nav.wishlist">Вишлист</a>
+          <a href="#/pokedex" class="nav-link" data-i18n="nav.pokedex">Покедекс</a>
+          <a href="#/projects" class="nav-link" data-i18n="nav.projects">Проекты</a>
+          <a href="#/settings" class="nav-link" data-i18n="nav.settings">Настройки</a>
         </nav>
       </aside>
 
       <main class="content" id="app"></main>
 
       <footer class="site-footer">
-        <span data-i18n="app.footer">РЎРґРµР»Р°РЅРѕ РґР»СЏ PokeTracker</span>
+        <span data-i18n="app.footer">Сделано для PokeTracker</span>
       </footer>
     </div>
 
