@@ -1,0 +1,209 @@
+207 cards
+
+Oddish - A2 #1 - DIAMOND1 - GRASS
+Gloom - A2 #2 - DIAMOND1 - GRASS
+Bellossom - A2 #3 - DIAMOND2 - GRASS
+Tangela - A2 #4 - DIAMOND1 - GRASS
+Tangrowth - A2 #5 - DIAMOND2 - GRASS
+Yanma - A2 #6 - DIAMOND1 - GRASS
+Yanmega ex - A2 #7 - DIAMOND4 - GRASS
+Roselia - A2 #8 - DIAMOND1 - GRASS
+Roserade - A2 #9 - DIAMOND2 - GRASS
+Turtwig - A2 #10 - DIAMOND1 - GRASS
+Grotle - A2 #11 - DIAMOND2 - GRASS
+Torterra - A2 #12 - DIAMOND3 - GRASS
+Kricketot - A2 #13 - DIAMOND1 - GRASS
+Kricketune - A2 #14 - DIAMOND1 - GRASS
+Burmy - A2 #15 - DIAMOND1 - GRASS
+Wormadam - A2 #16 - DIAMOND1 - GRASS
+Combee - A2 #17 - DIAMOND1 - GRASS
+Vespiquen - A2 #18 - DIAMOND2 - GRASS
+Carnivine - A2 #19 - DIAMOND2 - GRASS
+Leafeon - A2 #20 - DIAMOND3 - GRASS
+Mow Rotom - A2 #21 - DIAMOND1 - GRASS
+Shaymin - A2 #22 - DIAMOND3 - GRASS
+Magmar - A2 #23 - DIAMOND1 - FIRE
+Magmortar - A2 #24 - DIAMOND3 - FIRE
+Slugma - A2 #25 - DIAMOND1 - FIRE
+Magcargo - A2 #26 - DIAMOND2 - FIRE
+Chimchar - A2 #27 - DIAMOND1 - FIRE
+Monferno - A2 #28 - DIAMOND2 - FIRE
+Infernape ex - A2 #29 - DIAMOND4 - FIRE
+Heat Rotom - A2 #30 - DIAMOND1 - FIRE
+Swinub - A2 #31 - DIAMOND1 - WATER
+Piloswine - A2 #32 - DIAMOND2 - WATER
+Mamoswine - A2 #33 - DIAMOND3 - WATER
+Regice - A2 #34 - DIAMOND2 - WATER
+Piplup - A2 #35 - DIAMOND1 - WATER
+Prinplup - A2 #36 - DIAMOND2 - WATER
+Empoleon - A2 #37 - DIAMOND3 - WATER
+Buizel - A2 #38 - DIAMOND1 - WATER
+Floatzel - A2 #39 - DIAMOND2 - WATER
+Shellos - A2 #40 - DIAMOND1 - WATER
+Gastrodon - A2 #41 - DIAMOND2 - WATER
+Finneon - A2 #42 - DIAMOND1 - WATER
+Lumineon - A2 #43 - DIAMOND2 - WATER
+Snover - A2 #44 - DIAMOND1 - WATER
+Abomasnow - A2 #45 - DIAMOND2 - WATER
+Glaceon - A2 #46 - DIAMOND3 - WATER
+Wash Rotom - A2 #47 - DIAMOND1 - WATER
+Frost Rotom - A2 #48 - DIAMOND1 - WATER
+Palkia ex - A2 #49 - DIAMOND4 - WATER
+Manaphy - A2 #50 - DIAMOND2 - WATER
+Magnemite - A2 #51 - DIAMOND1 - LIGHTNING
+Magneton - A2 #52 - DIAMOND2 - LIGHTNING
+Magnezone - A2 #53 - DIAMOND3 - LIGHTNING
+Voltorb - A2 #54 - DIAMOND1 - LIGHTNING
+Electrode - A2 #55 - DIAMOND2 - LIGHTNING
+Electabuzz - A2 #56 - DIAMOND1 - LIGHTNING
+Electivire - A2 #57 - DIAMOND3 - LIGHTNING
+Shinx - A2 #58 - DIAMOND1 - LIGHTNING
+Luxio - A2 #59 - DIAMOND2 - LIGHTNING
+Luxray - A2 #60 - DIAMOND3 - LIGHTNING
+Pachirisu ex - A2 #61 - DIAMOND4 - LIGHTNING
+Rotom - A2 #62 - DIAMOND1 - LIGHTNING
+Togepi - A2 #63 - DIAMOND1 - PSYCHIC
+Togetic - A2 #64 - DIAMOND2 - PSYCHIC
+Togekiss - A2 #65 - DIAMOND3 - PSYCHIC
+Misdreavus - A2 #66 - DIAMOND1 - PSYCHIC
+Mismagius ex - A2 #67 - DIAMOND4 - PSYCHIC
+Ralts - A2 #68 - DIAMOND1 - PSYCHIC
+Kirlia - A2 #69 - DIAMOND1 - PSYCHIC
+Duskull - A2 #70 - DIAMOND1 - PSYCHIC
+Dusclops - A2 #71 - DIAMOND2 - PSYCHIC
+Dusknoir - A2 #72 - DIAMOND3 - PSYCHIC
+Drifloon - A2 #73 - DIAMOND1 - PSYCHIC
+Drifblim - A2 #74 - DIAMOND2 - PSYCHIC
+Uxie - A2 #75 - DIAMOND2 - PSYCHIC
+Mesprit - A2 #76 - DIAMOND3 - PSYCHIC
+Azelf - A2 #77 - DIAMOND2 - PSYCHIC
+Giratina - A2 #78 - DIAMOND3 - PSYCHIC
+Cresselia - A2 #79 - DIAMOND3 - PSYCHIC
+Rhyhorn - A2 #80 - DIAMOND1 - FIGHTING
+Rhydon - A2 #81 - DIAMOND2 - FIGHTING
+Rhyperior - A2 #82 - DIAMOND3 - FIGHTING
+Gligar - A2 #83 - DIAMOND1 - FIGHTING
+Gliscor - A2 #84 - DIAMOND2 - FIGHTING
+Hitmontop - A2 #85 - DIAMOND1 - FIGHTING
+Nosepass - A2 #86 - DIAMOND1 - FIGHTING
+Regirock - A2 #87 - DIAMOND2 - FIGHTING
+Cranidos - A2 #88 - DIAMOND2 - FIGHTING
+Rampardos - A2 #89 - DIAMOND3 - FIGHTING
+Wormadam - A2 #90 - DIAMOND1 - FIGHTING
+Riolu - A2 #91 - DIAMOND1 - FIGHTING
+Lucario - A2 #92 - DIAMOND3 - FIGHTING
+Hippopotas - A2 #93 - DIAMOND1 - FIGHTING
+Hippowdon - A2 #94 - DIAMOND2 - FIGHTING
+Gallade ex - A2 #95 - DIAMOND4 - FIGHTING
+Murkrow - A2 #96 - DIAMOND1 - DARKNESS
+Honchkrow - A2 #97 - DIAMOND2 - DARKNESS
+Sneasel - A2 #98 - DIAMOND1 - DARKNESS
+Weavile ex - A2 #99 - DIAMOND4 - DARKNESS
+Poochyena - A2 #100 - DIAMOND1 - DARKNESS
+Mightyena - A2 #101 - DIAMOND2 - DARKNESS
+Stunky - A2 #102 - DIAMOND1 - DARKNESS
+Skuntank - A2 #103 - DIAMOND2 - DARKNESS
+Spiritomb - A2 #104 - DIAMOND2 - DARKNESS
+Skorupi - A2 #105 - DIAMOND1 - DARKNESS
+Drapion - A2 #106 - DIAMOND2 - DARKNESS
+Croagunk - A2 #107 - DIAMOND1 - DARKNESS
+Toxicroak - A2 #108 - DIAMOND2 - DARKNESS
+Darkrai - A2 #109 - DIAMOND3 - DARKNESS
+Darkrai ex - A2 #110 - DIAMOND4 - DARKNESS
+Skarmory - A2 #111 - DIAMOND2 - METAL
+Registeel - A2 #112 - DIAMOND2 - METAL
+Shieldon - A2 #113 - DIAMOND2 - METAL
+Bastiodon - A2 #114 - DIAMOND3 - METAL
+Wormadam - A2 #115 - DIAMOND1 - METAL
+Bronzor - A2 #116 - DIAMOND1 - METAL
+Bronzong - A2 #117 - DIAMOND2 - METAL
+Probopass - A2 #118 - DIAMOND2 - METAL
+Dialga ex - A2 #119 - DIAMOND4 - METAL
+Heatran - A2 #120 - DIAMOND3 - METAL
+Gible - A2 #121 - DIAMOND1 - DRAGON
+Gabite - A2 #122 - DIAMOND2 - DRAGON
+Garchomp - A2 #123 - DIAMOND3 - DRAGON
+Lickitung - A2 #124 - DIAMOND1 - COLORLESS
+Lickilicky ex - A2 #125 - DIAMOND4 - COLORLESS
+Eevee - A2 #126 - DIAMOND1 - COLORLESS
+Porygon - A2 #127 - DIAMOND1 - COLORLESS
+Porygon2 - A2 #128 - DIAMOND2 - COLORLESS
+Porygon-Z - A2 #129 - DIAMOND3 - COLORLESS
+Aipom - A2 #130 - DIAMOND1 - COLORLESS
+Ambipom - A2 #131 - DIAMOND1 - COLORLESS
+Starly - A2 #132 - DIAMOND1 - COLORLESS
+Staravia - A2 #133 - DIAMOND1 - COLORLESS
+Staraptor - A2 #134 - DIAMOND2 - COLORLESS
+Bidoof - A2 #135 - DIAMOND1 - COLORLESS
+Bibarel - A2 #136 - DIAMOND1 - COLORLESS
+Buneary - A2 #137 - DIAMOND1 - COLORLESS
+Lopunny - A2 #138 - DIAMOND1 - COLORLESS
+Glameow - A2 #139 - DIAMOND1 - COLORLESS
+Purugly - A2 #140 - DIAMOND2 - COLORLESS
+Chatot - A2 #141 - DIAMOND1 - COLORLESS
+Fan Rotom - A2 #142 - DIAMOND1 - COLORLESS
+Regigigas - A2 #143 - DIAMOND3 - COLORLESS
+Skull Fossil - A2 #144 - DIAMOND1 - ITEM
+Armor Fossil - A2 #145 - DIAMOND1 - ITEM
+Pokémon Communication - A2 #146 - DIAMOND2 - ITEM
+Giant Cape - A2 #147 - DIAMOND2 - TOOL
+Rocky Helmet - A2 #148 - DIAMOND2 - TOOL
+Lum Berry - A2 #149 - DIAMOND2 - TOOL
+Cyrus - A2 #150 - DIAMOND2 - SUPPORTER
+Team Galactic Grunt - A2 #151 - DIAMOND2 - SUPPORTER
+Cynthia - A2 #152 - DIAMOND2 - SUPPORTER
+Volkner - A2 #153 - DIAMOND2 - SUPPORTER
+Dawn - A2 #154 - DIAMOND2 - SUPPORTER
+Mars - A2 #155 - DIAMOND2 - SUPPORTER
+Tangrowth - A2 #156 - STAR1 - GRASS
+Combee - A2 #157 - STAR1 - GRASS
+Carnivine - A2 #158 - STAR1 - GRASS
+Shaymin - A2 #159 - STAR1 - GRASS
+Mamoswine - A2 #160 - STAR1 - WATER
+Gastrodon - A2 #161 - STAR1 - WATER
+Manaphy - A2 #162 - STAR1 - WATER
+Shinx - A2 #163 - STAR1 - LIGHTNING
+Rotom - A2 #164 - STAR1 - LIGHTNING
+Drifloon - A2 #165 - STAR1 - PSYCHIC
+Mesprit - A2 #166 - STAR1 - PSYCHIC
+Giratina - A2 #167 - STAR1 - PSYCHIC
+Cresselia - A2 #168 - STAR1 - PSYCHIC
+Rhyperior - A2 #169 - STAR1 - FIGHTING
+Lucario - A2 #170 - STAR1 - FIGHTING
+Hippopotas - A2 #171 - STAR1 - FIGHTING
+Spiritomb - A2 #172 - STAR1 - DARKNESS
+Croagunk - A2 #173 - STAR1 - DARKNESS
+Heatran - A2 #174 - STAR1 - METAL
+Garchomp - A2 #175 - STAR1 - DRAGON
+Staraptor - A2 #176 - STAR1 - COLORLESS
+Bidoof - A2 #177 - STAR1 - COLORLESS
+Glameow - A2 #178 - STAR1 - COLORLESS
+Regigigas - A2 #179 - STAR1 - COLORLESS
+Yanmega ex - A2 #180 - STAR2 - GRASS
+Infernape ex - A2 #181 - STAR2 - FIRE
+Palkia ex - A2 #182 - STAR2 - WATER
+Pachirisu ex - A2 #183 - STAR2 - LIGHTNING
+Mismagius ex - A2 #184 - STAR2 - PSYCHIC
+Gallade ex - A2 #185 - STAR2 - FIGHTING
+Weavile ex - A2 #186 - STAR2 - DARKNESS
+Darkrai ex - A2 #187 - STAR2 - DARKNESS
+Dialga ex - A2 #188 - STAR2 - METAL
+Lickilicky ex - A2 #189 - STAR2 - COLORLESS
+Cyrus - A2 #190 - STAR2 - SUPPORTER
+Team Galactic Grunt - A2 #191 - STAR2 - SUPPORTER
+Cynthia - A2 #192 - STAR2 - SUPPORTER
+Volkner - A2 #193 - STAR2 - SUPPORTER
+Dawn - A2 #194 - STAR2 - SUPPORTER
+Mars - A2 #195 - STAR2 - SUPPORTER
+Yanmega ex - A2 #196 - STAR2 - GRASS
+Infernape ex - A2 #197 - STAR2 - FIRE
+Pachirisu ex - A2 #198 - STAR2 - LIGHTNING
+Mismagius ex - A2 #199 - STAR2 - PSYCHIC
+Gallade ex - A2 #200 - STAR2 - FIGHTING
+Weavile ex - A2 #201 - STAR2 - DARKNESS
+Darkrai ex - A2 #202 - STAR2 - DARKNESS
+Lickilicky ex - A2 #203 - STAR2 - COLORLESS
+Palkia ex - A2 #204 - STAR3 - WATER
+Dialga ex - A2 #205 - STAR3 - METAL
+Palkia ex - A2 #206 - CROWN - WATER
+Dialga ex - A2 #207 - CROWN - METAL

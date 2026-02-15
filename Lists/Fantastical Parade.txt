@@ -1,0 +1,236 @@
+234 cards
+
+Ledyba - A5 #1 - DIAMOND1 - GRASS
+Ledian - A5 #2 - DIAMOND1 - GRASS
+Shuckle - A5 #3 - DIAMOND1 - GRASS
+Roselia - A5 #4 - DIAMOND1 - GRASS
+Roserade - A5 #5 - DIAMOND3 - GRASS
+Cacnea - A5 #6 - DIAMOND1 - GRASS
+Cacturne - A5 #7 - DIAMOND2 - GRASS
+Chespin - A5 #8 - DIAMOND1 - GRASS
+Quilladin - A5 #9 - DIAMOND2 - GRASS
+Chesnaught - A5 #10 - DIAMOND3 - GRASS
+Scatterbug - A5 #11 - DIAMOND1 - GRASS
+Spewpa - A5 #12 - DIAMOND1 - GRASS
+Vivillon - A5 #13 - DIAMOND2 - GRASS
+Buzzwole - A5 #14 - DIAMOND3 - GRASS
+Gossifleur - A5 #15 - DIAMOND1 - GRASS
+Eldegoss - A5 #16 - DIAMOND2 - GRASS
+Teal Mask Ogerponex - A5 #17 - DIAMOND4 - GRASS
+Alolan Marowak - A5 #18 - DIAMOND2 - FIRE
+Reshiram - A5 #19 - DIAMOND3 - FIRE
+Litleo - A5 #20 - DIAMOND1 - FIRE
+Pyroar - A5 #21 - DIAMOND2 - FIRE
+Oricorio - A5 #22 - DIAMOND2 - FIRE
+Blacephalonex - A5 #23 - DIAMOND4 - FIRE
+Scorbunny - A5 #24 - DIAMOND1 - FIRE
+Raboot - A5 #25 - DIAMOND2 - FIRE
+Cinderace - A5 #26 - DIAMOND3 - FIRE
+Hearthflame Mask Ogerpon - A5 #27 - DIAMOND3 - FIRE
+Alolan Vulpix - A5 #28 - DIAMOND1 - WATER
+Alolan Ninetalesex - A5 #29 - DIAMOND4 - WATER
+Galarian Mr. Mime - A5 #30 - DIAMOND1 - WATER
+Galarian Mr. Rime - A5 #31 - DIAMOND2 - WATER
+Delibird - A5 #32 - DIAMOND2 - WATER
+Mudkip - A5 #33 - DIAMOND1 - WATER
+Marshtomp - A5 #34 - DIAMOND2 - WATER
+Swampert - A5 #35 - DIAMOND3 - WATER
+Mega SwampertMega ex - A5 #36 - DIAMOND4 - WATER
+Vanillite - A5 #37 - DIAMOND1 - WATER
+Vanillish - A5 #38 - DIAMOND1 - WATER
+Vanilluxe - A5 #39 - DIAMOND2 - WATER
+Cryogonal - A5 #40 - DIAMOND1 - WATER
+Amaura - A5 #41 - DIAMOND2 - WATER
+Aurorus - A5 #42 - DIAMOND3 - WATER
+Chewtle - A5 #43 - DIAMOND1 - WATER
+Drednaw - A5 #44 - DIAMOND2 - WATER
+Cramorant - A5 #45 - DIAMOND1 - WATER
+Arrokuda - A5 #46 - DIAMOND1 - WATER
+Barraskewda - A5 #47 - DIAMOND1 - WATER
+Wellspring Mask Ogerpon - A5 #48 - DIAMOND3 - WATER
+Pikachu - A5 #49 - DIAMOND1 - LIGHTNING
+Alolan Raichu - A5 #50 - DIAMOND3 - LIGHTNING
+Zapdos - A5 #51 - DIAMOND3 - LIGHTNING
+Plusle - A5 #52 - DIAMOND1 - LIGHTNING
+Minun - A5 #53 - DIAMOND1 - LIGHTNING
+Toxel - A5 #54 - DIAMOND1 - LIGHTNING
+Toxtricityex - A5 #55 - DIAMOND4 - LIGHTNING
+Tadbulb - A5 #56 - DIAMOND1 - LIGHTNING
+Bellibolt - A5 #57 - DIAMOND2 - LIGHTNING
+Galarian Ponyta - A5 #58 - DIAMOND1 - PSYCHIC
+Galarian Rapidash - A5 #59 - DIAMOND2 - PSYCHIC
+Wobbuffet - A5 #60 - DIAMOND1 - PSYCHIC
+Snubbull - A5 #61 - DIAMOND1 - PSYCHIC
+Granbull - A5 #62 - DIAMOND2 - PSYCHIC
+Ralts - A5 #63 - DIAMOND1 - PSYCHIC
+Kirlia - A5 #64 - DIAMOND2 - PSYCHIC
+Gardevoir - A5 #65 - DIAMOND3 - PSYCHIC
+Mega GardevoirMega ex - A5 #66 - DIAMOND4 - PSYCHIC
+Litwick - A5 #67 - DIAMOND1 - PSYCHIC
+Lampent - A5 #68 - DIAMOND2 - PSYCHIC
+Chandelure - A5 #69 - DIAMOND3 - PSYCHIC
+Meloetta - A5 #70 - DIAMOND2 - PSYCHIC
+Pumpkaboo - A5 #71 - DIAMOND1 - PSYCHIC
+Gourgeist - A5 #72 - DIAMOND3 - PSYCHIC
+Mimikyuex - A5 #73 - DIAMOND4 - PSYCHIC
+Sinistea - A5 #74 - DIAMOND1 - PSYCHIC
+Polteageist - A5 #75 - DIAMOND2 - PSYCHIC
+Indeedee - A5 #76 - DIAMOND1 - PSYCHIC
+Sandshrew - A5 #77 - DIAMOND1 - FIGHTING
+Sandslash - A5 #78 - DIAMOND1 - FIGHTING
+Machop - A5 #79 - DIAMOND1 - FIGHTING
+Machoke - A5 #80 - DIAMOND1 - FIGHTING
+Machamp - A5 #81 - DIAMOND2 - FIGHTING
+Cubone - A5 #82 - DIAMOND1 - FIGHTING
+Meditite - A5 #83 - DIAMOND1 - FIGHTING
+Medicham - A5 #84 - DIAMOND2 - FIGHTING
+Roggenrola - A5 #85 - DIAMOND1 - FIGHTING
+Boldore - A5 #86 - DIAMOND2 - FIGHTING
+Gigalithex - A5 #87 - DIAMOND4 - FIGHTING
+Drilbur - A5 #88 - DIAMOND1 - FIGHTING
+Tyrunt - A5 #89 - DIAMOND2 - FIGHTING
+Tyrantrum - A5 #90 - DIAMOND3 - FIGHTING
+Passimian - A5 #91 - DIAMOND1 - FIGHTING
+Falinks - A5 #92 - DIAMOND2 - FIGHTING
+Cornerstone Mask Ogerpon - A5 #93 - DIAMOND3 - FIGHTING
+Alolan Meowth - A5 #94 - DIAMOND1 - DARKNESS
+Alolan Persian - A5 #95 - DIAMOND2 - DARKNESS
+Alolan Grimer - A5 #96 - DIAMOND1 - DARKNESS
+Alolan Muk - A5 #97 - DIAMOND3 - DARKNESS
+Galarian Zigzagoon - A5 #98 - DIAMOND1 - DARKNESS
+Galarian Linoone - A5 #99 - DIAMOND2 - DARKNESS
+Galarian Obstagoon - A5 #100 - DIAMOND3 - DARKNESS
+Stunky - A5 #101 - DIAMOND1 - DARKNESS
+Skuntank - A5 #102 - DIAMOND2 - DARKNESS
+Spiritomb - A5 #103 - DIAMOND3 - DARKNESS
+Purrloin - A5 #104 - DIAMOND1 - DARKNESS
+Liepard - A5 #105 - DIAMOND2 - DARKNESS
+Scraggy - A5 #106 - DIAMOND1 - DARKNESS
+Scrafty - A5 #107 - DIAMOND2 - DARKNESS
+Yveltal - A5 #108 - DIAMOND3 - DARKNESS
+Guzzlord - A5 #109 - DIAMOND3 - DARKNESS
+Galarian Meowth - A5 #110 - DIAMOND1 - METAL
+Galarian Perrserker - A5 #111 - DIAMOND3 - METAL
+Mawile - A5 #112 - DIAMOND1 - METAL
+Mega MawileMega ex - A5 #113 - DIAMOND4 - METAL
+Excadrill - A5 #114 - DIAMOND2 - METAL
+Ferroseed - A5 #115 - DIAMOND1 - METAL
+Ferrothorn - A5 #116 - DIAMOND1 - METAL
+Galarian Stunfisk - A5 #117 - DIAMOND2 - METAL
+Honedge - A5 #118 - DIAMOND1 - METAL
+Doublade - A5 #119 - DIAMOND2 - METAL
+Aegislash - A5 #120 - DIAMOND3 - METAL
+Bagon - A5 #121 - DIAMOND1 - DRAGON
+Shelgon - A5 #122 - DIAMOND2 - DRAGON
+Salamence - A5 #123 - DIAMOND3 - DRAGON
+Meowth - A5 #124 - DIAMOND1 - COLORLESS
+Persian - A5 #125 - DIAMOND1 - COLORLESS
+Kangaskhan - A5 #126 - DIAMOND2 - COLORLESS
+Mega KangaskhanMega ex - A5 #127 - DIAMOND4 - COLORLESS
+Sentret - A5 #128 - DIAMOND1 - COLORLESS
+Furret - A5 #129 - DIAMOND1 - COLORLESS
+Smeargle - A5 #130 - DIAMOND2 - COLORLESS
+Lugia - A5 #131 - DIAMOND3 - COLORLESS
+Taillow - A5 #132 - DIAMOND1 - COLORLESS
+Swellow - A5 #133 - DIAMOND3 - COLORLESS
+Slakoth - A5 #134 - DIAMOND1 - COLORLESS
+Vigoroth - A5 #135 - DIAMOND2 - COLORLESS
+Slaking - A5 #136 - DIAMOND3 - COLORLESS
+Spinda - A5 #137 - DIAMOND1 - COLORLESS
+Tornadus - A5 #138 - DIAMOND3 - COLORLESS
+Bunnelby - A5 #139 - DIAMOND1 - COLORLESS
+Diggersby - A5 #140 - DIAMOND2 - COLORLESS
+Furfrou - A5 #141 - DIAMOND2 - COLORLESS
+Tandemaus - A5 #142 - DIAMOND1 - COLORLESS
+Maushold - A5 #143 - DIAMOND2 - COLORLESS
+Jaw Fossil - A5 #144 - DIAMOND1 - ITEM
+Lucky Ice Pop - A5 #145 - DIAMOND2 - ITEM
+Sail Fossil - A5 #146 - DIAMOND1 - ITEM
+Protective Poncho - A5 #147 - DIAMOND2 - TOOL
+Metal Core Barrier - A5 #148 - DIAMOND2 - TOOL
+Diantha - A5 #149 - DIAMOND2 - SUPPORTER
+Sightseer - A5 #150 - DIAMOND2 - SUPPORTER
+Juggler - A5 #151 - DIAMOND2 - SUPPORTER
+Piers - A5 #152 - DIAMOND2 - SUPPORTER
+Training Area - A5 #153 - DIAMOND2 - STADIUM
+Starting Plains - A5 #154 - DIAMOND2 - STADIUM
+Peculiar Plaza - A5 #155 - DIAMOND2 - STADIUM
+Cacnea - A5 #156 - STAR1 - GRASS
+Roserade - A5 #157 - STAR1 - GRASS
+Vivillon - A5 #158 - STAR1 - GRASS
+Buzzwole - A5 #159 - STAR1 - GRASS
+Reshiram - A5 #160 - STAR1 - FIRE
+Oricorio - A5 #161 - STAR1 - FIRE
+Scorbunny - A5 #162 - STAR1 - FIRE
+Aurorus - A5 #163 - STAR1 - WATER
+Cramorant - A5 #164 - STAR1 - WATER
+Minun - A5 #165 - STAR1 - LIGHTNING
+Toxel - A5 #166 - STAR1 - LIGHTNING
+Galarian Ponyta - A5 #167 - STAR1 - PSYCHIC
+Snubbull - A5 #168 - STAR1 - PSYCHIC
+Indeedee - A5 #169 - STAR1 - PSYCHIC
+Sandshrew - A5 #170 - STAR1 - FIGHTING
+Tyrantrum - A5 #171 - STAR1 - FIGHTING
+Falinks - A5 #172 - STAR1 - FIGHTING
+Alolan Muk - A5 #173 - STAR1 - DARKNESS
+Purrloin - A5 #174 - STAR1 - DARKNESS
+Yveltal - A5 #175 - STAR1 - DARKNESS
+Galarian Obstagoon - A5 #176 - STAR1 - DARKNESS
+Galarian Perrserker - A5 #177 - STAR1 - METAL
+Salamence - A5 #178 - STAR1 - DRAGON
+Slakoth - A5 #179 - STAR1 - COLORLESS
+Teal Mask Ogerponex - A5 #180 - STAR2 - GRASS
+Blacephalonex - A5 #181 - STAR2 - FIRE
+Alolan Ninetalesex - A5 #182 - STAR2 - WATER
+Mega SwampertMega ex - A5 #183 - STAR2 - WATER
+Toxtricityex - A5 #184 - STAR2 - LIGHTNING
+Mega GardevoirMega ex - A5 #185 - STAR2 - PSYCHIC
+Mimikyuex - A5 #186 - STAR2 - PSYCHIC
+Gigalithex - A5 #187 - STAR2 - FIGHTING
+Mega MawileMega ex - A5 #188 - STAR2 - METAL
+Mega KangaskhanMega ex - A5 #189 - STAR2 - COLORLESS
+Diantha - A5 #190 - STAR2 - SUPPORTER
+Sightseer - A5 #191 - STAR2 - SUPPORTER
+Juggler - A5 #192 - STAR2 - SUPPORTER
+Piers - A5 #193 - STAR2 - SUPPORTER
+Teal Mask Ogerponex - A5 #194 - STAR2 - GRASS
+Blacephalonex - A5 #195 - STAR2 - FIRE
+Alolan Ninetalesex - A5 #196 - STAR2 - WATER
+Mega SwampertMega ex - A5 #197 - STAR2 - WATER
+Toxtricityex - A5 #198 - STAR2 - LIGHTNING
+Mimikyuex - A5 #199 - STAR2 - PSYCHIC
+Gigalithex - A5 #200 - STAR2 - FIGHTING
+Mega MawileMega ex - A5 #201 - STAR2 - METAL
+Mega KangaskhanMega ex - A5 #202 - STAR2 - COLORLESS
+Mega GardevoirMega ex - A5 #203 - STAR3 - PSYCHIC
+Meowth - A5 #204 - STAR3 - COLORLESS
+Tangela - A5 #205 - SHINY1 - GRASS
+Magby - A5 #206 - SHINY1 - FIRE
+Magmar - A5 #207 - SHINY1 - FIRE
+Horsea - A5 #208 - SHINY1 - WATER
+Seadra - A5 #209 - SHINY1 - WATER
+Mantyke - A5 #210 - SHINY1 - WATER
+Omanyte - A5 #211 - SHINY1 - WATER
+Omastar - A5 #212 - SHINY1 - WATER
+Pichu - A5 #213 - SHINY1 - LIGHTNING
+Clefairy - A5 #214 - SHINY1 - PSYCHIC
+Clefable - A5 #215 - SHINY1 - PSYCHIC
+Latias - A5 #216 - SHINY1 - PSYCHIC
+Latios - A5 #217 - SHINY1 - PSYCHIC
+Hitmonlee - A5 #218 - SHINY1 - FIGHTING
+Hitmonchan - A5 #219 - SHINY1 - FIGHTING
+Kabuto - A5 #220 - SHINY1 - FIGHTING
+Kabutops - A5 #221 - SHINY1 - FIGHTING
+Phanpy - A5 #222 - SHINY1 - FIGHTING
+Tyrogue - A5 #223 - SHINY1 - FIGHTING
+Tauros - A5 #224 - SHINY1 - COLORLESS
+Flareonex - A5 #225 - SHINY2 - FIRE
+Ho-Ohex - A5 #226 - SHINY2 - FIRE
+Kingdraex - A5 #227 - SHINY2 - WATER
+Espeonex - A5 #228 - SHINY2 - PSYCHIC
+Sylveonex - A5 #229 - SHINY2 - PSYCHIC
+Donphanex - A5 #230 - SHINY2 - FIGHTING
+Umbreonex - A5 #231 - SHINY2 - DARKNESS
+Lugiaex - A5 #232 - SHINY2 - COLORLESS
+Meloetta - A5 #233 - CROWN - PSYCHIC
+Protective Poncho - A5 #234 - CROWN - TOOL

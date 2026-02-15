@@ -1,0 +1,142 @@
+140 cards
+
+Exeggcute - A3 #1 - DIAMOND1 - GRASS
+Alolan Exeggutor - A3 #2 - DIAMOND3 - GRASS
+Surskit - A3 #3 - DIAMOND1 - GRASS
+Masquerain - A3 #4 - DIAMOND2 - GRASS
+Maractus - A3 #5 - DIAMOND1 - GRASS
+Karrablast - A3 #6 - DIAMOND1 - GRASS
+Rowlet - A3 #10 - DIAMOND1 - GRASS
+Dartrix - A3 #11 - DIAMOND2 - GRASS
+Decidueye ex - A3 #12 - DIAMOND4 - GRASS
+Grubbin - A3 #13 - DIAMOND1 - GRASS
+Fomantis - A3 #14 - DIAMOND1 - GRASS
+Lurantis - A3 #15 - DIAMOND2 - GRASS
+Morelull - A3 #16 - DIAMOND1 - GRASS
+Shiinotic - A3 #17 - DIAMOND2 - GRASS
+Growlithe - A3 #25 - DIAMOND1 - FIRE
+Arcanine - A3 #26 - DIAMOND2 - FIRE
+Alolan Marowak - A3 #27 - DIAMOND2 - FIRE
+Litten - A3 #31 - DIAMOND1 - FIRE
+Oricorio - A3 #34 - DIAMOND2 - FIRE
+Salandit - A3 #35 - DIAMOND1 - FIRE
+Salazzle - A3 #36 - DIAMOND1 - FIRE
+Turtonator - A3 #37 - DIAMOND3 - FIRE
+Alolan Sandshrew - A3 #38 - DIAMOND1 - WATER
+Alolan Sandslash - A3 #39 - DIAMOND2 - WATER
+Alolan Vulpix - A3 #40 - DIAMOND1 - WATER
+Alolan Ninetales - A3 #41 - DIAMOND3 - WATER
+Lapras - A3 #44 - DIAMOND2 - WATER
+Popplio - A3 #45 - DIAMOND1 - WATER
+Brionne - A3 #47 - DIAMOND2 - WATER
+Primarina - A3 #48 - DIAMOND3 - WATER
+Wishiwashi - A3 #50 - DIAMOND1 - WATER
+Wishiwashi ex - A3 #51 - DIAMOND4 - WATER
+Pyukumuku - A3 #54 - DIAMOND1 - WATER
+Bruxish - A3 #55 - DIAMOND1 - WATER
+Tapu Fini - A3 #56 - DIAMOND3 - WATER
+Helioptile - A3 #62 - DIAMOND1 - LIGHTNING
+Heliolisk - A3 #63 - DIAMOND1 - LIGHTNING
+Charjabug - A3 #64 - DIAMOND2 - LIGHTNING
+Vikavolt - A3 #65 - DIAMOND3 - LIGHTNING
+Togedemaru - A3 #67 - DIAMOND1 - LIGHTNING
+Sableye - A3 #70 - DIAMOND2 - PSYCHIC
+Spoink - A3 #71 - DIAMOND1 - PSYCHIC
+Grumpig - A3 #72 - DIAMOND2 - PSYCHIC
+Lunatone - A3 #73 - DIAMOND1 - PSYCHIC
+Shuppet - A3 #74 - DIAMOND1 - PSYCHIC
+Banette - A3 #75 - DIAMOND1 - PSYCHIC
+Oricorio - A3 #77 - DIAMOND2 - PSYCHIC
+Mimikyu - A3 #83 - DIAMOND1 - PSYCHIC
+Tapu Lele - A3 #84 - DIAMOND3 - PSYCHIC
+Cosmog - A3 #85 - DIAMOND1 - PSYCHIC
+Cosmoem - A3 #86 - DIAMOND2 - PSYCHIC
+Lunala ex - A3 #87 - DIAMOND4 - PSYCHIC
+Necrozma - A3 #88 - DIAMOND3 - PSYCHIC
+Cubone - A3 #89 - DIAMOND1 - FIGHTING
+Makuhita - A3 #90 - DIAMOND1 - FIGHTING
+Hariyama - A3 #91 - DIAMOND2 - FIGHTING
+Drilbur - A3 #93 - DIAMOND1 - FIGHTING
+Timburr - A3 #94 - DIAMOND1 - FIGHTING
+Gurdurr - A3 #95 - DIAMOND2 - FIGHTING
+Conkeldurr - A3 #96 - DIAMOND3 - FIGHTING
+Rockruff - A3 #98 - DIAMOND1 - FIGHTING
+Lycanroc - A3 #101 - DIAMOND3 - FIGHTING
+Passimian ex - A3 #104 - DIAMOND4 - FIGHTING
+Minior - A3 #105 - DIAMOND2 - FIGHTING
+Alolan Rattata - A3 #106 - DIAMOND1 - DARKNESS
+Alolan Raticate - A3 #107 - DIAMOND2 - DARKNESS
+Alolan Grimer - A3 #110 - DIAMOND1 - DARKNESS
+Alolan Muk ex - A3 #111 - DIAMOND4 - DARKNESS
+Absol - A3 #112 - DIAMOND3 - DARKNESS
+Trubbish - A3 #113 - DIAMOND1 - DARKNESS
+Garbodor - A3 #114 - DIAMOND2 - DARKNESS
+Mareanie - A3 #115 - DIAMOND1 - DARKNESS
+Toxapex - A3 #116 - DIAMOND1 - DARKNESS
+Alolan Diglett - A3 #117 - DIAMOND1 - METAL
+Alolan Dugtrio - A3 #118 - DIAMOND1 - METAL
+Excadrill - A3 #119 - DIAMOND2 - METAL
+Escavalier - A3 #120 - DIAMOND2 - METAL
+Jangmo-o - A3 #125 - DIAMOND1 - DRAGON
+Hakamo-o - A3 #126 - DIAMOND2 - DRAGON
+Kommo-o - A3 #127 - DIAMOND3 - DRAGON
+Tauros - A3 #128 - DIAMOND2 - COLORLESS
+Skitty - A3 #129 - DIAMOND1 - COLORLESS
+Delcatty - A3 #130 - DIAMOND2 - COLORLESS
+Pikipek - A3 #133 - DIAMOND1 - COLORLESS
+Trumbeak - A3 #134 - DIAMOND1 - COLORLESS
+Toucannon - A3 #135 - DIAMOND2 - COLORLESS
+Stufful - A3 #138 - DIAMOND1 - COLORLESS
+Bewear - A3 #139 - DIAMOND3 - COLORLESS
+Oranguru - A3 #140 - DIAMOND3 - COLORLESS
+Big Malasada - A3 #142 - DIAMOND2 - ITEM
+Fishing Net - A3 #143 - DIAMOND2 - ITEM
+Rare Candy - A3 #144 - DIAMOND2 - ITEM
+Poison Barb - A3 #146 - DIAMOND2 - TOOL
+Acerola - A3 #148 - DIAMOND2 - SUPPORTER
+Ilima - A3 #149 - DIAMOND2 - SUPPORTER
+Kiawe - A3 #150 - DIAMOND2 - SUPPORTER
+Guzma - A3 #151 - DIAMOND2 - SUPPORTER
+Alolan Exeggutor - A3 #156 - STAR1 - GRASS
+Morelull - A3 #157 - STAR1 - GRASS
+Alolan Marowak - A3 #160 - STAR1 - FIRE
+Turtonator - A3 #161 - STAR1 - FIRE
+Alolan Vulpix - A3 #162 - STAR1 - WATER
+Pyukumuku - A3 #163 - STAR1 - WATER
+Tapu Fini - A3 #164 - STAR1 - WATER
+Tapu Lele - A3 #170 - STAR1 - PSYCHIC
+Cosmog - A3 #171 - STAR1 - PSYCHIC
+Minior - A3 #174 - STAR1 - FIGHTING
+Pikipek - A3 #177 - STAR1 - COLORLESS
+Bewear - A3 #178 - STAR1 - COLORLESS
+Decidueye ex - A3 #180 - STAR2 - GRASS
+Wishiwashi ex - A3 #184 - STAR2 - WATER
+Lunala ex - A3 #186 - STAR2 - PSYCHIC
+Passimian ex - A3 #187 - STAR2 - FIGHTING
+Alolan Muk ex - A3 #188 - STAR2 - DARKNESS
+Acerola - A3 #190 - STAR2 - SUPPORTER
+Ilima - A3 #191 - STAR2 - SUPPORTER
+Kiawe - A3 #192 - STAR2 - SUPPORTER
+Guzma - A3 #193 - STAR2 - SUPPORTER
+Decidueye ex - A3 #198 - STAR2 - GRASS
+Wishiwashi ex - A3 #202 - STAR2 - WATER
+Lunala ex - A3 #204 - STAR2 - PSYCHIC
+Passimian ex - A3 #205 - STAR2 - FIGHTING
+Alolan Muk ex - A3 #206 - STAR2 - DARKNESS
+Guzma - A3 #208 - STAR3 - SUPPORTER
+Exeggcute - A3 #213 - SHINY1 - GRASS
+Exeggutor - A3 #214 - SHINY1 - GRASS
+Squirtle - A3 #215 - SHINY1 - WATER
+Wartortle - A3 #216 - SHINY1 - WATER
+Blastoise - A3 #217 - SHINY1 - WATER
+Gastly - A3 #220 - SHINY1 - PSYCHIC
+Haunter - A3 #221 - SHINY1 - PSYCHIC
+Gengar - A3 #222 - SHINY1 - PSYCHIC
+Cubone - A3 #226 - SHINY1 - FIGHTING
+Marowak - A3 #227 - SHINY1 - FIGHTING
+Exeggutor ex - A3 #231 - SHINY2 - GRASS
+Blastoise ex - A3 #232 - SHINY2 - WATER
+Gengar ex - A3 #234 - SHINY2 - PSYCHIC
+Marowak ex - A3 #236 - SHINY2 - FIGHTING
+Lunala ex - A3 #238 - CROWN - PSYCHIC
+Solgaleo ex - A3 #239 - CROWN - METAL

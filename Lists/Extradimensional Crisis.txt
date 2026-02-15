@@ -1,0 +1,105 @@
+103 cards
+
+Petilil - A3a #001 - DIAMOND1 - GRASS
+Lilligant - A3a #002 - DIAMOND1 - GRASS
+Rowlet - A3a #003 - DIAMOND1 - GRASS
+Dartrix - A3a #004 - DIAMOND2 - GRASS
+Decidueye - A3a #005 - DIAMOND3 - GRASS
+Buzzwole ex - A3a #006 - DIAMOND4 - GRASS
+Pheromosa - A3a #007 - DIAMOND2 - GRASS
+Kartana - A3a #008 - DIAMOND1 - GRASS
+Blacephalon - A3a #009 - DIAMOND2 - FIRE
+Mantine - A3a #010 - DIAMOND1 - WATER
+Carvanha - A3a #011 - DIAMOND1 - WATER
+Sharpedo - A3a #012 - DIAMOND2 - WATER
+Shinx - A3a #013 - DIAMOND1 - LIGHTNING
+Luxio - A3a #014 - DIAMOND1 - LIGHTNING
+Luxray - A3a #015 - DIAMOND3 - LIGHTNING
+Blitzle - A3a #016 - DIAMOND1 - LIGHTNING
+Zebstrika - A3a #017 - DIAMOND1 - LIGHTNING
+Emolga - A3a #018 - DIAMOND1 - LIGHTNING
+Tapu Koko ex - A3a #019 - DIAMOND4 - LIGHTNING
+Xurkitree - A3a #020 - DIAMOND2 - LIGHTNING
+Zeraora - A3a #021 - DIAMOND3 - LIGHTNING
+Clefairy - A3a #022 - DIAMOND1 - PSYCHIC
+Clefable - A3a #023 - DIAMOND2 - PSYCHIC
+Phantump - A3a #024 - DIAMOND1 - PSYCHIC
+Trevenant - A3a #025 - DIAMOND1 - PSYCHIC
+Morelull - A3a #026 - DIAMOND1 - PSYCHIC
+Shiinotic - A3a #027 - DIAMOND3 - PSYCHIC
+Meditite - A3a #028 - DIAMOND1 - FIGHTING
+Medicham - A3a #029 - DIAMOND2 - FIGHTING
+Baltoy - A3a #030 - DIAMOND1 - FIGHTING
+Claydol - A3a #031 - DIAMOND2 - FIGHTING
+Rockruff - A3a #032 - DIAMOND1 - FIGHTING
+Lycanroc ex - A3a #033 - DIAMOND4 - FIGHTING
+Passimian - A3a #034 - DIAMOND1 - FIGHTING
+Sandygast - A3a #035 - DIAMOND1 - FIGHTING
+Palossand - A3a #036 - DIAMOND2 - FIGHTING
+Alolan Meowth - A3a #037 - DIAMOND1 - DARKNESS
+Alolan Persian - A3a #038 - DIAMOND2 - DARKNESS
+Sandile - A3a #039 - DIAMOND1 - DARKNESS
+Krokorok - A3a #040 - DIAMOND1 - DARKNESS
+Krookodile - A3a #041 - DIAMOND2 - DARKNESS
+Nihilego - A3a #042 - DIAMOND3 - DARKNESS
+Guzzlord ex - A3a #043 - DIAMOND4 - DARKNESS
+Poipole - A3a #044 - DIAMOND1 - DARKNESS
+Naganadel - A3a #045 - DIAMOND3 - DARKNESS
+Alolan Diglett - A3a #046 - DIAMOND1 - METAL
+Alolan Dugtrio ex - A3a #047 - DIAMOND4 - METAL
+Aron - A3a #048 - DIAMOND1 - METAL
+Lairon - A3a #049 - DIAMOND1 - METAL
+Aggron - A3a #050 - DIAMOND2 - METAL
+Ferroseed - A3a #051 - DIAMOND1 - METAL
+Ferrothorn - A3a #052 - DIAMOND2 - METAL
+Stakataka - A3a #053 - DIAMOND2 - METAL
+Lillipup - A3a #054 - DIAMOND1 - COLORLESS
+Herdier - A3a #055 - DIAMOND1 - COLORLESS
+Stoutland - A3a #056 - DIAMOND2 - COLORLESS
+Stufful - A3a #057 - DIAMOND1 - COLORLESS
+Bewear - A3a #058 - DIAMOND2 - COLORLESS
+Oranguru - A3a #059 - DIAMOND1 - COLORLESS
+Type: Null - A3a #060 - DIAMOND2 - COLORLESS
+Silvally - A3a #061 - DIAMOND3 - COLORLESS
+Celesteela - A3a #062 - DIAMOND3 - COLORLESS
+Beast Wall - A3a #063 - DIAMOND2 - ITEM
+Repel - A3a #064 - DIAMOND2 - ITEM
+Electrical Cord - A3a #065 - DIAMOND2 - TOOL
+Beastite - A3a #066 - DIAMOND2 - TOOL
+Gladion - A3a #067 - DIAMOND2 - SUPPORTER
+Looker - A3a #068 - DIAMOND2 - SUPPORTER
+Lusamine - A3a #069 - DIAMOND2 - SUPPORTER
+Rowlet - A3a #070 - STAR1 - GRASS
+Pheromosa - A3a #071 - STAR1 - GRASS
+Blacephalon - A3a #072 - STAR1 - FIRE
+Alolan Meowth - A3a #073 - STAR1 - DARKNESS
+Silvally - A3a #074 - STAR1 - COLORLESS
+Celesteela - A3a #075 - STAR1 - COLORLESS
+Buzzwole ex - A3a #076 - STAR2 - GRASS
+Tapu Koko ex - A3a #077 - STAR2 - LIGHTNING
+Lycanroc ex - A3a #078 - STAR2 - FIGHTING
+Guzzlord ex - A3a #079 - STAR2 - DARKNESS
+Alolan Dugtrio ex - A3a #080 - STAR2 - METAL
+Gladion - A3a #081 - STAR2 - SUPPORTER
+Looker - A3a #082 - STAR2 - SUPPORTER
+Lusamine - A3a #083 - STAR2 - SUPPORTER
+Tapu Koko ex - A3a #084 - STAR2 - LIGHTNING
+Lycanroc ex - A3a #085 - STAR2 - FIGHTING
+Guzzlord ex - A3a #086 - STAR2 - DARKNESS
+Alolan Dugtrio ex - A3a #087 - STAR2 - METAL
+Buzzwole ex - A3a #088 - STAR3 - GRASS
+Growlithe - A3a #089 - SHINY1 - FIRE
+Arcanine - A3a #090 - SHINY1 - FIRE
+Froakie - A3a #091 - SHINY1 - WATER
+Frogadier - A3a #092 - SHINY1 - WATER
+Greninja - A3a #093 - SHINY1 - WATER
+Jynx - A3a #094 - SHINY1 - PSYCHIC
+Pidgey - A3a #095 - SHINY1 - COLORLESS
+Pidgeotto - A3a #096 - SHINY1 - COLORLESS
+Pidgeot - A3a #097 - SHINY1 - COLORLESS
+Aerodactyl - A3a #098 - SHINY1 - COLORLESS
+Celebi ex - A3a #099 - SHINY2 - GRASS
+Arcanine ex - A3a #100 - SHINY2 - FIRE
+Aerodactyl ex - A3a #101 - SHINY2 - FIGHTING
+Pidgeot ex - A3a #102 - SHINY2 - COLORLESS
+Nihilego - A3a #103 - CROWN - DARKNESS
