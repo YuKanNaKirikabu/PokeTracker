@@ -1,0 +1,133 @@
+131 cards
+
+Sprigatito - B2a #001 - DIAMOND1 - GRASS
+Floragato - B2a #002 - DIAMOND1 - GRASS
+Meowscarada ex - B2a #003 - DIAMOND4 - GRASS
+Tarountula - B2a #004 - DIAMOND1 - GRASS
+Spidops - B2a #005 - DIAMOND2 - GRASS
+Nymble - B2a #006 - DIAMOND1 - GRASS
+Smoliv - B2a #007 - DIAMOND1 - GRASS
+Dolliv - B2a #008 - DIAMOND1 - GRASS
+Arboliva - B2a #009 - DIAMOND3 - GRASS
+Bramblin - B2a #010 - DIAMOND1 - GRASS
+Brambleghast - B2a #011 - DIAMOND2 - GRASS
+Capsakid - B2a #012 - DIAMOND1 - GRASS
+Scovillain - B2a #013 - DIAMOND2 - GRASS
+Rellor - B2a #014 - DIAMOND1 - GRASS
+Wo-Chien - B2a #015 - DIAMOND3 - GRASS
+Fuecoco - B2a #016 - DIAMOND1 - FIRE
+Crocalor - B2a #017 - DIAMOND1 - FIRE
+Skeledirge - B2a #018 - DIAMOND3 - FIRE
+Charcadet - B2a #019 - DIAMOND1 - FIRE
+Armarouge ex - B2a #020 - DIAMOND4 - FIRE
+Chi-Yu - B2a #021 - DIAMOND3 - FIRE
+Quaxly - B2a #022 - DIAMOND1 - WATER
+Quaxwell - B2a #023 - DIAMOND1 - WATER
+Quaquaval - B2a #024 - DIAMOND3 - WATER
+Wiglett - B2a #025 - DIAMOND1 - WATER
+Wugtrio - B2a #026 - DIAMOND2 - WATER
+Finizen - B2a #027 - DIAMOND1 - WATER
+Palafin - B2a #028 - DIAMOND3 - WATER
+Cetoddle - B2a #029 - DIAMOND1 - WATER
+Cetitan - B2a #030 - DIAMOND2 - WATER
+Veluza - B2a #031 - DIAMOND2 - WATER
+Dondozo - B2a #032 - DIAMOND2 - WATER
+Tatsugiri - B2a #033 - DIAMOND2 - WATER
+Frigibax - B2a #034 - DIAMOND1 - WATER
+Arctibax - B2a #035 - DIAMOND1 - WATER
+Baxcalibur - B2a #036 - DIAMOND3 - WATER
+Chien-Pao ex - B2a #037 - DIAMOND4 - WATER
+Pawmi - B2a #038 - DIAMOND1 - LIGHTNING
+Pawmo - B2a #039 - DIAMOND1 - LIGHTNING
+Pawmot - B2a #040 - DIAMOND2 - LIGHTNING
+Tadbulb - B2a #041 - DIAMOND1 - LIGHTNING
+Bellibolt ex - B2a #042 - DIAMOND4 - LIGHTNING
+Wattrel - B2a #043 - DIAMOND1 - LIGHTNING
+Kilowattrel - B2a #044 - DIAMOND2 - LIGHTNING
+Miraidon - B2a #045 - DIAMOND3 - LIGHTNING
+Fidough - B2a #046 - DIAMOND1 - PSYCHIC
+Dachsbun - B2a #047 - DIAMOND2 - PSYCHIC
+Ceruledge - B2a #048 - DIAMOND3 - PSYCHIC
+Rabsca - B2a #049 - DIAMOND2 - PSYCHIC
+Flittle - B2a #050 - DIAMOND1 - PSYCHIC
+Espathra - B2a #051 - DIAMOND2 - PSYCHIC
+Greavard - B2a #052 - DIAMOND1 - PSYCHIC
+Houndstone - B2a #053 - DIAMOND2 - PSYCHIC
+Gimmighoul - B2a #054 - DIAMOND1 - PSYCHIC
+Mankey - B2a #055 - DIAMOND1 - FIGHTING
+Primeape - B2a #056 - DIAMOND1 - FIGHTING
+Annihilape - B2a #057 - DIAMOND2 - FIGHTING
+Paldean Tauros - B2a #058 - DIAMOND2 - FIGHTING
+Toedscool - B2a #059 - DIAMOND1 - FIGHTING
+Toedscruel - B2a #060 - DIAMOND2 - FIGHTING
+Klawf - B2a #061 - DIAMOND1 - FIGHTING
+Ting-Lu - B2a #062 - DIAMOND3 - FIGHTING
+Koraidon - B2a #063 - DIAMOND3 - FIGHTING
+Paldean Wooper - B2a #064 - DIAMOND1 - DARKNESS
+Paldean Clodsire - B2a #065 - DIAMOND2 - DARKNESS
+Lokix - B2a #066 - DIAMOND2 - DARKNESS
+Maschiff - B2a #067 - DIAMOND1 - DARKNESS
+Mabosstiff - B2a #068 - DIAMOND2 - DARKNESS
+Shroodle - B2a #069 - DIAMOND1 - DARKNESS
+Grafaiai - B2a #070 - DIAMOND2 - DARKNESS
+Bombirdier - B2a #071 - DIAMOND1 - DARKNESS
+Tinkatink - B2a #072 - DIAMOND1 - METAL
+Tinkatuff - B2a #073 - DIAMOND1 - METAL
+Tinkaton - B2a #074 - DIAMOND3 - METAL
+Varoom - B2a #075 - DIAMOND1 - METAL
+Revavroom - B2a #076 - DIAMOND2 - METAL
+Orthworm - B2a #077 - DIAMOND2 - METAL
+Gholdengo ex - B2a #078 - DIAMOND4 - METAL
+Lechonk - B2a #079 - DIAMOND1 - COLORLESS
+Oinkologne - B2a #080 - DIAMOND1 - COLORLESS
+Tandemaus - B2a #081 - DIAMOND1 - COLORLESS
+Maushold - B2a #082 - DIAMOND2 - COLORLESS
+Squawkabilly - B2a #083 - DIAMOND1 - COLORLESS
+Cyclizar - B2a #084 - DIAMOND2 - COLORLESS
+Flamigo - B2a #085 - DIAMOND1 - COLORLESS
+Electric Generator - B2a #086 - DIAMOND2 - ITEM
+Big Air Balloon - B2a #087 - DIAMOND2 - TOOL
+Team Star Grunt - B2a #088 - DIAMOND2 - SUPPORTER
+Iono - B2a #089 - DIAMOND2 - SUPPORTER
+Nemona - B2a #090 - DIAMOND2 - SUPPORTER
+Arven - B2a #091 - DIAMOND2 - SUPPORTER
+Penny - B2a #092 - DIAMOND2 - SUPPORTER
+Mesagoza - B2a #093 - DIAMOND2 - STADIUM
+Fuecoco - B2a #094 - STAR1 - FIRE
+Greavard - B2a #095 - STAR1 - PSYCHIC
+Gimmighoul - B2a #096 - STAR1 - PSYCHIC
+Paldean Wooper - B2a #097 - STAR1 - DARKNESS
+Orthworm - B2a #098 - STAR1 - METAL
+Maushold - B2a #099 - STAR1 - COLORLESS
+Meowscarada ex - B2a #100 - STAR2 - GRASS
+Armarouge ex - B2a #101 - STAR2 - FIRE
+Chien-Pao ex - B2a #102 - STAR2 - WATER
+Bellibolt ex - B2a #103 - STAR2 - LIGHTNING
+Gholdengo ex - B2a #104 - STAR2 - METAL
+Team Star Grunt - B2a #105 - STAR2 - SUPPORTER
+Iono - B2a #106 - STAR2 - SUPPORTER
+Nemona - B2a #107 - STAR2 - SUPPORTER
+Arven - B2a #108 - STAR2 - SUPPORTER
+Penny - B2a #109 - STAR2 - SUPPORTER
+Meowscarada ex - B2a #110 - STAR2 - GRASS
+Armarouge ex - B2a #111 - STAR2 - FIRE
+Chien-Pao ex - B2a #112 - STAR2 - WATER
+Bellibolt ex - B2a #113 - STAR2 - LIGHTNING
+Gholdengo ex - B2a #114 - STAR2 - METAL
+Arven - B2a #115 - STAR3 - SUPPORTER
+Sprigatito - B2a #116 - STAR1 - GRASS
+Floragato - B2a #117 - STAR1 - GRASS
+Meowscarada - B2a #118 - STAR1 - GRASS
+Pawmi - B2a #119 - STAR1 - LIGHTNING
+Pawmo - B2a #120 - STAR1 - LIGHTNING
+Pawmot - B2a #121 - STAR1 - LIGHTNING
+Gimmighoul - B2a #122 - STAR1 - PSYCHIC
+Tinkatink - B2a #123 - STAR1 - METAL
+Tinkatuff - B2a #124 - STAR1 - METAL
+Gholdengo - B2a #125 - STAR1 - METAL
+Entei ex - B2a #126 - STAR2 - FIRE
+Suicune ex - B2a #127 - STAR2 - WATER
+Raikou ex - B2a #128 - STAR2 - LIGHTNING
+Tinkaton ex - B2a #129 - STAR2 - METAL
+Baxcalibur - B2a #130 - CROWN - WATER
+Electric Generator - B2a #131 - CROWN - ITEM

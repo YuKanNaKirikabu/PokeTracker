@@ -1,4 +1,9 @@
 @echo off
+reg add "HKCU\Console" /v FontSize /t REG_DWORD /d 1048576 /f >nul 2>&1
+if /I not "%~1"=="__PT_MAXIMIZED" (
+	start "" /max "%ComSpec%" /c ""%~f0" __PT_MAXIMIZED"
+	exit /b
+)
 setlocal EnableExtensions EnableDelayedExpansion
 chcp 65001 > nul
 mode con cols=240 lines=50 >nul 2>&1
@@ -14,6 +19,8 @@ set "SAFE_MODE=0"
 set "STARTUP_SUMMARY_MODE=full"
 set "CONSOLE_LOG_MODE=same"
 set "FILE_LOG_KEEP_COUNT=0"
+set "REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data"
+set "REMOTE_WRITE=1"
 
 if exist "%CONFIG_FILE%" call "%CONFIG_FILE%"
 
@@ -31,6 +38,7 @@ if /I not "%HOST%"=="localhost" if /I not "%HOST%"=="0.0.0.0" set "HOST=localhos
 if /I not "%STARTUP_SUMMARY_MODE%"=="full" if /I not "%STARTUP_SUMMARY_MODE%"=="compact" if /I not "%STARTUP_SUMMARY_MODE%"=="off" set "STARTUP_SUMMARY_MODE=full"
 
 if /I not "%CONSOLE_LOG_MODE%"=="same" if /I not "%CONSOLE_LOG_MODE%"=="separate" if /I not "%CONSOLE_LOG_MODE%"=="off" set "CONSOLE_LOG_MODE=same"
+if /I not "%REMOTE_WRITE%"=="0" if /I not "%REMOTE_WRITE%"=="1" set "REMOTE_WRITE=0"
 
 set "KEEP_COUNT=%FILE_LOG_KEEP_COUNT%"
 2>nul set /a KEEP_COUNT=%KEEP_COUNT%
@@ -40,9 +48,13 @@ set "FILE_LOG_KEEP_COUNT=%KEEP_COUNT%"
 
 set "APP_URL=http://localhost:%PORT%"
 set "APP_URL_BIND=http://%HOST%:%PORT%"
+set "LOG_DIR=%TEMP%\poketracker\logs"
 set "LAN_IP="
 set "LAN_URL="
-if /I "%HOST%"=="0.0.0.0" call :detect_lan_ip
+if /I "%HOST%"=="0.0.0.0" (
+	call :detect_lan_ip
+	call :try_open_firewall_port
+)
 
 if /I not "%STARTUP_SUMMARY_MODE%"=="off" (
 	call :print_run_banner
@@ -61,11 +73,14 @@ if %errorlevel% equ 0 (
 			) else (
 				echo   LAN URL: unavailable ^(could not auto-detect local IP^)
 			)
+			if "%FIREWALL_PORT_OPENED%"=="1" echo   Firewall: inbound TCP %PORT% allowed for Private profile
+			if "%FIREWALL_PORT_OPENED%"=="0" echo   Firewall: could not auto-open ^(run as Administrator or allow python.exe/TCP %PORT%^)
 		) else (
 			echo   Host mode: localhost ^(this PC only^)
 		)
 		echo.
-		echo   Data file: data/collection.json
+		if defined REMOTE_DATA_BASE_URL echo   Remote data URL: %REMOTE_DATA_BASE_URL%
+		echo   Remote write: %REMOTE_WRITE%
 		echo   Auto-save: Enabled
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
 			echo   File logs: disabled ^(0 files kept^)
@@ -86,26 +101,27 @@ if %errorlevel% equ 0 (
 		echo.
 	)
 	cd /d "%SCRIPT_DIR%"
-	if not exist "%SCRIPT_DIR%data" mkdir "%SCRIPT_DIR%data"
 	if not "%FILE_LOG_KEEP_COUNT%"=="0" (
-		if not exist "%SCRIPT_DIR%data\logs" mkdir "%SCRIPT_DIR%data\logs"
+		if not exist "%LOG_DIR%" mkdir "%LOG_DIR%"
 		for /f %%i in ('powershell -NoLogo -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmmss"') do set "RUN_TS=%%i"
-		set "LOG_FILE=%SCRIPT_DIR%data\logs\server-!RUN_TS!.log"
+		set "LOG_FILE=%LOG_DIR%\server-!RUN_TS!.log"
 		echo ======================================== > "!LOG_FILE!"
 		echo PokeTracker server log >> "!LOG_FILE!"
 		echo Started at %date% %time% >> "!LOG_FILE!"
 		echo URL: %APP_URL_BIND% >> "!LOG_FILE!"
 		echo Port: %PORT% ^| Safe mode: %SAFE_MODE% >> "!LOG_FILE!"
 		echo ======================================== >> "!LOG_FILE!"
-		if /I not "%STARTUP_SUMMARY_MODE%"=="off" echo   Active log file: data/logs/server-!RUN_TS!.log
-		for /f "skip=%FILE_LOG_KEEP_COUNT% delims=" %%F in ('dir /b /a-d /o-d "%SCRIPT_DIR%data\logs\server-*.log" 2^>nul') do del /q "%SCRIPT_DIR%data\logs\%%F" >nul 2>&1
+		if /I not "%STARTUP_SUMMARY_MODE%"=="off" echo   Active log file: !LOG_FILE!
+		for /f "skip=%FILE_LOG_KEEP_COUNT% delims=" %%F in ('dir /b /a-d /o-d "%LOG_DIR%\server-*.log" 2^>nul') do del /q "%LOG_DIR%\%%F" >nul 2>&1
 	) else (
-		if exist "%SCRIPT_DIR%data\logs" rmdir /s /q "%SCRIPT_DIR%data\logs" >nul 2>&1
+		if exist "%LOG_DIR%" rmdir /s /q "%LOG_DIR%" >nul 2>&1
 	)
 
 	set "POKETRACKER_PORT=%PORT%"
 	set "POKETRACKER_SAFE_MODE=%SAFE_MODE%"
 	set "POKETRACKER_HOST=%HOST%"
+	set "POKETRACKER_DATA_BASE_URL=%REMOTE_DATA_BASE_URL%"
+	set "POKETRACKER_REMOTE_WRITE=%REMOTE_WRITE%"
 
 	if "%START_MINIMIZED%"=="1" (
 		powershell -NoLogo -NoProfile -Command "Add-Type -Name Win -Namespace Native -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern IntPtr GetConsoleWindow();[DllImport(\"user32.dll\")]public static extern bool ShowWindow(IntPtr hWnd,int nCmdShow);'; $h=[Native.Win]::GetConsoleWindow(); [Native.Win]::ShowWindow($h,2) ^| Out-Null" >nul 2>&1
@@ -117,7 +133,7 @@ if %errorlevel% equ 0 (
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
 			python -u "%SCRIPT_DIR%server\server.py"
 		) else (
-			powershell -NoLogo -NoProfile -Command "& { python -u '%SCRIPT_DIR%server\server.py' 2>&1 | Tee-Object -FilePath '!LOG_FILE!' -Append }"
+			python -u "%SCRIPT_DIR%server\server.py" 2>&1 | python -u "%SCRIPT_DIR%server\tee_stream.py" --file "!LOG_FILE!"
 		)
 	) else if /I "%CONSOLE_LOG_MODE%"=="off" (
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
@@ -130,14 +146,14 @@ if %errorlevel% equ 0 (
 		set "RUNTIME_CONSOLE_LOG=%TEMP%\poketracker-console-!RUN_TS_CONSOLE!.log"
 		type nul > "!RUNTIME_CONSOLE_LOG!"
 		if "%START_MINIMIZED%"=="1" (
-			start "PokeTracker Console" /min cmd /c "mode con cols=240 lines=50 >nul & powershell -NoLogo -NoProfile -Command \"Get-Content -Path '!RUNTIME_CONSOLE_LOG!' -Wait -Encoding UTF8\""
+			start "PokeTracker Console" /min python -u "%SCRIPT_DIR%server\tail_file.py" "!RUNTIME_CONSOLE_LOG!"
 		) else (
-			start "PokeTracker Console" cmd /c "mode con cols=240 lines=50 >nul & powershell -NoLogo -NoProfile -Command \"Get-Content -Path '!RUNTIME_CONSOLE_LOG!' -Wait -Encoding UTF8\""
+			start "PokeTracker Console" python -u "%SCRIPT_DIR%server\tail_file.py" "!RUNTIME_CONSOLE_LOG!"
 		)
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
-			powershell -NoLogo -NoProfile -Command "& { python -u '%SCRIPT_DIR%server\server.py' 2>&1 | Tee-Object -FilePath '!RUNTIME_CONSOLE_LOG!' -Append > $null }"
+			python -u "%SCRIPT_DIR%server\server.py" 2>&1 | python -u "%SCRIPT_DIR%server\tee_stream.py" --no-stdout --file "!RUNTIME_CONSOLE_LOG!"
 		) else (
-			powershell -NoLogo -NoProfile -Command "& { python -u '%SCRIPT_DIR%server\server.py' 2>&1 | Tee-Object -FilePath '!RUNTIME_CONSOLE_LOG!' -Append | Tee-Object -FilePath '!LOG_FILE!' -Append > $null }"
+			python -u "%SCRIPT_DIR%server\server.py" 2>&1 | python -u "%SCRIPT_DIR%server\tee_stream.py" --no-stdout --file "!RUNTIME_CONSOLE_LOG!" --file "!LOG_FILE!"
 		)
 		del /q "!RUNTIME_CONSOLE_LOG!" >nul 2>&1
 	)
@@ -166,6 +182,45 @@ echo.
 exit /b 0
 
 :detect_lan_ip
-for /f %%i in ('powershell -NoLogo -NoProfile -Command "$ips = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue ^| Where-Object { $_.IPAddress -notlike ''169.254.*'' -and $_.IPAddress -ne ''127.0.0.1'' }; if ($ips) { $ips[0].IPAddress } else { $fallback = [System.Net.Dns]::GetHostAddresses([System.Net.Dns]::GetHostName()) ^| Where-Object { $_.AddressFamily -eq [System.Net.Sockets.AddressFamily]::InterNetwork -and $_.IPAddressToString -ne ''127.0.0.1'' -and $_.IPAddressToString -notlike ''169.254.*'' }; if ($fallback) { $fallback[0].IPAddressToString } }"') do set "LAN_IP=%%i"
+set "LAN_IP="
+
+for /f "usebackq delims=" %%i in (`powershell -NoLogo -NoProfile -Command "$exclude='vEthernet|Hyper-V|VirtualBox|VMware|WSL|Loopback|Teredo|isatap|VPN|TAP|WireGuard|ZeroTier|Bluetooth'; $cfg = Get-NetIPConfiguration -ErrorAction SilentlyContinue ^| Where-Object { $_.NetAdapter.Status -eq 'Up' -and $_.IPv4Address -and $_.IPv4DefaultGateway -and $_.InterfaceAlias -notmatch $exclude }; $ips = $cfg ^| ForEach-Object { $_.IPv4Address.IPAddress } ^| Where-Object { $_ -match '^\d{1,3}(\.\d{1,3}){3}$' -and $_ -notmatch '^(127\.|169\.254\.)' } ^| Select-Object -Unique; $private = $ips ^| Where-Object { $_ -match '^(192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.)' } ^| Select-Object -First 1; if ($private) { $private } elseif ($ips) { $ips[0] }" 2^>nul`) do (
+	set "LAN_IP_CANDIDATE=%%i"
+	echo(!LAN_IP_CANDIDATE!| findstr /r "^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$" >nul && (
+		if /I not "!LAN_IP_CANDIDATE!"=="127.0.0.1" if /I not "!LAN_IP_CANDIDATE:~0,8!"=="169.254." (
+			set "LAN_IP=!LAN_IP_CANDIDATE!"
+			goto detect_lan_ip_done
+		)
+	)
+)
+
+for /f "usebackq delims=" %%i in (`python -c "import socket; s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM); s.connect(('1.1.1.1',80)); print(s.getsockname()[0]); s.close()" 2^>nul`) do (
+	set "LAN_IP_CANDIDATE=%%i"
+	echo(!LAN_IP_CANDIDATE!| findstr /r "^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$" >nul && (
+		set "LAN_IP=!LAN_IP_CANDIDATE!"
+		goto detect_lan_ip_done
+	)
+)
+
+for /f "tokens=2 delims=: " %%i in ('ipconfig ^| findstr /R /C:"IPv4.*:"') do (
+	set "LAN_IP_CANDIDATE=%%i"
+	set "LAN_IP_CANDIDATE=!LAN_IP_CANDIDATE: =!"
+	echo(!LAN_IP_CANDIDATE!| findstr /r "^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$" >nul && (
+		if /I not "!LAN_IP_CANDIDATE!"=="127.0.0.1" if /I not "!LAN_IP_CANDIDATE:~0,8!"=="169.254." (
+			set "LAN_IP=!LAN_IP_CANDIDATE!"
+			goto detect_lan_ip_done
+		)
+	)
+)
+:detect_lan_ip_done
 if defined LAN_IP set "LAN_URL=http://%LAN_IP%:%PORT%"
+exit /b 0
+
+:try_open_firewall_port
+set "FIREWALL_PORT_OPENED=0"
+net session >nul 2>&1
+if errorlevel 1 exit /b 0
+set "FW_RULE_NAME=PokeTracker LAN %PORT%"
+netsh advfirewall firewall delete rule name="%FW_RULE_NAME%" protocol=TCP localport=%PORT% >nul 2>&1
+netsh advfirewall firewall add rule name="%FW_RULE_NAME%" dir=in action=allow protocol=TCP localport=%PORT% profile=private >nul 2>&1 && set "FIREWALL_PORT_OPENED=1"
 exit /b 0

@@ -1,5 +1,34 @@
 import { state } from "./state.js";
 
+const TRANSIENT_UI_KEYS = new Set([
+  "gamePokedex",
+  "gamePokedexPage",
+  "gamePokedexVersion",
+  "gamePokedexMode",
+  "gamePokedexDirty",
+  "cardsDirty",
+  "settingsDirty",
+  "pokedexSelected",
+  "pokedexListScroll",
+  "pokedexCardScroll",
+  "pokedexGender",
+  "showcaseExpanded",
+  "arc",
+  "arcCleanup",
+  "packFiltersOpen",
+]);
+
+function pickPersistentUi(ui) {
+  if (!ui || typeof ui !== "object") return {};
+  const next = {};
+  Object.entries(ui).forEach(([key, value]) => {
+    if (!TRANSIENT_UI_KEYS.has(key)) {
+      next[key] = value;
+    }
+  });
+  return next;
+}
+
 export function getStorageSet(key) {
   try {
     const raw = localStorage.getItem(key);
@@ -152,12 +181,7 @@ export async function saveSettingsToFile() {
     ui: {},
   };
 
-  const excludeKeys = ["gamePokedex", "gamePokedexPage", "gamePokedexVersion", "gamePokedexMode"];
-  for (const [key, value] of Object.entries(state.ui)) {
-    if (!excludeKeys.includes(key)) {
-      settings.ui[key] = value;
-    }
-  }
+  settings.ui = pickPersistentUi(state.ui);
 
   try {
     const response = await fetch("/api/save-settings", {
@@ -220,7 +244,7 @@ export async function loadBootstrapFromFile() {
     state.wishlist = new Set(collection.wishlist || []);
 
     if (settings.ui) {
-      state.ui = { ...state.ui, ...settings.ui };
+      state.ui = { ...state.ui, ...pickPersistentUi(settings.ui) };
     }
 
     if (gamePokedex.pokedexes) {
@@ -268,7 +292,7 @@ export async function loadSettingsFromFile() {
     const data = await response.json();
 
     if (data.ui) {
-      state.ui = { ...state.ui, ...data.ui };
+      state.ui = { ...state.ui, ...pickPersistentUi(data.ui) };
     }
   } catch (err) {
     console.error(`Settings load error: ${err.message}`);

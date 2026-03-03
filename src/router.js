@@ -67,6 +67,11 @@ export function renderRoute() {
     const parsed = rawNo ? Number(rawNo) : null;
     if (parsed && !Number.isNaN(parsed)) {
       state.ui.pokedexSelected = parsed;
+    } else {
+      state.ui.pokedexSelected = 1;
+      state.ui.pokedexListScroll = 0;
+      state.ui.pokedexCardScroll = 0;
+      state.ui.pokedexGender = "common";
     }
     renderPokedex();
     return;
@@ -76,7 +81,10 @@ export function renderRoute() {
     const path = hash.replace("#/projects/pokedexes", "");
     const parts = path.split("/").filter(Boolean);
     if (parts.length) {
-      renderGamePokedex(parts[0]);
+      const gameId = parts[0];
+      state.ui.gamePokedexPage = state.ui.gamePokedexPage || {};
+      state.ui.gamePokedexPage[gameId] = 1;
+      renderGamePokedex(gameId);
     } else {
       renderNintPokedexesHome();
     }

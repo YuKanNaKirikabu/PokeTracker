@@ -1,12 +1,11 @@
 ﻿export const PACKS_ORDER = [
   { id: "ALL", title: "All Cards", code: "ALL", artwork: "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png" },
   { id: "Series B", title: "Series B", code: "SERIES_B" },
+  { id: "DELUXE PACK EX", title: "Deluxe Pack: ex (A4b)", code: "A4b" },
+  { id: "PALDEAN WONDERS", title: "Paldean Wonders (B2a)", code: "B2a" },
+  { id: "FANTASTICAL PARADE", title: "Fantastical Parade (A5)", code: "A5" },
   { id: "CRIMSON BLAZE", title: "Crimson Blaze (B1a)", code: "B1a" },
   { id: "MEGA RISING", title: "Mega Rising (B1)", code: "B1" },
-  { id: "Series A", title: "Series A", code: "SERIES_A" },
-  { id: "FANTASTICAL PARADE", title: "Fantastical Parade (A5)", code: "A5" },
-  { id: "DELUXE PACK EX", title: "Deluxe Pack: ex (A4b)", code: "A4b" },
-  { id: "GENETIC APEX", title: "Genetic Apex (A1)", code: "A1" },
   { id: "SECLUDED SPRINGS", title: "Secluded Springs (A4a)", code: "A4a" },
   { id: "WISDOM OF SEA AND SKY", title: "Wisdom of Sea and Sky (A4)", code: "A4" },
   { id: "EEVEE GROVE", title: "Eevee Grove (A3b)", code: "A3b" },
@@ -16,11 +15,14 @@
   { id: "TRIUMPHANT LIGHT", title: "Triumphant Light (A2a)", code: "A2a" },
   { id: "SPACE-TIME SMACKDOWN", title: "Space-Time Smackdown (A2)", code: "A2" },
   { id: "MYTHICAL ISLAND", title: "Mythical Island (A1a)", code: "A1a" },
+  { id: "Series A", title: "Series A", code: "SERIES_A" },
+  { id: "GENETIC APEX", title: "Genetic Apex (A1)", code: "A1" },
 ];
 
 export const KNOWN_PACKS = {
   "CRIMSON BLAZE": "CRIMSON BLAZE",
   "MEGA RISING": "MEGA RISING",
+  "PALDEAN WONDERS": "PALDEAN WONDERS",
   "WISDOM OF SEA AND SKY": "WISDOM OF SEA AND SKY",
   "EEVEE GROVE": "EEVEE GROVE",
   "TRIUMPHANT LIGHT": "TRIUMPHANT LIGHT",

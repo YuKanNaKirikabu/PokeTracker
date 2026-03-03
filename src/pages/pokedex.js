@@ -7,6 +7,7 @@ import {
     getPokedexIconPath,
     getPokedexList,
     getPokedexRegion,
+    getPokedexSpriteFallback,
     getPokemonArtwork,
     getPokemonDisplayName,
     getPokemonTypes,
@@ -40,13 +41,13 @@ export function renderPokedex() {
       const types = getPokemonTypes(entry.nameEn);
       const iconPath = getPokedexIconPath(entry);
       const artwork = getPokemonArtwork(entry.nameEn);
-      const fallbackAttr = artwork
-        ? `this.onerror=null;this.src='${artwork}'`
-        : "this.onerror=null;this.remove();";
+      const spriteFallback = getPokedexSpriteFallback(entry);
+      const fallbackSrc = artwork || spriteFallback || "";
+      const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
       const iconHtml = iconPath
-        ? `<img src="${iconPath}" alt="${displayName}" onerror="${fallbackAttr}" loading="lazy" decoding="async" />`
+        ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
         : artwork
-          ? `<img src="${artwork}" alt="${displayName}" loading="lazy" decoding="async" />`
+          ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
           : `<span>${displayName.slice(0, 1)}</span>`;
       return `
         <button class="pokedex-item ${entry.number === selected.number ? "active" : ""}" data-dex="${entry.number}" type="button">
@@ -100,6 +101,9 @@ function attachPokedexSearch(list) {
   if (!input) return;
   if (input._pokedexHandler) {
     input.removeEventListener("input", input._pokedexHandler);
+  }
+  if (input._gamePokedexHandler) {
+    input.removeEventListener("input", input._gamePokedexHandler);
   }
   const handler = () => {
     const listEl = document.querySelector(".pokedex-list");

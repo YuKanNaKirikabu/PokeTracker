@@ -1,9 +1,9 @@
 import { RARITY_ICONS, TYPE_ICONS } from "../config/packs.js";
 import {
-    GAME_POKEDEXES,
-    POKEDEX_DESCRIPTIONS,
-    POKEDEX_RAW,
-    POKEDEX_TRAINER_INCLUDES,
+  GAME_POKEDEXES,
+  POKEDEX_DESCRIPTIONS,
+  POKEDEX_RAW,
+  POKEDEX_TRAINER_INCLUDES,
 } from "../config/pokedex.js";
 import { getCurrentLanguage, t } from "../core/i18n.js";
 import { state } from "../core/state.js";
@@ -16,6 +16,15 @@ const GAME_POKEDEX_CACHE = new Map();
 const POKEDEX_CARD_CACHE = new Map();
 const GAME_POKEDEX_LOADING = new Map();
 let POKEDEX_NAMES_LOADING = null;
+
+const POKEDEX_VALIDATION_ANCHORS = [
+  { number: 1, nameEn: "Bulbasaur" },
+  { number: 438, nameEn: "Bonsly" },
+  { number: 439, nameEn: "Mime Jr." },
+  { number: 827, nameEn: "Nickit" },
+  { number: 828, nameEn: "Thievul" },
+  { number: 1025, nameEn: "Pecharunt" },
+];
 
 function resolveDisplayName(nameEn, nameRu) {
   const safeNameEn = String(nameEn || "").trim();
@@ -139,6 +148,22 @@ function rebuildPokedexLookup(list) {
   });
 }
 
+function isValidMasterPokedexList(list) {
+  if (!Array.isArray(list) || list.length < 1025) return false;
+
+  for (let i = 0; i < 1025; i += 1) {
+    const entry = list[i];
+    const expectedNumber = i + 1;
+    if (!entry || entry.number !== expectedNumber) return false;
+  }
+
+  return POKEDEX_VALIDATION_ANCHORS.every((anchor) => {
+    const entry = list[anchor.number - 1];
+    if (!entry) return false;
+    return normalizePokemonName(entry.nameEn) === normalizePokemonName(anchor.nameEn);
+  });
+}
+
 export async function loadPokedexNamesFromFile() {
   if (POKEDEX_NAMES_LOADING) return POKEDEX_NAMES_LOADING;
 
@@ -148,8 +173,10 @@ export async function loadPokedexNamesFromFile() {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const raw = await response.text();
       const list = parsePokedexText(raw, 4);
-      if (list.length) {
+      if (isValidMasterPokedexList(list)) {
         rebuildPokedexLookup(list);
+      } else {
+        console.warn("Pokedex names list rejected: invalid or shifted mapping");
       }
     } catch (err) {
       console.warn("Pokedex names load failed:", err.message);
@@ -386,7 +413,14 @@ export function getPokedexIconPath(entry) {
   if (!entry?.number || !entry?.nameEn) return null;
   if (entry.number > 1025) return null;
   const safeName = sanitizePokemonFileName(entry.nameEn);
-  return `https://storage.yandexcloud.net/poketracker/Images/Pokedex/0001-1025 Original/${entry.numberStr}_${safeName}.png`;
+  return `https://storage.yandexcloud.net/poketracker/Images/Pokedex/0001-1025 Original/${entry.numberStr}_${encodeURIComponent(safeName)}.png`;
+}
+
+export function getPokedexSpriteFallback(entry) {
+  if (!entry?.number) return null;
+  const number = Number(entry.number);
+  if (!Number.isFinite(number) || number < 1) return null;
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png`;
 }
 
 export function renderPokemonTypeIcons(types, sizeClass = "") {
@@ -477,13 +511,13 @@ export function renderPokedexDetail(entry) {
   const types = getPokemonTypes(entry.nameEn);
   const iconPath = getPokedexIconPath(entry);
   const artwork = getPokemonArtwork(entry.nameEn);
-  const fallbackAttr = artwork
-    ? `this.onerror=null;this.src='${artwork}'`
-    : "this.onerror=null;this.remove();";
+  const spriteFallback = getPokedexSpriteFallback(entry);
+  const fallbackSrc = artwork || spriteFallback || "";
+  const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
   const iconHtml = iconPath
-    ? `<img src="${iconPath}" alt="${displayName}" onerror="${fallbackAttr}" loading="lazy" decoding="async" />`
+    ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
     : artwork
-      ? `<img src="${artwork}" alt="${displayName}" loading="lazy" decoding="async" />`
+      ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
       : `<span>${displayName.slice(0, 1)}</span>`;
   const desc = getPokedexDescription(entry);
   const gender = resolvePokedexGender(desc);

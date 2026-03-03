@@ -1,4 +1,9 @@
 @echo off
+reg add "HKCU\Console" /v FontSize /t REG_DWORD /d 1048576 /f >nul 2>&1
+if /I not "%~1"=="__PT_MAXIMIZED" (
+  start "" /max "%ComSpec%" /c ""%~f0" __PT_MAXIMIZED"
+  exit /b
+)
 setlocal EnableExtensions EnableDelayedExpansion
 chcp 65001 > nul
 mode con cols=240 lines=50 >nul 2>&1
@@ -49,17 +54,18 @@ echo     PORT                 = %PORT%
 echo     SAFE_MODE            = %SAFE_MODE_TEXT%
 echo     HOST                 = %HOST%
 echo     STARTUP_SUMMARY_MODE = %STARTUP_SUMMARY_MODE%
+echo     REMOTE_DATA_BASE_URL = %REMOTE_DATA_BASE_URL%
+echo     REMOTE_WRITE         = %REMOTE_WRITE%
 echo     ACTIVE_PROFILE       = %ACTIVE_PROFILE%
 echo.
-echo   1^) Console log mode ^(same^/separate/off^)
-echo   2^) File logs keep count ^(0 = disabled, N = keep last N files^)
-echo   3^) AUTO_OPEN_BROWSER ^(true/false^)
-echo   4^) START_MINIMIZED ^(true/false^)
-echo   5^) Set PORT manually ^(1..65535^)
-echo   6^) SAFE_MODE ^(true/false, read-only saves^)
-echo   7^) Profiles ^(save/load presets^)
-echo   8^) Host and startup summary settings
-echo.
+echo   1^) Console log mode
+echo   2^) File logs keep count
+echo   3^) AUTO_OPEN_BROWSER
+echo   4^) START_MINIMIZED
+echo   5^) Set PORT manually
+echo   6^) SAFE_MODE
+echo   7^) Host and startup summary settings
+echo   8^) Profiles
 echo   9^) Save and exit
 echo   0^) Exit without saving
 echo.
@@ -69,10 +75,10 @@ if "%choice%"=="1" goto console_mode_menu
 if "%choice%"=="2" goto set_file_keep_count
 if "%choice%"=="3" goto auto_open_browser_menu
 if "%choice%"=="4" goto start_minimized_menu
-if "%choice%"=="5" set "ACTIVE_PROFILE=(manual/defaults)" & goto set_port
+if "%choice%"=="5" goto port_menu
 if "%choice%"=="6" goto safe_mode_menu
-if "%choice%"=="7" goto profiles_menu
-if "%choice%"=="8" goto host_summary_menu
+if "%choice%"=="7" goto host_summary_menu
+if "%choice%"=="8" goto profiles_menu
 if "%choice%"=="9" goto save
 if "%choice%"=="0" goto end
 goto menu
@@ -208,30 +214,47 @@ if "%smChoice%"=="2" set "START_MINIMIZED=0" & set "ACTIVE_PROFILE=(manual/defau
 if "%smChoice%"=="0" goto menu
 goto start_minimized_menu
 
+:port_menu
+cls
+echo.
+echo   PORT settings:
+echo   Current PORT: %PORT%
+echo   1^) Set PORT manually
+echo   0^) Back
+echo.
+set /p "portChoice=Select option: "
+if "%portChoice%"=="1" goto set_port
+if "%portChoice%"=="0" goto menu
+goto port_menu
+
 :set_port
+cls
 echo.
 echo Enter server PORT in range 1..65535
+echo Enter 0 to return without changes
 set /p "newPort=PORT: "
 if "%newPort%"=="" goto menu
+if "%newPort%"=="0" goto port_menu
 echo(%newPort%| findstr /r "^[0-9][0-9]*$" >nul
 if errorlevel 1 (
   echo Invalid port.
   timeout /t 2 >nul
-  goto menu
+  goto set_port
 )
 set /a PORT_CHECK=%newPort% >nul 2>&1
 if %PORT_CHECK% LSS 1 (
   echo Port must be >= 1.
   timeout /t 2 >nul
-  goto menu
+  goto set_port
 )
 if %PORT_CHECK% GTR 65535 (
   echo Port must be <= 65535.
   timeout /t 2 >nul
-  goto menu
+  goto set_port
 )
 set "PORT=%newPort%"
-goto menu
+set "ACTIVE_PROFILE=(manual/defaults)"
+goto port_menu
 
 :safe_mode_menu
 cls
@@ -368,6 +391,8 @@ set "SAFE_MODE=0"
 set "STARTUP_SUMMARY_MODE=full"
 set "CONSOLE_LOG_MODE=same"
 set "FILE_LOG_KEEP_COUNT=0"
+set "REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data"
+set "REMOTE_WRITE=1"
 exit /b 0
 
 :validate_settings
@@ -385,12 +410,15 @@ if /I not "%HOST%"=="localhost" if /I not "%HOST%"=="0.0.0.0" set "HOST=localhos
 if /I not "%STARTUP_SUMMARY_MODE%"=="full" if /I not "%STARTUP_SUMMARY_MODE%"=="compact" if /I not "%STARTUP_SUMMARY_MODE%"=="off" set "STARTUP_SUMMARY_MODE=full"
 
 if /I not "%CONSOLE_LOG_MODE%"=="same" if /I not "%CONSOLE_LOG_MODE%"=="separate" if /I not "%CONSOLE_LOG_MODE%"=="off" set "CONSOLE_LOG_MODE=same"
+if /I not "%REMOTE_WRITE%"=="0" if /I not "%REMOTE_WRITE%"=="1" set "REMOTE_WRITE=0"
 
 set "KEEP_COUNT=%FILE_LOG_KEEP_COUNT%"
 2>nul set /a KEEP_COUNT=%KEEP_COUNT%
 if "%KEEP_COUNT%"=="" set "KEEP_COUNT=0"
 if %KEEP_COUNT% LSS 0 set "KEEP_COUNT=0"
 set "FILE_LOG_KEEP_COUNT=%KEEP_COUNT%"
+if not defined REMOTE_DATA_BASE_URL set "REMOTE_DATA_BASE_URL="
+if not defined REMOTE_WRITE set "REMOTE_WRITE=0"
 exit /b 0
 
 :write_config
@@ -404,5 +432,7 @@ exit /b 0
   echo set "STARTUP_SUMMARY_MODE=%STARTUP_SUMMARY_MODE%"
   echo set "CONSOLE_LOG_MODE=%CONSOLE_LOG_MODE%"
   echo set "FILE_LOG_KEEP_COUNT=%FILE_LOG_KEEP_COUNT%"
+  echo set "REMOTE_DATA_BASE_URL=%REMOTE_DATA_BASE_URL%"
+  echo set "REMOTE_WRITE=%REMOTE_WRITE%"
 )
 exit /b 0

@@ -10,6 +10,8 @@ import {
     getPokedexEntryByName,
     getPokedexIconPath,
     getPokedexList,
+    getPokedexSpriteFallback,
+    getPokemonArtwork,
     getPokemonDisplayName,
     normalizePokemonName,
     setGamePokedexMarks
@@ -136,8 +138,14 @@ export function renderGamePokedex(gameId) {
     const baseEntry = getPokedexEntryByName(entry.nameEn) || entry;
     const displayName = getPokemonDisplayName(baseEntry);
     const iconPath = getPokedexIconPath(baseEntry);
+    const artwork = getPokemonArtwork(entry.nameEn);
+    const spriteFallback = getPokedexSpriteFallback(baseEntry);
+    const fallbackSrc = artwork || spriteFallback || "";
+    const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
     const iconHtml = iconPath
-      ? `<img src="${iconPath}" alt="${displayName}" loading="lazy" decoding="async" />`
+      ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
+      : artwork
+        ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
       : `<span>${displayName.slice(0, 1)}</span>`;
     const isSelected = marks.blue.has(key);
     const isMatch = matchKey && key === matchKey;
