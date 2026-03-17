@@ -35,7 +35,7 @@
 #035 Barbaracle - Rock · Water  
 #036 Staryu - Water  
 #037 Starmie - Water · Psychic  
-#038 Flabébé - Fairy  
+#038 Flabebe - Fairy  
 #039 Floette - Fairy  
 #040 Florges - Fairy  
 #041 Skiddo - Grass  

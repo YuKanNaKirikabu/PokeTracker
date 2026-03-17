@@ -60,9 +60,17 @@ if /I not "%STARTUP_SUMMARY_MODE%"=="off" (
 	call :print_run_banner
 )
 
-REM Check if Python is available
-python --version >nul 2>&1
+REM Check if Python is available (prefer python, fall back to py launcher)
+set "PYTHON_CMD="
+python -c "import sys; print(sys.version_info[0])" >nul 2>&1
 if %errorlevel% equ 0 (
+	set "PYTHON_CMD=python"
+) else (
+	py -3 -c "import sys; print(sys.version_info[0])" >nul 2>&1
+	if %errorlevel% equ 0 set "PYTHON_CMD=py -3"
+)
+
+if not "%PYTHON_CMD%"=="" (
 	if /I "%STARTUP_SUMMARY_MODE%"=="full" (
 		echo   Starting server with data persistence...
 		echo   Local URL: %APP_URL%
@@ -131,29 +139,29 @@ if %errorlevel% equ 0 (
 
 	if /I "%CONSOLE_LOG_MODE%"=="same" (
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
-			python -u "%SCRIPT_DIR%server\server.py"
+			%PYTHON_CMD% -u "%SCRIPT_DIR%server\server.py"
 		) else (
-			python -u "%SCRIPT_DIR%server\server.py" 2>&1 | python -u "%SCRIPT_DIR%server\tee_stream.py" --file "!LOG_FILE!"
+			%PYTHON_CMD% -u "%SCRIPT_DIR%server\server.py" 2>&1 | %PYTHON_CMD% -u "%SCRIPT_DIR%server\tee_stream.py" --file "!LOG_FILE!"
 		)
 	) else if /I "%CONSOLE_LOG_MODE%"=="off" (
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
-			python -u "%SCRIPT_DIR%server\server.py" >nul 2>&1
+			%PYTHON_CMD% -u "%SCRIPT_DIR%server\server.py" >nul 2>&1
 		) else (
-			python -u "%SCRIPT_DIR%server\server.py" >> "!LOG_FILE!" 2>&1
+			%PYTHON_CMD% -u "%SCRIPT_DIR%server\server.py" >> "!LOG_FILE!" 2>&1
 		)
 	) else (
 		for /f %%i in ('powershell -NoLogo -NoProfile -Command "Get-Date -Format yyyyMMdd-HHmmss"') do set "RUN_TS_CONSOLE=%%i"
 		set "RUNTIME_CONSOLE_LOG=%TEMP%\poketracker-console-!RUN_TS_CONSOLE!.log"
 		type nul > "!RUNTIME_CONSOLE_LOG!"
 		if "%START_MINIMIZED%"=="1" (
-			start "PokeTracker Console" /min python -u "%SCRIPT_DIR%server\tail_file.py" "!RUNTIME_CONSOLE_LOG!"
+			start "PokeTracker Console" /min %PYTHON_CMD% -u "%SCRIPT_DIR%server\tail_file.py" "!RUNTIME_CONSOLE_LOG!"
 		) else (
-			start "PokeTracker Console" python -u "%SCRIPT_DIR%server\tail_file.py" "!RUNTIME_CONSOLE_LOG!"
+			start "PokeTracker Console" %PYTHON_CMD% -u "%SCRIPT_DIR%server\tail_file.py" "!RUNTIME_CONSOLE_LOG!"
 		)
 		if "%FILE_LOG_KEEP_COUNT%"=="0" (
-			python -u "%SCRIPT_DIR%server\server.py" 2>&1 | python -u "%SCRIPT_DIR%server\tee_stream.py" --no-stdout --file "!RUNTIME_CONSOLE_LOG!"
+			%PYTHON_CMD% -u "%SCRIPT_DIR%server\server.py" 2>&1 | %PYTHON_CMD% -u "%SCRIPT_DIR%server\tee_stream.py" --no-stdout --file "!RUNTIME_CONSOLE_LOG!"
 		) else (
-			python -u "%SCRIPT_DIR%server\server.py" 2>&1 | python -u "%SCRIPT_DIR%server\tee_stream.py" --no-stdout --file "!RUNTIME_CONSOLE_LOG!" --file "!LOG_FILE!"
+			%PYTHON_CMD% -u "%SCRIPT_DIR%server\server.py" 2>&1 | %PYTHON_CMD% -u "%SCRIPT_DIR%server\tee_stream.py" --no-stdout --file "!RUNTIME_CONSOLE_LOG!" --file "!LOG_FILE!"
 		)
 		del /q "!RUNTIME_CONSOLE_LOG!" >nul 2>&1
 	)

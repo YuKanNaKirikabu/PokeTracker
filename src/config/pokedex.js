@@ -699,7 +699,7 @@ export const POKEDEX_RAW = `
 #0666 Vivillon | Вивиллон
 #0667 Litleo | Литлио
 #0668 Pyroar | Пайрор
-#0669 Flabébé | Флабебе
+#0669 Flabebe | Флабебе
 #0670 Floette | Флоэтт
 #0671 Florges | Флоргес
 #0672 Skiddo | Скиддо
