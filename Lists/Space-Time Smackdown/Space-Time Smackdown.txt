@@ -145,7 +145,7 @@ Fan Rotom - A2 #142 - DIAMOND1 - COLORLESS
 Regigigas - A2 #143 - DIAMOND3 - COLORLESS
 Skull Fossil - A2 #144 - DIAMOND1 - ITEM
 Armor Fossil - A2 #145 - DIAMOND1 - ITEM
-Pokémon Communication - A2 #146 - DIAMOND2 - ITEM
+Pokemon Communication - A2 #146 - DIAMOND2 - ITEM
 Giant Cape - A2 #147 - DIAMOND2 - TOOL
 Rocky Helmet - A2 #148 - DIAMOND2 - TOOL
 Lum Berry - A2 #149 - DIAMOND2 - TOOL

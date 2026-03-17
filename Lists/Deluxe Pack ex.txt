@@ -315,8 +315,8 @@ Old Amber - A4b #312 - DIAMOND1 - ITEM
 Old Amber - A4b #313 - DIAMOND1 - ITEM
 Rare Candy - A4b #314 - DIAMOND2 - ITEM
 Rare Candy - A4b #315 - DIAMOND2 - ITEM
-Pokémon Communication - A4b #316 - DIAMOND2 - ITEM
-Pokémon Communication - A4b #317 - DIAMOND2 - ITEM
+Pokemon Communication - A4b #316 - DIAMOND2 - ITEM
+Pokemon Communication - A4b #317 - DIAMOND2 - ITEM
 Electrical Cord - A4b #318 - DIAMOND2 - TOOL
 Electrical Cord - A4b #319 - DIAMOND2 - TOOL
 Giant Cape - A4b #320 - DIAMOND2 - TOOL

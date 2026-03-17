@@ -63,7 +63,7 @@ Tauros - A1a #060 - DIAMOND3 - COLORLESS
 Eevee - A1a #061 - DIAMOND1 - COLORLESS
 Chatot - A1a #062 - DIAMOND1 - COLORLESS
 Old Amber - A1a #063 - DIAMOND1 - ITEM
-Pokémon Flute - A1a #064 - DIAMOND2 - ITEM
+Pokemon Flute - A1a #064 - DIAMOND2 - ITEM
 Mythical Slab - A1a #065 - DIAMOND2 - ITEM
 Budding Expeditioner - A1a #066 - DIAMOND2 - SUPPORTER
 Blue - A1a #067 - DIAMOND2 - SUPPORTER

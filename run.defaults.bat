@@ -4,7 +4,7 @@ REM This file defines DEFAULT values for settings.bat "Reset all settings to def
 REM You can edit these values to make your own defaults.
 
 set "PORT=1025"
-set "HOST=localhost"
+set "HOST=0.0.0.0"
 set "AUTO_OPEN_BROWSER=1"
 set "START_MINIMIZED=0"
 set "SAFE_MODE=0"
