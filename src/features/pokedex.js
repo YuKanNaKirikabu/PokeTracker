@@ -1,9 +1,9 @@
 import { RARITY_ICONS, TYPE_ICONS } from "../config/packs.js";
 import {
-  GAME_POKEDEXES,
-  POKEDEX_DESCRIPTIONS,
-  POKEDEX_RAW,
-  POKEDEX_TRAINER_INCLUDES,
+    GAME_POKEDEXES,
+    POKEDEX_DESCRIPTIONS,
+    POKEDEX_RAW,
+    POKEDEX_TRAINER_INCLUDES,
 } from "../config/pokedex.js";
 import { getCurrentLanguage, t } from "../core/i18n.js";
 import { state } from "../core/state.js";
@@ -61,6 +61,8 @@ export function normalizePokemonName(name) {
 export function tokenizePokemonName(name) {
   return String(name || "")
     .toLowerCase()
+    // Keep hyphenated Pokemon as one lexical unit (e.g. Porygon-Z, Ho-Oh).
+    .replace(/-/g, "")
     .replace(/[^a-z0-9]+/gi, " ")
     .trim()
     .split(/\s+/)
@@ -434,6 +436,14 @@ export function renderPokemonTypeIcons(types, sizeClass = "") {
     .join("");
 }
 
+function getCardImageFallback(url) {
+  if (!url) return "";
+  if (url.includes("/Images/Packs/MEGA SHINE/")) {
+    return url.replace("/Images/Packs/MEGA SHINE/", "/Images/Packs/Mega Shine/");
+  }
+  return "";
+}
+
 export function renderPokedexCardItem(card) {
   const cardId = formatCardId(card);
   const owned = state.owned.has(cardId);
@@ -444,6 +454,8 @@ export function renderPokedexCardItem(card) {
   const gradientId = `heartGradient-${safeId}`;
   const heartFill = wished ? `url(#${gradientId})` : "none";
   const heartStroke = wished ? "rgba(255, 120, 160, 0.95)" : "rgba(255, 255, 255, 0.75)";
+  const fallbackImage = getCardImageFallback(card.image);
+  const fallbackAttr = fallbackImage ? ` data-fallback-src="${fallbackImage}"` : "";
   const wishlistHtml = !owned
     ? `
       <button class="wishlist-heart ${wished ? "active" : ""}" data-card-id="${cardId}" aria-label="${t("wishlist.aria")}" type="button">
@@ -463,7 +475,7 @@ export function renderPokedexCardItem(card) {
     <div class="card-item card-item--compact pokedex-card" data-pack="${card.pack}" data-card-id="${cardId}">
       <div class="pokeball ${owned ? "collected" : ""}" data-card-id="${cardId}"></div>
       ${wishlistHtml}
-      <img src="${card.image}" alt="${card.name}" loading="lazy" decoding="async" />
+      <img src="${card.image}" alt="${card.name}" loading="lazy" decoding="async"${fallbackAttr} />
       <div class="card-meta">
         <h3>${card.name}</h3>
         <span>${displayCode}</span>

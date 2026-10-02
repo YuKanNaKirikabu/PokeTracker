@@ -2,6 +2,7 @@
   { id: "ALL", title: "All Cards", code: "ALL", artwork: "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png" },
   { id: "Series B", title: "Series B", code: "SERIES_B" },
   { id: "DELUXE PACK EX", title: "Deluxe Pack: ex (A4b)", code: "A4b" },
+  { id: "MEGA SHINE", title: "Mega Shine (B2b)", code: "B2b", artwork: "https://storage.yandexcloud.net/poketracker/Images/Artworks/Mega-Shine.png" },
   { id: "PALDEAN WONDERS", title: "Paldean Wonders (B2a)", code: "B2a" },
   { id: "FANTASTICAL PARADE", title: "Fantastical Parade (A5)", code: "A5" },
   { id: "CRIMSON BLAZE", title: "Crimson Blaze (B1a)", code: "B1a" },
@@ -24,6 +25,7 @@
 export const KNOWN_PACKS = {
   "CRIMSON BLAZE": "CRIMSON BLAZE",
   "MEGA RISING": "MEGA RISING",
+  "MEGA SHINE": "MEGA SHINE",
   "PALDEAN WONDERS": "PALDEAN WONDERS",
   "WISDOM OF SEA AND SKY": "WISDOM OF SEA AND SKY",
   "EEVEE GROVE": "EEVEE GROVE",

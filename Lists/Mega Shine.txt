@@ -1,0 +1,119 @@
+117 cards
+
+Scyther - B2b #001 - DIAMOND1 - GRASS
+Pineco - B2b #002 - DIAMOND1 - GRASS
+Volbeat - B2b #003 - DIAMOND1 - GRASS
+Illumise - B2b #004 - DIAMOND1 - GRASS
+Phantump - B2b #005 - DIAMOND1 - GRASS
+Trevenant - B2b #006 - DIAMOND2 - GRASS
+Charmander - B2b #007 - DIAMOND1 - FIRE
+Charmeleon - B2b #008 - DIAMOND2 - FIRE
+Mega Charizard X ex - B2b #009 - DIAMOND4 - FIRE
+Ponyta - B2b #010 - DIAMOND1 - FIRE
+Rapidash - B2b #011 - DIAMOND1 - FIRE
+Magmar - B2b #012 - DIAMOND1 - FIRE
+Magmortar - B2b #013 - DIAMOND2 - FIRE
+Paldean Tauros - B2b #014 - DIAMOND1 - FIRE
+Slowpoke - B2b #015 - DIAMOND1 - WATER
+Mega Slowbro ex - B2b #016 - DIAMOND4 - WATER
+Lapras - B2b #017 - DIAMOND2 - WATER
+Piplup - B2b #018 - DIAMOND1 - WATER
+Prinplup - B2b #019 - DIAMOND2 - WATER
+Empoleon - B2b #020 - DIAMOND3 - WATER
+Phione - B2b #021 - DIAMOND2 - WATER
+Pikachu - B2b #022 - DIAMOND1 - LIGHTNING
+Raichu - B2b #023 - DIAMOND2 - LIGHTNING
+Electabuzz - B2b #024 - DIAMOND1 - LIGHTNING
+Electivire - B2b #025 - DIAMOND2 - LIGHTNING
+Electrike - B2b #026 - DIAMOND1 - LIGHTNING
+Mega Manectric ex - B2b #027 - DIAMOND4 - LIGHTNING
+Drowzee - B2b #028 - DIAMOND1 - PSYCHIC
+Hypno - B2b #029 - DIAMOND2 - PSYCHIC
+Mew - B2b #030 - DIAMOND3 - PSYCHIC
+Spoink - B2b #031 - DIAMOND1 - PSYCHIC
+Grumpig - B2b #032 - DIAMOND2 - PSYCHIC
+Diglett - B2b #033 - DIAMOND1 - FIGHTING
+Dugtrio - B2b #034 - DIAMOND2 - FIGHTING
+Groudon - B2b #035 - DIAMOND3 - FIGHTING
+Hawlucha - B2b #036 - DIAMOND1 - FIGHTING
+Gastly - B2b #037 - DIAMOND1 - DARKNESS
+Haunter - B2b #038 - DIAMOND2 - DARKNESS
+Mega Gengar ex - B2b #039 - DIAMOND4 - DARKNESS
+Darkrai - B2b #040 - DIAMOND3 - DARKNESS
+Trubbish - B2b #041 - DIAMOND1 - DARKNESS
+Garbodor - B2b #042 - DIAMOND1 - DARKNESS
+Zorua - B2b #043 - DIAMOND1 - DARKNESS
+Zoroark - B2b #044 - DIAMOND3 - DARKNESS
+Morpeko - B2b #045 - DIAMOND1 - DARKNESS
+Forretress - B2b #046 - DIAMOND2 - METAL
+Mega Scizor ex - B2b #047 - DIAMOND4 - METAL
+Kartana - B2b #048 - DIAMOND2 - METAL
+Varoom - B2b #049 - DIAMOND1 - METAL
+Revavroom - B2b #050 - DIAMOND3 - METAL
+Dratini - B2b #051 - DIAMOND1 - DRAGON
+Dragonair - B2b #052 - DIAMOND2 - DRAGON
+Dragonite - B2b #053 - DIAMOND3 - DRAGON
+Axew - B2b #054 - DIAMOND1 - DRAGON
+Fraxure - B2b #055 - DIAMOND2 - DRAGON
+Haxorus - B2b #056 - DIAMOND3 - DRAGON
+Druddigon - B2b #057 - DIAMOND1 - DRAGON
+Jigglypuff - B2b #058 - DIAMOND1 - COLORLESS
+Wigglytuff - B2b #059 - DIAMOND1 - COLORLESS
+Miltank - B2b #060 - DIAMOND2 - COLORLESS
+Chatot - B2b #061 - DIAMOND1 - COLORLESS
+Minccino - B2b #062 - DIAMOND1 - COLORLESS
+Cinccino - B2b #063 - DIAMOND2 - COLORLESS
+Furfrou - B2b #064 - DIAMOND2 - COLORLESS
+Nasty Notice - B2b #065 - DIAMOND2 - ITEM
+Maintenance - B2b #066 - DIAMOND2 - TOOL
+Iris - B2b #067 - DIAMOND2 - SUPPORTER
+Calem - B2b #068 - DIAMOND2 - SUPPORTER
+Hiking Trail - B2b #069 - DIAMOND2 - SUPPORTER
+Lapras - B2b #070 - STAR1 - WATER
+Empoleon - B2b #071 - STAR1 - WATER
+Groudon - B2b #072 - STAR1 - FIGHTING
+Morpeko - B2b #073 - STAR1 - DARKNESS
+Revavroom - B2b #074 - STAR1 - METAL
+Miltank - B2b #075 - STAR1 - COLORLESS
+Mega Charizard X ex - B2b #076 - STAR2 - FIRE
+Mega Slowbro ex - B2b #077 - STAR2 - WATER
+Mega Manectric ex - B2b #078 - STAR2 - LIGHTNING
+Mega Gengar ex - B2b #079 - STAR2 - DARKNESS
+Mega Scizor ex - B2b #080 - STAR2 - METAL
+Iris - B2b #081 - STAR2 - SUPPORTER
+Calem - B2b #082 - STAR2 - SUPPORTER
+Mega Slowbro ex - B2b #083 - STAR2 - WATER
+Mega Manectric ex - B2b #084 - STAR2 - LIGHTNING
+Mew - B2b #085 - STAR3 - PSYCHIC
+Mew - B2b #086 - STAR3 - PSYCHIC
+Scyther - B2b #087 - SHINY1 - GRASS
+Pineco - B2b #088 - SHINY1 - GRASS
+Phantump - B2b #089 - SHINY1 - GRASS
+Trevenant - B2b #090 - SHINY1 - GRASS
+Charmander - B2b #091 - SHINY1 - FIRE
+Charmeleon - B2b #092 - SHINY1 - FIRE
+Ponyta - B2b #093 - SHINY1 - FIRE
+Rapidash - B2b #094 - SHINY1 - FIRE
+Slowpoke - B2b #095 - SHINY1 - WATER
+Pikachu - B2b #096 - SHINY1 - LIGHTNING
+Raichu - B2b #097 - SHINY1 - LIGHTNING
+Electrike - B2b #098 - SHINY1 - LIGHTNING
+Hawlucha - B2b #099 - SHINY1 - FIGHTING
+Gastly - B2b #100 - SHINY1 - DARKNESS
+Haunter - B2b #101 - SHINY1 - DARKNESS
+Zorua - B2b #102 - SHINY1 - DARKNESS
+Zoroark - B2b #103 - SHINY1 - DARKNESS
+Forretress - B2b #104 - SHINY1 - METAL
+Dratini - B2b #105 - SHINY1 - DRAGON
+Dragonair - B2b #106 - SHINY1 - DRAGON
+Dragonite - B2b #107 - SHINY1 - DRAGON
+Axew - B2b #108 - SHINY1 - DRAGON
+Fraxure - B2b #109 - SHINY1 - DRAGON
+Haxorus - B2b #110 - SHINY1 - DRAGON
+Mega Charizard X ex - B2b #111 - SHINY2 - FIRE
+Mega Slowbro ex - B2b #112 - SHINY2 - WATER
+Mega Manectric ex - B2b #113 - SHINY2 - LIGHTNING
+Mega Gengar ex - B2b #114 - SHINY2 - DARKNESS
+Mega Scizor ex - B2b #115 - SHINY2 - METAL
+Arboliva - B2b #116 - CROWN - GRASS
+Metal Core Barrier - B2b #117 - CROWN - METAL

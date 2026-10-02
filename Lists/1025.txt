@@ -666,7 +666,7 @@
 #0666 Vivillon
 #0667 Litleo
 #0668 Pyroar
-#0669 Flabébé
+#0669 Flabebe
 #0670 Floette
 #0671 Florges
 #0672 Skiddo

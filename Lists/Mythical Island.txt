@@ -35,7 +35,7 @@ Mew ex - A1a #032 - DIAMOND4 - PSYCHIC
 Sigilyph - A1a #033 - DIAMOND2 - PSYCHIC
 Elgyem - A1a #034 - DIAMOND1 - PSYCHIC
 Beheeyem - A1a #035 - DIAMOND2 - PSYCHIC
-Flabébé - A1a #036 - DIAMOND1 - PSYCHIC
+Flabebe - A1a #036 - DIAMOND1 - PSYCHIC
 Floette - A1a #037 - DIAMOND1 - PSYCHIC
 Florges - A1a #038 - DIAMOND2 - PSYCHIC
 Swirlix - A1a #039 - DIAMOND1 - PSYCHIC
@@ -63,7 +63,7 @@ Tauros - A1a #060 - DIAMOND3 - COLORLESS
 Eevee - A1a #061 - DIAMOND1 - COLORLESS
 Chatot - A1a #062 - DIAMOND1 - COLORLESS
 Old Amber - A1a #063 - DIAMOND1 - ITEM
-Pokémon Flute - A1a #064 - DIAMOND2 - ITEM
+Pokemon Flute - A1a #064 - DIAMOND2 - ITEM
 Mythical Slab - A1a #065 - DIAMOND2 - ITEM
 Budding Expeditioner - A1a #066 - DIAMOND2 - SUPPORTER
 Blue - A1a #067 - DIAMOND2 - SUPPORTER

@@ -4,6 +4,13 @@ import { state } from "../core/state.js";
 import { saveDataToFile } from "../core/storage.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 
+function normalizeMegaShineLogoUrl(url) {
+  if (!url) return "";
+  return String(url)
+    .replace("/PacksLogos/Mega-Shine.webp", "/PacksLogos/Mega%20Shine.png")
+    .replace("/PacksLogos/Mega Shine.png", "/PacksLogos/Mega%20Shine.png");
+}
+
 function setCardsDirty(isDirty) {
   state.ui.cardsDirty = isDirty;
   const button = document.getElementById("cardsSaveBtn");
@@ -29,12 +36,13 @@ function getOrderedPacks() {
 
 function resolvePackBanner(pack) {
   const orderItem = PACKS_ORDER.find((item) => item.id === pack.id);
-  return (
+  const raw = (
     pack.logo
     || pack.artwork
     || orderItem?.artwork
-    || "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png"
+    || ""
   );
+  return normalizeMegaShineLogoUrl(raw);
 }
 
 function renderGroupedByPacks(cards) {
@@ -47,7 +55,7 @@ function renderGroupedByPacks(cards) {
         <div class="pack-block pack-accordion" data-pack-block="${pack.id}">
           <button class="pack-accordion-header" data-pack-toggle="${pack.id}" type="button" aria-expanded="false">
             <span class="pack-accordion-logo-wrap">
-              <img src="${logo}" alt="${pack.display}" onerror="this.onerror=null;this.src='https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png';" loading="lazy" decoding="async" />
+              <img src="${logo}" alt="${pack.display}" loading="lazy" decoding="async" />
             </span>
             <span class="pack-accordion-title">${pack.display}</span>
             <span class="pack-accordion-chevron" aria-hidden="true">▾</span>

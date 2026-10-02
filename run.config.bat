@@ -1,6 +1,6 @@
 @echo off
 set "PORT=1025"
-set "HOST=localhost"
+set "HOST=0.0.0.0"
 set "AUTO_OPEN_BROWSER=1"
 set "START_MINIMIZED=0"
 set "SAFE_MODE=0"

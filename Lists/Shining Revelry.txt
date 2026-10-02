@@ -69,7 +69,7 @@ Buneary - A2b #066 - DIAMOND1 - COLORLESS
 Lopunny - A2b #067 - DIAMOND1 - COLORLESS
 Cyclizar - A2b #068 - DIAMOND2 - COLORLESS
 Iono - A2b #069 - DIAMOND2 - SUPPORTER
-Pokémon Center Lady - A2b #070 - DIAMOND2 - SUPPORTER
+Pokemon Center Lady - A2b #070 - DIAMOND2 - SUPPORTER
 Red - A2b #071 - DIAMOND2 - SUPPORTER
 Team Rocket Grunt - A2b #072 - DIAMOND2 - SUPPORTER
 Meowscarada - A2b #073 - STAR1 - GRASS
@@ -88,7 +88,7 @@ Paldean Clodsire ex - A2b #085 - STAR2 - DARKNESS
 Tinkaton ex - A2b #086 - STAR2 - METAL
 Bibarel ex - A2b #087 - STAR2 - COLORLESS
 Iono - A2b #088 - STAR2 - SUPPORTER
-Pokémon Center Lady - A2b #089 - STAR2 - SUPPORTER
+Pokemon Center Lady - A2b #089 - STAR2 - SUPPORTER
 Red - A2b #090 - STAR2 - SUPPORTER
 Team Rocket Grunt - A2b #091 - STAR2 - SUPPORTER
 Pikachu ex - A2b #092 - STAR2 - LIGHTNING
@@ -110,4 +110,4 @@ Beedrill ex - A2b #107 - SHINY2 - GRASS
 Charizard ex - A2b #108 - SHINY2 - FIRE
 Wugtrio ex - A2b #109 - SHINY2 - WATER
 Lucario ex - A2b #110 - SHINY2 - FIGHTING
-Poké Ball - A2b #111 - CROWN - ITEM
+Poke Ball - A2b #111 - CROWN - ITEM

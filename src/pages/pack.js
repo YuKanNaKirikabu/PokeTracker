@@ -43,6 +43,18 @@ function attachCardsSaveButton() {
   setCardsDirty(Boolean(state.ui.cardsDirty));
 }
 
+function normalizeMegaShineLogoUrl(url) {
+  if (!url) return "";
+  return String(url)
+    .replace("/PacksLogos/Mega-Shine.webp", "/PacksLogos/Mega%20Shine.png")
+    .replace("/PacksLogos/Mega Shine.png", "/PacksLogos/Mega%20Shine.png");
+}
+
+function renderPackLogoImage(logoUrl, altText) {
+  const primaryLogo = normalizeMegaShineLogoUrl(logoUrl);
+  return `<img src="${primaryLogo}" alt="${altText}" class="pack-logo" loading="lazy" decoding="async" />`;
+}
+
 function normalizeGeneticSubpack(raw) {
   if (!raw) return "all";
   const value = raw.toLowerCase();
@@ -256,7 +268,7 @@ export function renderPack(packTitle, subpack) {
       ${renderCardsSaveButton()}
     `;
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
-    attachCardEvents(() => renderPack("ALL"));
+    attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
@@ -277,7 +289,7 @@ export function renderPack(packTitle, subpack) {
         ${renderFilters(renderGeneticApexGroup(activeSubpack))}
         <div>
           <div class="pack-header">
-            <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
+            ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
           ${renderCardGrid(cards)}
@@ -287,7 +299,7 @@ export function renderPack(packTitle, subpack) {
     `;
     attachFilterEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack));
     attachGeneticApexEvents();
-    attachCardEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack));
+    attachCardEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
@@ -308,7 +320,7 @@ export function renderPack(packTitle, subpack) {
         ${renderFilters(renderMegaRisingGroup(activeSubpack))}
         <div>
           <div class="pack-header">
-            <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
+            ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
           ${renderCardGrid(cards)}
@@ -318,7 +330,7 @@ export function renderPack(packTitle, subpack) {
     `;
     attachFilterEvents(() => renderPack(MEGA_RISING_ID, activeSubpack));
     attachMegaRisingEvents();
-    attachCardEvents(() => renderPack(MEGA_RISING_ID, activeSubpack));
+    attachCardEvents(() => renderPack(MEGA_RISING_ID, activeSubpack), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
@@ -339,7 +351,7 @@ export function renderPack(packTitle, subpack) {
         ${renderFilters(renderWisdomSeaSkyGroup(activeSubpack))}
         <div>
           <div class="pack-header">
-            <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
+            ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
           ${renderCardGrid(cards)}
@@ -349,7 +361,7 @@ export function renderPack(packTitle, subpack) {
     `;
     attachFilterEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack));
     attachWisdomSeaSkyEvents();
-    attachCardEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack));
+    attachCardEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
@@ -370,7 +382,7 @@ export function renderPack(packTitle, subpack) {
         ${renderFilters(renderCelestialGuardiansGroup(activeSubpack))}
         <div>
           <div class="pack-header">
-            <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
+            ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
           ${renderCardGrid(cards)}
@@ -380,7 +392,7 @@ export function renderPack(packTitle, subpack) {
     `;
     attachFilterEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack));
     attachCelestialGuardiansEvents();
-    attachCardEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack));
+    attachCardEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
@@ -401,7 +413,7 @@ export function renderPack(packTitle, subpack) {
         ${renderFilters(renderSpaceTimeSmackdownGroup(activeSubpack))}
         <div>
           <div class="pack-header">
-            <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
+            ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
           ${renderCardGrid(cards)}
@@ -411,7 +423,7 @@ export function renderPack(packTitle, subpack) {
     `;
     attachFilterEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack));
     attachSpaceTimeSmackdownEvents();
-    attachCardEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack));
+    attachCardEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
@@ -445,6 +457,6 @@ export function renderPack(packTitle, subpack) {
     ${renderCardsSaveButton()}
   `;
   attachFilterEvents(() => renderPack(packTitle));
-  attachCardEvents(() => renderPack(packTitle));
+  attachCardEvents(() => renderPack(packTitle), { rerenderOnToggle: false });
   attachCardsSaveButton();
 }
