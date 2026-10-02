@@ -1,4 +1,6 @@
-﻿import { t } from "../core/i18n.js";
+﻿import { compilerPages } from "../config/compiler-pages.js";
+import { t } from "../core/i18n.js";
+import { mountCompilerWidget } from "../widgets/compiler-widget/compiler-widget.js";
 
 export function renderHome() {
   const app = document.getElementById("app");
@@ -34,7 +36,17 @@ export function renderHome() {
           <div class="choice-desc">${t("home.physicalDesc")}</div>
         </a>
       </div>
+      <section class="compiler-mount" data-compiler-widget aria-label="Project documentation compiler"></section>
     </section>
   `;
+
+  const compilerContainer = app.querySelector("[data-compiler-widget]");
+  if (compilerContainer) {
+    mountCompilerWidget(compilerContainer, compilerPages, {
+      statusText: "PokeTracker Docs: READY",
+      sidebarTitle: "Project Files",
+      initialPageId: "project",
+    });
+  }
 }
 

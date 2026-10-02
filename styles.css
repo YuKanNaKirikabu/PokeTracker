@@ -403,8 +403,8 @@ body.theme-light .menu-toggle img {
 
 .pack-arc-track {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   top: 38%;
   left: 50%;
   transform: translateX(-50%);

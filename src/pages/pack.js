@@ -5,6 +5,7 @@ import {
     GENETIC_APEX_SUBPACKS,
     MEGA_RISING_ID,
     MEGA_RISING_SUBPACKS,
+    PACKS_ORDER,
     SPACE_TIME_SMACKDOWN_ID,
     SPACE_TIME_SMACKDOWN_SUBPACKS,
     WISDOM_SEA_SKY_ID,
@@ -210,6 +211,16 @@ function attachSpaceTimeSmackdownEvents() {
     const query = subpack && subpack !== "all" ? `?sub=${encodeURIComponent(subpack)}` : "";
     location.hash = `#/pack/${encodeURIComponent(SPACE_TIME_SMACKDOWN_ID)}${query}`;
   });
+}
+
+function resolvePackLogo(pack) {
+  const orderItem = PACKS_ORDER.find((item) => item.id === pack?.id);
+  return (
+    pack?.logo
+    || pack?.artwork
+    || orderItem?.artwork
+    || "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png"
+  );
 }
 
 export function renderPack(packTitle, subpack) {
@@ -419,12 +430,13 @@ export function renderPack(packTitle, subpack) {
   const ownedCount = state.data.cards.filter(
     (card) => card.pack === packData.id && state.owned.has(formatCardId(card))
   ).length;
+  const logo = resolvePackLogo(packData);
   app.innerHTML = `
     <section class="pack-page">
       ${renderFilters()}
       <div>
         <div class="pack-header">
-          <img src="${packData.logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
+          <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
         </div>
         <p class="section-subtitle">${ownedCount}/${packData.count}</p>
         ${renderCardGrid(cards)}
