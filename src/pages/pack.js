@@ -17,6 +17,60 @@ import { saveDataToFile } from "../core/storage.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
 
+const ALL_CARDS_BATCH_SIZE = 150;
+
+function renderBatchedCardGrid(cards) {
+  const initialCards = cards.slice(0, ALL_CARDS_BATCH_SIZE);
+  return `
+    <div id="allCardsGrid" class="cards-grid" style="--card-scale: 1; --icon-scale: 1">
+      ${renderCardGrid(initialCards).replace(/^\s*<div class="cards-grid"[^>]*>|<\/div>\s*$/g, "")}
+    </div>
+    <div id="allCardsSentinel" aria-hidden="true"></div>
+  `;
+}
+
+function attachCardsInfiniteScroll(cards) {
+  const grid = document.querySelector("#allCardsGrid");
+  const sentinel = document.querySelector("#allCardsSentinel");
+  if (!grid || !sentinel || cards.length <= ALL_CARDS_BATCH_SIZE) {
+    sentinel?.remove();
+    return;
+  }
+
+  let nextIndex = ALL_CARDS_BATCH_SIZE;
+  let loading = false;
+  const appendNextBatch = () => {
+    if (loading || nextIndex >= cards.length) return;
+    loading = true;
+
+    const batch = cards.slice(nextIndex, nextIndex + ALL_CARDS_BATCH_SIZE);
+    const template = document.createElement("template");
+    template.innerHTML = renderCardGrid(batch);
+    const batchGrid = template.content.firstElementChild;
+    if (batchGrid) {
+      const newCards = document.createElement("div");
+      newCards.append(...batchGrid.children);
+      attachCardEvents(() => {}, {
+        rerenderOnToggle: false,
+        root: newCards,
+      });
+      grid.append(...newCards.children);
+    }
+
+    nextIndex += batch.length;
+    loading = false;
+    if (nextIndex >= cards.length) {
+      observer.disconnect();
+      sentinel.remove();
+    }
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) appendNextBatch();
+  }, { rootMargin: "600px 0px" });
+  observer.observe(sentinel);
+}
+
 function renderCardsSaveButton() {
   return `
     <button class="game-pokedex-save-btn left" id="cardsSaveBtn" type="button" disabled>
@@ -262,13 +316,14 @@ export function renderPack(packTitle, subpack) {
         <div>
           <h1 class="section-title">${t("pack.allTitle")}</h1>
           <p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p>
-          ${renderCardGrid(cards)}
+          ${renderBatchedCardGrid(cards)}
         </div>
       </section>
       ${renderCardsSaveButton()}
     `;
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
-    attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
+    attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false, root: app });
+    attachCardsInfiniteScroll(cards);
     attachCardsSaveButton();
     return;
   }
@@ -292,7 +347,7 @@ export function renderPack(packTitle, subpack) {
             ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
+          ${renderBatchedCardGrid(cards)}
         </div>
       </section>
       ${renderCardsSaveButton()}
@@ -300,6 +355,7 @@ export function renderPack(packTitle, subpack) {
     attachFilterEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack));
     attachGeneticApexEvents();
     attachCardEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack), { rerenderOnToggle: false });
+    attachCardsInfiniteScroll(cards);
     attachCardsSaveButton();
     return;
   }
@@ -323,7 +379,7 @@ export function renderPack(packTitle, subpack) {
             ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
+          ${renderBatchedCardGrid(cards)}
         </div>
       </section>
       ${renderCardsSaveButton()}
@@ -331,6 +387,7 @@ export function renderPack(packTitle, subpack) {
     attachFilterEvents(() => renderPack(MEGA_RISING_ID, activeSubpack));
     attachMegaRisingEvents();
     attachCardEvents(() => renderPack(MEGA_RISING_ID, activeSubpack), { rerenderOnToggle: false });
+    attachCardsInfiniteScroll(cards);
     attachCardsSaveButton();
     return;
   }
@@ -354,7 +411,7 @@ export function renderPack(packTitle, subpack) {
             ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
+          ${renderBatchedCardGrid(cards)}
         </div>
       </section>
       ${renderCardsSaveButton()}
@@ -362,6 +419,7 @@ export function renderPack(packTitle, subpack) {
     attachFilterEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack));
     attachWisdomSeaSkyEvents();
     attachCardEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack), { rerenderOnToggle: false });
+    attachCardsInfiniteScroll(cards);
     attachCardsSaveButton();
     return;
   }
@@ -385,7 +443,7 @@ export function renderPack(packTitle, subpack) {
             ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
+          ${renderBatchedCardGrid(cards)}
         </div>
       </section>
       ${renderCardsSaveButton()}
@@ -393,6 +451,7 @@ export function renderPack(packTitle, subpack) {
     attachFilterEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack));
     attachCelestialGuardiansEvents();
     attachCardEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack), { rerenderOnToggle: false });
+    attachCardsInfiniteScroll(cards);
     attachCardsSaveButton();
     return;
   }
@@ -416,7 +475,7 @@ export function renderPack(packTitle, subpack) {
             ${renderPackLogoImage(logo, packData.display)}
           </div>
           <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
+          ${renderBatchedCardGrid(cards)}
         </div>
       </section>
       ${renderCardsSaveButton()}
@@ -424,6 +483,7 @@ export function renderPack(packTitle, subpack) {
     attachFilterEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack));
     attachSpaceTimeSmackdownEvents();
     attachCardEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack), { rerenderOnToggle: false });
+    attachCardsInfiniteScroll(cards);
     attachCardsSaveButton();
     return;
   }
@@ -451,12 +511,13 @@ export function renderPack(packTitle, subpack) {
           <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
         </div>
         <p class="section-subtitle">${ownedCount}/${packData.count}</p>
-        ${renderCardGrid(cards)}
+        ${renderBatchedCardGrid(cards)}
       </div>
     </section>
     ${renderCardsSaveButton()}
   `;
   attachFilterEvents(() => renderPack(packTitle));
   attachCardEvents(() => renderPack(packTitle), { rerenderOnToggle: false });
+  attachCardsInfiniteScroll(cards);
   attachCardsSaveButton();
 }

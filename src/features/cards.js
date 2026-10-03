@@ -208,9 +208,14 @@ function updateHeartVisual(heart, cardId, wished) {
 }
 
 export function attachCardEvents(render, options = {}) {
-  const { enableShowcase = false, showcaseId = null, rerenderOnToggle = true } = options;
+  const {
+    enableShowcase = false,
+    showcaseId = null,
+    rerenderOnToggle = true,
+    root = document,
+  } = options;
   const canRerender = rerenderOnToggle && typeof render === "function";
-  document.querySelectorAll(".pokeball").forEach((ball) => {
+  root.querySelectorAll(".pokeball").forEach((ball) => {
     ball.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -249,7 +254,7 @@ export function attachCardEvents(render, options = {}) {
       }
     });
   });
-  document.querySelectorAll(".wishlist-heart").forEach((heart) => {
+  root.querySelectorAll(".wishlist-heart").forEach((heart) => {
     heart.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -263,7 +268,7 @@ export function attachCardEvents(render, options = {}) {
     });
   });
   if (enableShowcase && showcaseId) {
-    document.querySelectorAll(".showcase-star").forEach((star) => {
+    root.querySelectorAll(".showcase-star").forEach((star) => {
       star.addEventListener("click", () => {
         const id = star.dataset.cardId;
         toggleShowcaseCard(showcaseId, id);
@@ -272,6 +277,6 @@ export function attachCardEvents(render, options = {}) {
     });
   }
 
-  attachCardImageFallbacks(document);
+  attachCardImageFallbacks(root);
 }
 
