@@ -1,125 +1,21 @@
-﻿import {
-    CELESTIAL_GUARDIANS_ID,
-    CELESTIAL_GUARDIANS_SUBPACKS,
-    GENETIC_APEX_ID,
-    GENETIC_APEX_SUBPACKS,
-    KNOWN_PACKS,
-    MEGA_RISING_ID,
-    MEGA_RISING_SUBPACKS,
-    PACKS_ORDER,
-    SPACE_TIME_SMACKDOWN_ID,
-    SPACE_TIME_SMACKDOWN_SUBPACKS,
-    WISDOM_SEA_SKY_ID,
-    WISDOM_SEA_SKY_SUBPACKS,
-} from "../config/packs.js";
-import { formatCardsCount, t } from "../core/i18n.js";
+﻿import { formatCardsCount, t } from "../core/i18n.js";
+import { getPackSubpacks } from "../core/data.js";
 import { state } from "../core/state.js";
 
 export function renderPacksDropdown() {
   const dropdown = document.getElementById("packsDropdown");
   if (!dropdown) return;
   dropdown.innerHTML = "";
-  PACKS_ORDER.filter((item) => !item.id.startsWith("Series")).forEach((item) => {
-    if (item.id === GENETIC_APEX_ID) {
-      const geneticCards = state.data?.cards.filter((card) => card.pack === KNOWN_PACKS[GENETIC_APEX_ID]) || [];
-      GENETIC_APEX_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        const count = geneticCards.filter((card) => card.subpacks?.includes(sub.name)).length;
-        const link = document.createElement("a");
-        link.className = "dropdown-pack";
-        link.href = `#/pack/${encodeURIComponent(GENETIC_APEX_ID)}?sub=${encodeURIComponent(sub.key)}`;
-        link.innerHTML = `
-          <img src="${sub.artwork}" alt="${sub.label}" loading="lazy" decoding="async" />
-          <div>
-            <div>${sub.label}</div>
-            <div class="pack-card-meta">${formatCardsCount(count)}</div>
-          </div>
-        `;
-        dropdown.appendChild(link);
-      });
-      return;
-    }
-    if (item.id === MEGA_RISING_ID) {
-      const megaCards = state.data?.cards.filter((card) => card.pack === KNOWN_PACKS[MEGA_RISING_ID]) || [];
-      MEGA_RISING_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        const count = megaCards.filter((card) => card.subpacks?.includes(sub.name)).length;
-        const link = document.createElement("a");
-        link.className = "dropdown-pack";
-        link.href = `#/pack/${encodeURIComponent(MEGA_RISING_ID)}?sub=${encodeURIComponent(sub.key)}`;
-        link.innerHTML = `
-          <img src="${sub.artwork}" alt="${sub.label}" loading="lazy" decoding="async" />
-          <div>
-            <div>${sub.label}</div>
-            <div class="pack-card-meta">${formatCardsCount(count)}</div>
-          </div>
-        `;
-        dropdown.appendChild(link);
-      });
-      return;
-    }
-    if (item.id === WISDOM_SEA_SKY_ID) {
-      const seaSkyCards = state.data?.cards.filter((card) => card.pack === KNOWN_PACKS[WISDOM_SEA_SKY_ID]) || [];
-      WISDOM_SEA_SKY_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        const count = seaSkyCards.filter((card) => card.subpacks?.includes(sub.name)).length;
-        const link = document.createElement("a");
-        link.className = "dropdown-pack";
-        link.href = `#/pack/${encodeURIComponent(WISDOM_SEA_SKY_ID)}?sub=${encodeURIComponent(sub.key)}`;
-        link.innerHTML = `
-          <img src="${sub.artwork}" alt="${sub.label}" loading="lazy" decoding="async" />
-          <div>
-            <div>${sub.label}</div>
-            <div class="pack-card-meta">${formatCardsCount(count)}</div>
-          </div>
-        `;
-        dropdown.appendChild(link);
-      });
-      return;
-    }
-    if (item.id === CELESTIAL_GUARDIANS_ID) {
-      const celestialCards = state.data?.cards.filter((card) => card.pack === KNOWN_PACKS[CELESTIAL_GUARDIANS_ID]) || [];
-      CELESTIAL_GUARDIANS_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        const count = celestialCards.filter((card) => card.subpacks?.includes(sub.name)).length;
-        const link = document.createElement("a");
-        link.className = "dropdown-pack";
-        link.href = `#/pack/${encodeURIComponent(CELESTIAL_GUARDIANS_ID)}?sub=${encodeURIComponent(sub.key)}`;
-        link.innerHTML = `
-          <img src="${sub.artwork}" alt="${sub.label}" loading="lazy" decoding="async" />
-          <div>
-            <div>${sub.label}</div>
-            <div class="pack-card-meta">${formatCardsCount(count)}</div>
-          </div>
-        `;
-        dropdown.appendChild(link);
-      });
-      return;
-    }
-    if (item.id === SPACE_TIME_SMACKDOWN_ID) {
-      const spaceCards = state.data?.cards.filter((card) => card.pack === KNOWN_PACKS[SPACE_TIME_SMACKDOWN_ID]) || [];
-      SPACE_TIME_SMACKDOWN_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        const count = spaceCards.filter((card) => card.subpacks?.includes(sub.name)).length;
-        const link = document.createElement("a");
-        link.className = "dropdown-pack";
-        link.href = `#/pack/${encodeURIComponent(SPACE_TIME_SMACKDOWN_ID)}?sub=${encodeURIComponent(sub.key)}`;
-        link.innerHTML = `
-          <img src="${sub.artwork}" alt="${sub.label}" loading="lazy" decoding="async" />
-          <div>
-            <div>${sub.label}</div>
-            <div class="pack-card-meta">${formatCardsCount(count)}</div>
-          </div>
-        `;
-        dropdown.appendChild(link);
-      });
-      return;
-    }
-    const packData = state.data?.packs.find((p) => p.id === item.id);
-    const displayTitle = item.id === "ALL" ? t("pack.allTitle") : item.title;
+  (state.data?.packs || []).forEach((packData) => {
+    const displayTitle = packData.display || packData.id;
     const link = document.createElement("a");
     link.className = "dropdown-pack";
-    link.href = item.id === "ALL" ? "#/all" : `#/pack/${encodeURIComponent(item.id)}`;
+    link.href = `#/pack/${encodeURIComponent(packData.id)}`;
     link.innerHTML = `
-      <img src="${packData?.artwork || "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png"}" alt="${displayTitle}" loading="lazy" decoding="async" />
+      <img src="${packData.artwork || packData.logo || ""}" alt="${displayTitle}" loading="lazy" decoding="async" />
       <div>
         <div>${displayTitle}</div>
-        <div class="pack-card-meta">${packData ? formatCardsCount(packData.count) : t("common.soon")}</div>
+        <div class="pack-card-meta">${formatCardsCount(packData.count)}</div>
       </div>
     `;
     dropdown.appendChild(link);
@@ -128,66 +24,20 @@ export function renderPacksDropdown() {
 
 export function getMobilePackTiles() {
   const tiles = [];
-  PACKS_ORDER.forEach((item) => {
-    if (item.id === "Series A" || item.id === "Series B") return;
-    if (item.id === GENETIC_APEX_ID) {
-      GENETIC_APEX_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        tiles.push({
-          href: `#/pack/${encodeURIComponent(GENETIC_APEX_ID)}?sub=${encodeURIComponent(sub.key)}`,
-          artwork: sub.artwork,
-          label: sub.label,
-        });
-      });
+  (state.data?.packs || []).forEach((packData) => {
+    const subpacks = getPackSubpacks(packData.id);
+    if (subpacks.length) {
+      subpacks.forEach((sub) => tiles.push({
+        href: `#/pack/${encodeURIComponent(packData.id)}?sub=${encodeURIComponent(sub.key)}`,
+        artwork: sub.artwork || packData.artwork || packData.logo,
+        label: sub.label,
+      }));
       return;
     }
-    if (item.id === MEGA_RISING_ID) {
-      MEGA_RISING_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        tiles.push({
-          href: `#/pack/${encodeURIComponent(MEGA_RISING_ID)}?sub=${encodeURIComponent(sub.key)}`,
-          artwork: sub.artwork,
-          label: sub.label,
-        });
-      });
-      return;
-    }
-    if (item.id === WISDOM_SEA_SKY_ID) {
-      WISDOM_SEA_SKY_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        tiles.push({
-          href: `#/pack/${encodeURIComponent(WISDOM_SEA_SKY_ID)}?sub=${encodeURIComponent(sub.key)}`,
-          artwork: sub.artwork,
-          label: sub.label,
-        });
-      });
-      return;
-    }
-    if (item.id === CELESTIAL_GUARDIANS_ID) {
-      CELESTIAL_GUARDIANS_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        tiles.push({
-          href: `#/pack/${encodeURIComponent(CELESTIAL_GUARDIANS_ID)}?sub=${encodeURIComponent(sub.key)}`,
-          artwork: sub.artwork,
-          label: sub.label,
-        });
-      });
-      return;
-    }
-    if (item.id === SPACE_TIME_SMACKDOWN_ID) {
-      SPACE_TIME_SMACKDOWN_SUBPACKS.filter((sub) => sub.key !== "all").forEach((sub) => {
-        tiles.push({
-          href: `#/pack/${encodeURIComponent(SPACE_TIME_SMACKDOWN_ID)}?sub=${encodeURIComponent(sub.key)}`,
-          artwork: sub.artwork,
-          label: sub.label,
-        });
-      });
-      return;
-    }
-    const packData = state.data?.packs.find((p) => p.id === item.id);
-    const artwork = packData?.artwork || item.artwork || "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png";
-    const href = item.id === "ALL" ? "#/all" : `#/pack/${encodeURIComponent(item.id)}`;
-    const label = item.id === "ALL" ? t("pack.allTitle") : item.title;
     tiles.push({
-      href,
-      artwork,
-      label,
+      href: `#/pack/${encodeURIComponent(packData.id)}`,
+      artwork: packData.artwork || packData.logo,
+      label: packData.display || packData.id,
     });
   });
   return tiles;

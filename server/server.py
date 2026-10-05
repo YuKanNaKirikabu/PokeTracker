@@ -17,7 +17,12 @@ def env_flag(name: str, default: bool = False) -> bool:
 
 SAFE_MODE = env_flag("POKETRACKER_SAFE_MODE", False)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-REMOTE_DATA_BASE_URL = str(os.getenv("POKETRACKER_DATA_BASE_URL", "")).strip().rstrip("/")
+REMOTE_DATA_BASE_URL = str(
+    os.getenv(
+        "POKETRACKER_DATA_BASE_URL",
+        "https://storage.yandexcloud.net/poketracker/data",
+    )
+).strip().rstrip("/")
 REMOTE_DATA_WRITE_ENABLED = env_flag("POKETRACKER_REMOTE_WRITE", False)
 
 

@@ -437,10 +437,6 @@ export function renderPokemonTypeIcons(types, sizeClass = "") {
 }
 
 function getCardImageFallback(url) {
-  if (!url) return "";
-  if (url.includes("/Images/Packs/MEGA SHINE/")) {
-    return url.replace("/Images/Packs/MEGA SHINE/", "/Images/Packs/Mega Shine/");
-  }
   return "";
 }
 

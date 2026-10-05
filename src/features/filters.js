@@ -70,10 +70,8 @@ export function applyFilters(cards) {
       } else {
         base = (a.number - b.number) * dir;
       }
-      const deluxeId = "DELUXE PACK EX";
       if (a.name === b.name && a.rarity === b.rarity && a.pack !== b.pack) {
-        if (a.pack === deluxeId) return 1;
-        if (b.pack === deluxeId) return -1;
+        return a.pack.localeCompare(b.pack, "ru") * dir;
       }
       if (base !== 0) return base;
       if (state.filters.sort === "rarity") {

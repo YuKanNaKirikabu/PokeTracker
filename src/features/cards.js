@@ -40,10 +40,6 @@ export function renderCardTypeBadge(card) {
 }
 
 function getFallbackCardImage(url) {
-  if (!url) return "";
-  if (url.includes("/Images/Packs/MEGA SHINE/")) {
-    return url.replace("/Images/Packs/MEGA SHINE/", "/Images/Packs/Mega Shine/");
-  }
   return "";
 }
 

@@ -1,15 +1,11 @@
 import { state } from "./state.js";
 
 const STORAGE_HOST = "storage.yandexcloud.net";
-const PACK_FOLDER_MAP = {
-  "MEGA SHINE": "Mega Shine",
-};
 
 function normalizePackFolderSegment(segment) {
   if (!segment || segment.includes(".")) return segment;
 
-  const normalizedKey = segment.replace(/[-_]+/g, " ").trim().toUpperCase();
-  return PACK_FOLDER_MAP[normalizedKey] || segment;
+  return segment;
 }
 
 function normalizeStorageImageUrl(rawUrl) {
@@ -23,7 +19,6 @@ function normalizeStorageImageUrl(rawUrl) {
     if (url.hostname !== STORAGE_HOST) return rawUrl;
 
     const fixedPath = url.pathname
-      .replaceAll("/Mega-Shine/", "/Mega Shine/")
       .split("/")
       .map((segment) => decodeURIComponent(segment))
       .map((segment) => normalizePackFolderSegment(segment))
@@ -64,6 +59,28 @@ function normalizeLoadedCardsData(payload) {
   }
 
   return normalized;
+}
+
+export function getPackSubpacks(packId) {
+  const cards = state.data?.cards?.filter((card) => card.pack === packId) || [];
+  const subpacks = new Map();
+
+  cards.forEach((card) => {
+    (Array.isArray(card.subpacks) ? card.subpacks : []).forEach((name) => {
+      if (!subpacks.has(name)) {
+        subpacks.set(name, {
+          key: String(name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+          label: name,
+          name,
+          artwork: card.image,
+          count: 0,
+        });
+      }
+      subpacks.get(name).count += 1;
+    });
+  });
+
+  return [...subpacks.values()];
 }
 
 export async function loadData() {

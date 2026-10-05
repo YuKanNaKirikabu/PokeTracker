@@ -1,4 +1,3 @@
-import { PACKS_ORDER } from "../config/packs.js";
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
 import { saveDataToFile } from "../core/storage.js";
@@ -6,13 +5,6 @@ import { attachCardImageFallbacks, formatCardId, renderCardGrid, toggleOwned } f
 
 const collectionPendingRemoved = new Set();
 const collectionOpenPacks = new Set();
-
-function normalizeMegaShineLogoUrl(url) {
-  if (!url) return "";
-  return String(url)
-    .replace("/PacksLogos/Mega-Shine.webp", "/PacksLogos/Mega%20Shine.png")
-    .replace("/PacksLogos/Mega Shine.png", "/PacksLogos/Mega%20Shine.png");
-}
 
 function setCardsDirty(isDirty) {
   state.ui.cardsDirty = isDirty;
@@ -23,29 +15,11 @@ function setCardsDirty(isDirty) {
 }
 
 function getOrderedPacks() {
-  const packs = state.data?.packs || [];
-  const map = new Map(packs.map((pack) => [pack.id, pack]));
-  const ordered = [];
-  PACKS_ORDER.forEach((item) => {
-    if (item.id === "ALL" || item.id.startsWith("Series")) return;
-    if (map.has(item.id)) {
-      ordered.push(map.get(item.id));
-      map.delete(item.id);
-    }
-  });
-  map.forEach((pack) => ordered.push(pack));
-  return ordered;
+  return state.data?.packs || [];
 }
 
 function resolvePackBanner(pack) {
-  const orderItem = PACKS_ORDER.find((item) => item.id === pack.id);
-  const raw = (
-    pack.logo
-    || pack.artwork
-    || orderItem?.artwork
-    || ""
-  );
-  return normalizeMegaShineLogoUrl(raw);
+  return pack.logo || pack.artwork || "";
 }
 
 function renderGroupedByPacks(cards) {
