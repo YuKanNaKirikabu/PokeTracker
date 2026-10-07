@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import json
+import hashlib
+import hmac
 import os
 from pathlib import Path
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse, urlsplit
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 import sys
@@ -24,6 +26,9 @@ REMOTE_DATA_BASE_URL = str(
     )
 ).strip().rstrip("/")
 REMOTE_DATA_WRITE_ENABLED = env_flag("POKETRACKER_REMOTE_WRITE", False)
+REMOTE_ACCESS_KEY_ID = str(os.getenv("POKETRACKER_ACCESS_KEY_ID", "")).strip()
+REMOTE_SECRET_ACCESS_KEY = str(os.getenv("POKETRACKER_SECRET_ACCESS_KEY", "")).strip()
+REMOTE_S3_REGION = str(os.getenv("POKETRACKER_S3_REGION", "ru-central1")).strip()
 
 
 def remote_data_url(file_name: str) -> str:
@@ -78,6 +83,68 @@ def normalize_payload(file_name: str, payload, default_payload):
     return payload
 
 
+def signed_s3_headers(url: str, method: str, payload: bytes = b''):
+    if not REMOTE_ACCESS_KEY_ID or not REMOTE_SECRET_ACCESS_KEY:
+        return {}
+
+    parsed = urlsplit(url)
+    host = parsed.netloc
+    now = time.gmtime()
+    amz_date = time.strftime('%Y%m%dT%H%M%SZ', now)
+    date_stamp = time.strftime('%Y%m%d', now)
+    payload_hash = hashlib.sha256(payload).hexdigest()
+    canonical_uri = quote(parsed.path or '/', safe='/-_.~')
+    query_pairs = []
+    if parsed.query:
+        for item in parsed.query.split('&'):
+            key, _, value = item.partition('=')
+            query_pairs.append((quote(key, safe='-_.~'), quote(value, safe='-_.~')))
+    canonical_query = '&'.join(
+        f'{key}={value}' for key, value in sorted(query_pairs)
+    )
+    canonical_headers = (
+        f'host:{host}\n'
+        f'x-amz-content-sha256:{payload_hash}\n'
+        f'x-amz-date:{amz_date}\n'
+    )
+    signed_headers = 'host;x-amz-content-sha256;x-amz-date'
+    canonical_request = '\n'.join((
+        method,
+        canonical_uri,
+        canonical_query,
+        canonical_headers,
+        signed_headers,
+        payload_hash,
+    ))
+    credential_scope = f'{date_stamp}/{REMOTE_S3_REGION}/s3/aws4_request'
+    string_to_sign = '\n'.join((
+        'AWS4-HMAC-SHA256',
+        amz_date,
+        credential_scope,
+        hashlib.sha256(canonical_request.encode('utf-8')).hexdigest(),
+    ))
+    date_key = hmac.new(
+        f'AWS4{REMOTE_SECRET_ACCESS_KEY}'.encode('utf-8'),
+        date_stamp.encode('utf-8'), hashlib.sha256,
+    ).digest()
+    region_key = hmac.new(date_key, REMOTE_S3_REGION.encode('utf-8'), hashlib.sha256).digest()
+    service_key = hmac.new(region_key, b's3', hashlib.sha256).digest()
+    signing_key = hmac.new(service_key, b'aws4_request', hashlib.sha256).digest()
+    signature = hmac.new(
+        signing_key, string_to_sign.encode('utf-8'), hashlib.sha256,
+    ).hexdigest()
+    authorization = (
+        f'AWS4-HMAC-SHA256 Credential={REMOTE_ACCESS_KEY_ID}/{credential_scope}, '
+        f'SignedHeaders={signed_headers}, Signature={signature}'
+    )
+    return {
+        'Host': host,
+        'x-amz-content-sha256': payload_hash,
+        'x-amz-date': amz_date,
+        'Authorization': authorization,
+    }
+
+
 def read_data_payload(file_name: str, default_payload):
     remote_url = remote_data_url(file_name)
     if not remote_url:
@@ -85,7 +152,13 @@ def read_data_payload(file_name: str, default_payload):
 
     try:
         sep = '&' if '?' in remote_url else '?'
-        req = Request(f"{remote_url}{sep}_ts={int(time.time())}", method='GET')
+        request_url = f"{remote_url}{sep}_ts={int(time.time())}"
+        headers = signed_s3_headers(request_url, 'GET')
+        req = Request(
+            request_url,
+            method='GET',
+            headers=headers,
+        )
         with urlopen(req, timeout=10) as response:
             raw_payload = json.loads(response.read().decode('utf-8'))
             return normalize_payload(file_name, raw_payload, default_payload)
@@ -108,11 +181,13 @@ def write_data_payload(file_name: str, payload):
             "Enable POKETRACKER_REMOTE_WRITE=1 only if cloud PUT writes are allowed."
         )
 
+    headers = signed_s3_headers(remote_url, 'PUT', raw)
+    headers.setdefault('Content-Type', 'application/json')
     req = Request(
         remote_url,
         data=raw,
         method='PUT',
-        headers={'Content-Type': 'application/json'}
+        headers=headers,
     )
     try:
         with urlopen(req, timeout=15):
@@ -408,6 +483,10 @@ if __name__ == '__main__':
     if REMOTE_DATA_BASE_URL:
         print(f"Remote data URL: {REMOTE_DATA_BASE_URL}")
         print(f"Remote write: {'enabled' if REMOTE_DATA_WRITE_ENABLED else 'disabled'}")
+        print(
+            "Object Storage auth: "
+            f"{'S3 access key configured' if REMOTE_ACCESS_KEY_ID and REMOTE_SECRET_ACCESS_KEY else 'not configured'}"
+        )
     else:
         print("Remote data URL is not configured (API returns defaults, writes are disabled).")
     if HOST == "0.0.0.0":

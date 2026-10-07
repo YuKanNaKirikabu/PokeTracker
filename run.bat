@@ -21,6 +21,8 @@ set "CONSOLE_LOG_MODE=same"
 set "FILE_LOG_KEEP_COUNT=0"
 set "REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data"
 set "REMOTE_WRITE=1"
+set "ACCESS_KEY_ID=YCAJE9HQ0zezZsKrJsJU4rjyf"
+set "SECRET_ACCESS_KEY=%SECRET_ACCESS_KEY%"
 
 if exist "%CONFIG_FILE%" call "%CONFIG_FILE%"
 
@@ -130,6 +132,8 @@ if not "%PYTHON_CMD%"=="" (
 	set "POKETRACKER_HOST=%HOST%"
 	set "POKETRACKER_DATA_BASE_URL=%REMOTE_DATA_BASE_URL%"
 	set "POKETRACKER_REMOTE_WRITE=%REMOTE_WRITE%"
+	set "POKETRACKER_ACCESS_KEY_ID=%ACCESS_KEY_ID%"
+	set "POKETRACKER_SECRET_ACCESS_KEY=%SECRET_ACCESS_KEY%"
 
 	if "%START_MINIMIZED%"=="1" (
 		powershell -NoLogo -NoProfile -Command "Add-Type -Name Win -Namespace Native -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern IntPtr GetConsoleWindow();[DllImport(\"user32.dll\")]public static extern bool ShowWindow(IntPtr hWnd,int nCmdShow);'; $h=[Native.Win]::GetConsoleWindow(); [Native.Win]::ShowWindow($h,2) ^| Out-Null" >nul 2>&1

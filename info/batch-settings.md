@@ -19,9 +19,12 @@
 - `FILE_LOG_KEEP_COUNT` — `0` или `N`
 - `REMOTE_DATA_BASE_URL` — базовый URL каталога данных (без завершающего `/`)
 - `REMOTE_WRITE` — `1` (разрешён PUT) / `0` (read-only)
+- `ACCESS_KEY_ID` — идентификатор статического ключа Object Storage
+- `SECRET_ACCESS_KEY` — секретная часть статического ключа Object Storage
 
 Текущее ожидаемое значение:
 - `REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data`
+- Для закрытого Object Storage используйте пару `ACCESS_KEY_ID` + `SECRET_ACCESS_KEY`; она подписывает S3-запросы.
 
 ## 3) Что делает settings.bat
 
