@@ -21,6 +21,7 @@
 - `REMOTE_WRITE` — `1` (разрешён PUT) / `0` (read-only)
 - `ACCESS_KEY_ID` — идентификатор статического ключа Object Storage
 - `SECRET_ACCESS_KEY` — секретная часть статического ключа Object Storage
+- Секреты нужно хранить в пользовательских переменных окружения Windows `POKETRACKER_ACCESS_KEY_ID` и `POKETRACKER_SECRET_ACCESS_KEY`, а не в файлах проекта.
 
 Текущее ожидаемое значение:
 - `REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data`
