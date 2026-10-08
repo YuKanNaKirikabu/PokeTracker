@@ -23,6 +23,21 @@ set "REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data"
 set "REMOTE_WRITE=1"
 
 if exist "%CONFIG_FILE%" call "%CONFIG_FILE%"
+
+REM --- Load .env (keys only) ---
+set "ENV_FILE=%SCRIPT_DIR%.env"
+if exist "%ENV_FILE%" (
+	for /f "usebackq tokens=1,* delims==" %%A in ("%ENV_FILE%") do (
+		set "_ENV_KEY=%%A"
+		set "_ENV_VAL=%%B"
+		if not "!_ENV_KEY!"=="" if not "!_ENV_KEY:~0,1!"=="#" (
+			set "!_ENV_KEY!=!_ENV_VAL!"
+		)
+	)
+	set "_ENV_KEY="
+	set "_ENV_VAL="
+)
+
 set "ACCESS_KEY_ID=%POKETRACKER_ACCESS_KEY_ID%"
 set "SECRET_ACCESS_KEY=%POKETRACKER_SECRET_ACCESS_KEY%"
 
