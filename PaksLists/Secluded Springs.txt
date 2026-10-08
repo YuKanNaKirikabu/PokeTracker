@@ -1,0 +1,107 @@
+105 cards
+
+Hoppip - A4a #001 - DIAMOND1 - GRASS
+Skiploom - A4a #002 - DIAMOND2 - GRASS
+Jumpluff ex - A4a #003 - DIAMOND4 - GRASS
+Sunkern - A4a #004 - DIAMOND1 - GRASS
+Sunflora - A4a #005 - DIAMOND2 - GRASS
+Celebi - A4a #006 - DIAMOND3 - GRASS
+Durant - A4a #007 - DIAMOND1 - GRASS
+Slugma - A4a #008 - DIAMOND1 - FIRE
+Magcargo - A4a #009 - DIAMOND2 - FIRE
+Entei ex - A4a #010 - DIAMOND4 - FIRE
+Fletchinder - A4a #011 - DIAMOND1 - FIRE
+Talonflame - A4a #012 - DIAMOND2 - FIRE
+Poliwag - A4a #013 - DIAMOND1 - WATER
+Poliwhirl - A4a #014 - DIAMOND2 - WATER
+Tentacool - A4a #015 - DIAMOND1 - WATER
+Tentacruel - A4a #016 - DIAMOND2 - WATER
+Slowpoke - A4a #017 - DIAMOND1 - WATER
+Slowking - A4a #018 - DIAMOND2 - WATER
+Jynx - A4a #019 - DIAMOND1 - WATER
+Suicune ex - A4a #020 - DIAMOND4 - WATER
+Feebas - A4a #021 - DIAMOND1 - WATER
+Milotic - A4a #022 - DIAMOND3 - WATER
+Mantyke - A4a #023 - DIAMOND3 - WATER
+Cryogonal - A4a #024 - DIAMOND1 - WATER
+Raikou ex - A4a #025 - DIAMOND4 - LIGHTNING
+Tynamo - A4a #026 - DIAMOND1 - LIGHTNING
+Eelektrik - A4a #027 - DIAMOND1 - LIGHTNING
+Eelektross - A4a #028 - DIAMOND2 - LIGHTNING
+Stunfisk - A4a #029 - DIAMOND1 - LIGHTNING
+Yamper - A4a #030 - DIAMOND1 - LIGHTNING
+Boltund - A4a #031 - DIAMOND3 - LIGHTNING
+Misdreavus - A4a #032 - DIAMOND1 - PSYCHIC
+Mismagius - A4a #033 - DIAMOND2 - PSYCHIC
+Galarian Corsola - A4a #034 - DIAMOND1 - PSYCHIC
+Galarian Cursola - A4a #035 - DIAMOND3 - PSYCHIC
+Latias - A4a #036 - DIAMOND3 - PSYCHIC
+Latios - A4a #037 - DIAMOND3 - PSYCHIC
+Frillish - A4a #038 - DIAMOND1 - PSYCHIC
+Jellicent - A4a #039 - DIAMOND2 - PSYCHIC
+Diglett - A4a #040 - DIAMOND1 - FIGHTING
+Dugtrio - A4a #041 - DIAMOND2 - FIGHTING
+Poliwrath ex - A4a #042 - DIAMOND4 - FIGHTING
+Phanpy - A4a #043 - DIAMOND1 - FIGHTING
+Donphan - A4a #044 - DIAMOND2 - FIGHTING
+Relicanth - A4a #045 - DIAMOND1 - FIGHTING
+Dwebble - A4a #046 - DIAMOND1 - FIGHTING
+Crustle - A4a #047 - DIAMOND2 - FIGHTING
+Seviper - A4a #048 - DIAMOND1 - DARKNESS
+Zorua - A4a #049 - DIAMOND1 - DARKNESS
+Zoroark - A4a #050 - DIAMOND3 - DARKNESS
+Inkay - A4a #051 - DIAMOND1 - DARKNESS
+Malamar - A4a #052 - DIAMOND2 - DARKNESS
+Skrelp - A4a #053 - DIAMOND1 - DARKNESS
+Dragalge - A4a #054 - DIAMOND1 - DARKNESS
+Altaria - A4a #055 - DIAMOND3 - DRAGON
+Farfetch'd - A4a #056 - DIAMOND1 - COLORLESS
+Lickitung - A4a #057 - DIAMOND1 - COLORLESS
+Lickilicky - A4a #058 - DIAMOND2 - COLORLESS
+Igglybuff - A4a #059 - DIAMOND3 - COLORLESS
+Teddiursa - A4a #060 - DIAMOND1 - COLORLESS
+Ursaring - A4a #061 - DIAMOND2 - COLORLESS
+Miltank - A4a #062 - DIAMOND2 - COLORLESS
+Azurill - A4a #063 - DIAMOND3 - COLORLESS
+Swablu - A4a #064 - DIAMOND1 - COLORLESS
+Zangoose - A4a #065 - DIAMOND2 - COLORLESS
+Fletchling - A4a #066 - DIAMOND1 - COLORLESS
+Inflatable Boat - A4a #067 - DIAMOND2 - TOOL
+Memory Light - A4a #068 - DIAMOND2 - TOOL
+Whitney - A4a #069 - DIAMOND2 - SUPPORTER
+Traveling Merchant - A4a #070 - DIAMOND2 - SUPPORTER
+Morty - A4a #071 - DIAMOND2 - SUPPORTER
+Milotic - A4a #072 - STAR1 - WATER
+Stunfisk - A4a #073 - STAR1 - LIGHTNING
+Yamper - A4a #074 - STAR1 - LIGHTNING
+Latios - A4a #075 - STAR1 - PSYCHIC
+Phanpy - A4a #076 - STAR1 - FIGHTING
+Azurill - A4a #077 - STAR1 - COLORLESS
+Jumpluff ex - A4a #078 - STAR2 - GRASS
+Entei ex - A4a #079 - STAR2 - FIRE
+Suicune ex - A4a #080 - STAR2 - WATER
+Raikou ex - A4a #081 - STAR2 - LIGHTNING
+Poliwrath ex - A4a #082 - STAR2 - FIGHTING
+Whitney - A4a #083 - STAR2 - SUPPORTER
+Traveling Merchant - A4a #084 - STAR2 - SUPPORTER
+Morty - A4a #085 - STAR2 - SUPPORTER
+Jumpluff ex - A4a #086 - STAR2 - GRASS
+Entei ex - A4a #087 - STAR2 - FIRE
+Raikou ex - A4a #088 - STAR2 - LIGHTNING
+Poliwrath ex - A4a #089 - STAR2 - FIGHTING
+Suicune ex - A4a #090 - STAR3 - WATER
+Chimchar - A4a #091 - SHINY1 - FIRE
+Monferno - A4a #092 - SHINY1 - FIRE
+Psyduck - A4a #093 - SHINY1 - WATER
+Golduck - A4a #094 - SHINY1 - WATER
+Krabby - A4a #095 - SHINY1 - WATER
+Kingler - A4a #096 - SHINY1 - WATER
+Pyukumuku - A4a #097 - SHINY1 - WATER
+Gible - A4a #098 - SHINY1 - FIGHTING
+Gabite - A4a #099 - SHINY1 - FIGHTING
+Paldean Wooper - A4a #100 - SHINY1 - DARKNESS
+Infernape ex - A4a #101 - SHINY2 - FIRE
+Mew ex - A4a #102 - SHINY2 - PSYCHIC
+Garchomp ex - A4a #103 - SHINY2 - FIGHTING
+Paldean Clodsire ex - A4a #104 - SHINY2 - DARKNESS
+Mantyke - A4a #105 - CROWN - WATER

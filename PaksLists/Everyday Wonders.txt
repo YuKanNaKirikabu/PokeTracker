@@ -1,0 +1,108 @@
+106 cards
+
+Caterpie - B3b #001 - DIAMOND1 - GRASS
+Metapod - B3b #002 - DIAMOND2 - GRASS
+Butterfree - B3b #003 - DIAMOND3 - GRASS
+Cacnea - B3b #004 - DIAMOND1 - GRASS
+Tropius - B3b #005 - DIAMOND2 - GRASS
+Petilil - B3b #006 - DIAMOND1 - GRASS
+Hisuian Lilligant - B3b #007 - DIAMOND2 - GRASS
+Vulpix - B3b #008 - DIAMOND1 - FIRE
+Ninetales - B3b #009 - DIAMOND2 - FIRE
+Growlithe - B3b #010 - DIAMOND1 - FIRE
+Psyduck - B3b #011 - DIAMOND1 - WATER
+Goldeen - B3b #012 - DIAMOND1 - WATER
+Seaking - B3b #013 - DIAMOND2 - WATER
+Feebas - B3b #014 - DIAMOND1 - WATER
+Milotic ex - B3b #015 - DIAMOND4 - WATER
+Snorunt - B3b #016 - DIAMOND1 - WATER
+Froslass - B3b #017 - DIAMOND3 - WATER
+Luvdisc - B3b #018 - DIAMOND1 - WATER
+Piplup - B3b #019 - DIAMOND1 - WATER
+Iron Bundle - B3b #020 - DIAMOND2 - WATER
+Pikachu - B3b #021 - DIAMOND1 - LIGHTNING
+Raichu - B3b #022 - DIAMOND2 - LIGHTNING
+Emolga - B3b #023 - DIAMOND1 - LIGHTNING
+Dedenne ex - B3b #024 - DIAMOND4 - LIGHTNING
+Yamper - B3b #025 - DIAMOND1 - LIGHTNING
+Slowpoke - B3b #026 - DIAMOND1 - PSYCHIC
+Slowbro - B3b #027 - DIAMOND2 - PSYCHIC
+Munna - B3b #028 - DIAMOND1 - PSYCHIC
+Musharna - B3b #029 - DIAMOND2 - PSYCHIC
+Sylveon - B3b #030 - DIAMOND3 - PSYCHIC
+Carbink - B3b #031 - DIAMOND2 - PSYCHIC
+Mega Diancie ex - B3b #032 - DIAMOND4 - PSYCHIC
+Enamorus - B3b #033 - DIAMOND3 - PSYCHIC
+Fidough - B3b #034 - DIAMOND1 - PSYCHIC
+Flutter Mane - B3b #035 - DIAMOND2 - PSYCHIC
+Wooper - B3b #036 - DIAMOND1 - FIGHTING
+Quagsire - B3b #037 - DIAMOND2 - FIGHTING
+Rockruff - B3b #038 - DIAMOND1 - FIGHTING
+Sandygast - B3b #039 - DIAMOND1 - FIGHTING
+Palossand - B3b #040 - DIAMOND2 - FIGHTING
+Mega Sableye ex - B3b #041 - DIAMOND4 - DARKNESS
+Cacturne - B3b #042 - DIAMOND2 - DARKNESS
+Spiritomb - B3b #043 - DIAMOND2 - DARKNESS
+Scraggy - B3b #044 - DIAMOND1 - DARKNESS
+Scrafty - B3b #045 - DIAMOND2 - DARKNESS
+Mareanie - B3b #046 - DIAMOND1 - DARKNESS
+Toxapex - B3b #047 - DIAMOND2 - DARKNESS
+Goomy - B3b #048 - DIAMOND1 - DRAGON
+Hisuian Sliggoo - B3b #049 - DIAMOND2 - DRAGON
+Hisuian Goodra - B3b #050 - DIAMOND3 - DRAGON
+Jigglypuff - B3b #051 - DIAMOND1 - COLORLESS
+Wigglytuff - B3b #052 - DIAMOND2 - COLORLESS
+Eevee - B3b #053 - DIAMOND1 - COLORLESS
+Munchlax - B3b #054 - DIAMOND3 - COLORLESS
+Snorlax - B3b #055 - DIAMOND3 - COLORLESS
+Teddiursa - B3b #056 - DIAMOND1 - COLORLESS
+Ursaring - B3b #057 - DIAMOND2 - COLORLESS
+Ursaluna - B3b #058 - DIAMOND3 - COLORLESS
+Hisuian Zorua - B3b #059 - DIAMOND1 - COLORLESS
+Hisuian Zoroark ex - B3b #060 - DIAMOND4 - COLORLESS
+Furfrou - B3b #061 - DIAMOND1 - COLORLESS
+Skwovet - B3b #062 - DIAMOND1 - COLORLESS
+Greedent - B3b #063 - DIAMOND2 - COLORLESS
+Small Balloon - B3b #064 - DIAMOND2 - TRAINER
+Elegant Cape - B3b #065 - DIAMOND2 - TRAINER
+Elesa - B3b #066 - DIAMOND2 - TRAINER
+Puppy-Loving Girl - B3b #067 - DIAMOND2 - TRAINER
+Wallace - B3b #068 - DIAMOND2 - TRAINER
+Kid's Room - B3b #069 - DIAMOND2 - ARENA
+Vulpix - B3b #070 - STAR1 - FIRE
+Piplup - B3b #071 - STAR1 - WATER
+Pikachu - B3b #072 - STAR1 - LIGHTNING
+Sylveon - B3b #073 - STAR1 - PSYCHIC
+Mareanie - B3b #074 - STAR1 - DARKNESS
+Jigglypuff - B3b #075 - STAR1 - COLORLESS
+Snorlax - B3b #076 - STAR1 - COLORLESS
+Greedent - B3b #077 - STAR1 - COLORLESS
+Milotic ex - B3b #078 - STAR2 - WATER
+Dedenne ex - B3b #079 - STAR2 - LIGHTNING
+Mega Diancie ex - B3b #080 - STAR2 - PSYCHIC
+Mega Sableye ex - B3b #081 - STAR2 - DARKNESS
+Hisuian Zoroark ex - B3b #082 - STAR2 - COLORLESS
+Elesa - B3b #083 - STAR2 - TRAINER
+Puppy-Loving Girl - B3b #084 - STAR2 - TRAINER
+Wallace - B3b #085 - STAR2 - TRAINER
+Milotic ex - B3b #086 - STAR2 - WATER
+Mega Diancie ex - B3b #087 - STAR2 - PSYCHIC
+Mega Sableye ex - B3b #088 - STAR2 - DARKNESS
+Hisuian Zoroark ex - B3b #089 - STAR2 - COLORLESS
+Dedenne ex - B3b #090 - STAR2 - LIGHTNING
+Caterpie - B3b #091 - STAR3 - GRASS
+Metapod - B3b #092 - SHINY1 - GRASS
+Butterfree - B3b #093 - SHINY1 - GRASS
+Mareep - B3b #094 - SHINY1 - LIGHTNING
+Flaaffy - B3b #095 - SHINY1 - LIGHTNING
+Ampharos - B3b #096 - SHINY1 - LIGHTNING
+Slowbro - B3b #097 - SHINY1 - PSYCHIC
+Kangaskhan - B3b #098 - SHINY1 - COLORLESS
+Ditto - B3b #099 - SHINY1 - COLORLESS
+Snorlax - B3b #100 - SHINY1 - COLORLESS
+Mega Gyarados ex - B3b #101 - SHINY2 - WATER
+Vaporeon ex - B3b #102 - SHINY2 - WATER
+Mega Ampharos ex - B3b #103 - SHINY2 - LIGHTNING
+Indeedee ex - B3b #104 - SHINY2 - PSYCHIC
+Munchlax - B3b #105 - CROWN - COLORLESS
+Small Balloon - B3b #106 - CROWN - TRAINER

@@ -1,0 +1,400 @@
+#001 Grookey - Grass  
+#002 Thwackey - Grass  
+#003 Rillaboom - Grass  
+#004 Scorbunny - Fire  
+#005 Raboot - Fire  
+#006 Cinderace - Fire  
+#007 Sobble - Water  
+#008 Drizzile - Water  
+#009 Inteleon - Water  
+#010 Blipbug - Bug  
+#011 Dottler - Bug · Psychic  
+#012 Orbeetle - Bug · Psychic  
+#013 Caterpie - Bug  
+#014 Metapod - Bug  
+#015 Butterfree - Bug · Flying  
+#016 Grubbin - Bug  
+#017 Charjabug - Bug · Electric  
+#018 Vikavolt - Bug · Electric  
+#019 Hoothoot - Normal · Flying  
+#020 Noctowl - Normal · Flying  
+#021 Rookidee - Flying  
+#022 Corvisquire - Flying  
+#023 Corviknight - Flying · Steel  
+#024 Skwovet - Normal  
+#025 Greedent - Normal  
+#026 Pidove - Normal · Flying  
+#027 Tranquill - Normal · Flying  
+#028 Unfezant - Normal · Flying  
+#029 Nickit - Dark  
+#030 Thievul - Dark  
+#031 Zigzagoon - Dark · Normal  
+#032 Linoone - Dark · Normal  
+#033 Obstagoon - Dark · Normal  
+#034 Wooloo - Normal  
+#035 Dubwool - Normal  
+#036 Lotad - Water · Grass  
+#037 Lombre - Water · Grass  
+#038 Ludicolo - Water · Grass  
+#039 Seedot - Grass  
+#040 Nuzleaf - Grass · Dark  
+#041 Shiftry - Grass · Dark  
+#042 Chewtle - Water  
+#043 Drednaw - Water · Rock  
+#044 Purrloin - Dark  
+#045 Liepard - Dark  
+#046 Yamper - Electric  
+#047 Boltund - Electric  
+#048 Bunnelby - Normal  
+#049 Diggersby - Normal · Ground  
+#050 Minccino - Normal  
+#051 Cinccino - Normal  
+#052 Bounsweet - Grass  
+#053 Steenee - Grass  
+#054 Tsareena - Grass  
+#055 Oddish - Grass · Poison  
+#056 Gloom - Grass · Poison  
+#057 Vileplume - Grass · Poison  
+#058 Bellossom - Grass  
+#059 Budew - Grass · Poison  
+#060 Roselia - Grass · Poison  
+#061 Roserade - Grass · Poison  
+#062 Wingull - Water · Flying  
+#063 Pelipper - Water · Flying  
+#064 Joltik - Bug · Electric  
+#065 Galvantula - Bug · Electric  
+#066 Electrike - Electric  
+#067 Manectric - Electric  
+#068 Vulpix - Fire  
+#069 Ninetales - Fire  
+#070 Growlithe - Fire  
+#071 Arcanine - Fire  
+#072 Vanillite - Ice  
+#073 Vanillish - Ice  
+#074 Vanilluxe - Ice  
+#075 Swinub - Ice · Ground  
+#076 Piloswine - Ice · Ground  
+#077 Mamoswine - Ice · Ground  
+#078 Delibird - Ice · Flying  
+#079 Snorunt - Ice  
+#080 Glalie - Ice  
+#081 Froslass - Ice · Ghost  
+#082 Baltoy - Ground · Psychic  
+#083 Claydol - Ground · Psychic  
+#084 Mudbray - Ground  
+#085 Mudsdale - Ground  
+#086 Dwebble - Bug · Rock  
+#087 Crustle - Bug · Rock  
+#088 Golett - Ground · Ghost  
+#089 Golurk - Ground · Ghost  
+#090 Munna - Psychic  
+#091 Musharna - Psychic  
+#092 Natu - Psychic · Flying  
+#093 Xatu - Psychic · Flying  
+#094 Stufful - Normal · Fighting  
+#095 Bewear - Normal · Fighting  
+#096 Snover - Grass · Ice  
+#097 Abomasnow - Grass · Ice  
+#098 Krabby - Water  
+#099 Kingler - Water  
+#100 Wooper - Water · Ground  
+#101 Quagsire - Water · Ground  
+#102 Corphish - Water  
+#103 Crawdaunt - Water · Dark  
+#104 Nincada - Bug · Ground  
+#105 Ninjask - Bug · Flying  
+#106 Shedinja - Bug · Ghost  
+#107 Tyrogue - Fighting  
+#108 Hitmonlee - Fighting  
+#109 Hitmonchan - Fighting  
+#110 Hitmontop - Fighting  
+#111 Pancham - Fighting  
+#112 Pangoro - Fighting · Dark  
+#113 Klink - Steel  
+#114 Klang - Steel  
+#115 Klinklang - Steel  
+#116 Combee - Bug · Flying  
+#117 Vespiquen - Bug · Flying  
+#118 Bronzor - Steel · Psychic  
+#119 Bronzong - Steel · Psychic  
+#120 Ralts - Psychic · Fairy  
+#121 Kirlia - Psychic · Fairy  
+#122 Gardevoir - Psychic · Fairy  
+#123 Gallade - Psychic · Fighting  
+#124 Drifloon - Ghost · Flying  
+#125 Drifblim - Ghost · Flying  
+#126 Gossifleur - Grass  
+#127 Eldegoss - Grass  
+#128 Cherubi - Grass  
+#129 Cherrim - Grass  
+#130 Stunky - Poison · Dark  
+#131 Skuntank - Poison · Dark  
+#132 Tympole - Water  
+#133 Palpitoad - Water · Ground  
+#134 Seismitoad - Water · Ground  
+#135 Duskull - Ghost  
+#136 Dusclops - Ghost  
+#137 Dusknoir - Ghost  
+#138 Machop - Fighting  
+#139 Machoke - Fighting  
+#140 Machamp - Fighting  
+#141 Gastly - Ghost · Poison  
+#142 Haunter - Ghost · Poison  
+#143 Gengar - Ghost · Poison  
+#144 Magikarp - Water  
+#145 Gyarados - Water · Flying  
+#146 Goldeen - Water  
+#147 Seaking - Water  
+#148 Remoraid - Water  
+#149 Octillery - Water  
+#150 Shellder - Water  
+#151 Cloyster - Water · Ice  
+#152 Feebas - Water  
+#153 Milotic - Water  
+#154 Basculin - Water  
+#155 Wishiwashi - Water  
+#156 Pyukumuku - Water  
+#157 Trubbish - Poison  
+#158 Garbodor - Poison  
+#159 Sizzlipede - Fire · Bug  
+#160 Centiskorch - Fire · Bug  
+#161 Rolycoly - Rock  
+#162 Carkol - Rock · Fire  
+#163 Coalossal - Rock · Fire  
+#164 Diglett - Ground  
+#165 Dugtrio - Ground  
+#166 Drilbur - Ground  
+#167 Excadrill - Ground · Steel  
+#168 Roggenrola - Rock  
+#169 Boldore - Rock  
+#170 Gigalith - Rock  
+#171 Timburr - Fighting  
+#172 Gurdurr - Fighting  
+#173 Conkeldurr - Fighting  
+#174 Woobat - Psychic · Flying  
+#175 Swoobat - Psychic · Flying  
+#176 Noibat - Flying · Dragon  
+#177 Noivern - Flying · Dragon  
+#178 Onix - Rock · Ground  
+#179 Steelix - Steel · Ground  
+#180 Arrokuda - Water  
+#181 Barraskewda - Water  
+#182 Meowth - Steel  
+#183 Perrserker - Steel  
+#184 Persian - Normal  
+#185 Milcery - Fairy  
+#186 Alcremie - Fairy  
+#187 Cutiefly - Bug · Fairy  
+#188 Ribombee - Bug · Fairy  
+#189 Ferroseed - Grass · Steel  
+#190 Ferrothorn - Grass · Steel  
+#191 Pumpkaboo - Ghost · Grass  
+#192 Gourgeist - Ghost · Grass  
+#193 Pichu - Electric  
+#194 Pikachu - Electric  
+#195 Raichu - Electric  
+#196 Eevee - Normal  
+#197 Vaporeon - Water  
+#198 Jolteon - Electric  
+#199 Flareon - Fire  
+#200 Espeon - Psychic  
+#201 Umbreon - Dark  
+#202 Leafeon - Grass  
+#203 Glaceon - Ice  
+#204 Sylveon - Fairy  
+#205 Applin - Grass · Dragon  
+#206 Flapple - Grass · Dragon  
+#207 Appletun - Grass · Dragon  
+#208 Espurr - Psychic  
+#209 Meowstic - Psychic  
+#210 Swirlix - Fairy  
+#211 Slurpuff - Fairy  
+#212 Spritzee - Fairy  
+#213 Aromatisse - Fairy  
+#214 Dewpider - Water · Bug  
+#215 Araquanid - Water · Bug  
+#216 Wynaut - Psychic  
+#217 Wobbuffet - Psychic  
+#218 Farfetch'd - Fighting  
+#219 Sirfetch'd - Fighting  
+#220 Chinchou - Water · Electric  
+#221 Lanturn - Water · Electric  
+#222 Croagunk - Poison · Fighting  
+#223 Toxicroak - Poison · Fighting  
+#224 Scraggy - Dark · Fighting  
+#225 Scrafty - Dark · Fighting  
+#226 Stunfisk - Ground · Steel  
+#227 Shuckle - Bug · Rock  
+#228 Barboach - Water · Ground  
+#229 Whiscash - Water · Ground  
+#230 Shellos - Water  
+#231 Gastrodon - Water · Ground  
+#232 Wimpod - Bug · Water  
+#233 Golisopod - Bug · Water  
+#234 Binacle - Rock · Water  
+#235 Barbaracle - Rock · Water  
+#236 Corsola - Ghost  
+#237 Cursola - Ghost  
+#238 Impidimp - Dark · Fairy  
+#239 Morgrem - Dark · Fairy  
+#240 Grimmsnarl - Dark · Fairy  
+#241 Hatenna - Psychic  
+#242 Hattrem - Psychic  
+#243 Hatterene - Psychic · Fairy  
+#244 Salandit - Poison · Fire  
+#245 Salazzle - Poison · Fire  
+#246 Pawniard - Dark · Steel  
+#247 Bisharp - Dark · Steel  
+#248 Throh - Fighting  
+#249 Sawk - Fighting  
+#250 Koffing - Poison  
+#251 Weezing - Poison · Fairy  
+#252 Bonsly - Rock  
+#253 Sudowoodo - Rock  
+#254 Cleffa - Fairy  
+#255 Clefairy - Fairy  
+#256 Clefable - Fairy  
+#257 Togepi - Fairy  
+#258 Togetic - Fairy · Flying  
+#259 Togekiss - Fairy · Flying  
+#260 Munchlax - Normal  
+#261 Snorlax - Normal  
+#262 Cottonee - Grass · Fairy  
+#263 Whimsicott - Grass · Fairy  
+#264 Rhyhorn - Ground · Rock  
+#265 Rhydon - Ground · Rock  
+#266 Rhyperior - Ground · Rock  
+#267 Gothita - Psychic  
+#268 Gothorita - Psychic  
+#269 Gothitelle - Psychic  
+#270 Solosis - Psychic  
+#271 Duosion - Psychic  
+#272 Reuniclus - Psychic  
+#273 Karrablast - Bug  
+#274 Escavalier - Bug · Steel  
+#275 Shelmet - Bug  
+#276 Accelgor - Bug  
+#277 Elgyem - Psychic  
+#278 Beheeyem - Psychic  
+#279 Cubchoo - Ice  
+#280 Beartic - Ice  
+#281 Rufflet - Normal · Flying  
+#282 Braviary - Normal · Flying  
+#283 Vullaby - Dark · Flying  
+#284 Mandibuzz - Dark · Flying  
+#285 Skorupi - Poison · Bug  
+#286 Drapion - Poison · Dark  
+#287 Litwick - Ghost · Fire  
+#288 Lampent - Ghost · Fire  
+#289 Chandelure - Ghost · Fire  
+#290 Inkay - Dark · Psychic  
+#291 Malamar - Dark · Psychic  
+#292 Sneasel - Dark · Ice  
+#293 Weavile - Dark · Ice  
+#294 Sableye - Dark · Ghost  
+#295 Mawile - Steel · Fairy  
+#296 Maractus - Grass  
+#297 Sigilyph - Psychic · Flying  
+#298 Riolu - Fighting  
+#299 Lucario - Fighting · Steel  
+#300 Torkoal - Fire  
+#301 Mimikyu - Ghost · Fairy  
+#302 Cufant - Steel  
+#303 Copperajah - Steel  
+#304 Qwilfish - Water · Poison  
+#305 Frillish - Water · Ghost  
+#306 Jellicent - Water · Ghost  
+#307 Mareanie - Poison · Water  
+#308 Toxapex - Poison · Water  
+#309 Cramorant - Flying · Water  
+#310 Toxel - Electric · Poison  
+#311 Toxtricity - Electric · Poison  
+#312 Silicobra - Ground  
+#313 Sandaconda - Ground  
+#314 Hippopotas - Ground  
+#315 Hippowdon - Ground  
+#316 Durant - Bug · Steel  
+#317 Heatmor - Fire  
+#318 Helioptile - Electric · Normal  
+#319 Heliolisk - Electric · Normal  
+#320 Hawlucha - Fighting · Flying  
+#321 Trapinch - Ground  
+#322 Vibrava - Ground · Dragon  
+#323 Flygon - Ground · Dragon  
+#324 Axew - Dragon  
+#325 Fraxure - Dragon  
+#326 Haxorus - Dragon  
+#327 Yamask - Ground · Ghost  
+#328 Runerigus - Ground · Ghost  
+#329 Cofagrigus - Ghost  
+#330 Honedge - Steel · Ghost  
+#331 Doublade - Steel · Ghost  
+#332 Aegislash - Steel · Ghost  
+#333 Ponyta - Psychic  
+#334 Rapidash - Psychic · Fairy  
+#335 Sinistea - Ghost  
+#336 Polteageist - Ghost  
+#337 Indeedee - Psychic · Normal  
+#338 Phantump - Ghost · Grass  
+#339 Trevenant - Ghost · Grass  
+#340 Morelull - Grass · Fairy  
+#341 Shiinotic - Grass · Fairy  
+#342 Oranguru - Normal · Psychic  
+#343 Passimian - Fighting  
+#344 Morpeko - Electric · Dark  
+#345 Falinks - Fighting  
+#346 Drampa - Normal · Dragon  
+#347 Turtonator - Fire · Dragon  
+#348 Togedemaru - Electric · Steel  
+#349 Snom - Ice · Bug  
+#350 Frosmoth - Ice · Bug  
+#351 Clobbopus - Fighting  
+#352 Grapploct - Fighting  
+#353 Pincurchin - Electric  
+#354 Mantyke - Water · Flying  
+#355 Mantine - Water · Flying  
+#356 Wailmer - Water  
+#357 Wailord - Water  
+#358 Bergmite - Ice  
+#359 Avalugg - Ice  
+#360 Dhelmise - Ghost · Grass  
+#361 Lapras - Water · Ice  
+#362 Lunatone - Rock · Psychic  
+#363 Solrock - Rock · Psychic  
+#364 Mime Jr. - Psychic · Fairy  
+#365 Mr. Mime - Ice · Psychic  
+#366 Mr. Rime - Ice · Psychic  
+#367 Darumaka - Ice  
+#368 Darmanitan - Ice  
+#369 Stonjourner - Rock  
+#370 Eiscue - Ice  
+#371 Duraludon - Steel · Dragon  
+#372 Rotom - Electric · Ghost  
+#373 Ditto - Normal  
+#374 Dracozolt - Electric · Dragon  
+#375 Arctozolt - Electric · Ice  
+#376 Dracovish - Water · Dragon  
+#377 Arctovish - Water · Ice  
+#378 Charmander - Fire  
+#379 Charmeleon - Fire  
+#380 Charizard - Fire · Flying  
+#381 Type: Null - Normal  
+#382 Silvally - Normal  
+#383 Larvitar - Rock · Ground  
+#384 Pupitar - Rock · Ground  
+#385 Tyranitar - Rock · Dark  
+#386 Deino - Dark · Dragon  
+#387 Zweilous - Dark · Dragon  
+#388 Hydreigon - Dark · Dragon  
+#389 Goomy - Dragon  
+#390 Sliggoo - Dragon  
+#391 Goodra - Dragon  
+#392 Jangmo-o - Dragon  
+#393 Hakamo-o - Dragon · Fighting  
+#394 Kommo-o - Dragon · Fighting  
+#395 Dreepy - Dragon · Ghost  
+#396 Drakloak - Dragon · Ghost  
+#397 Dragapult - Dragon · Ghost  
+#398 Zacian - Fairy  
+#399 Zamazenta - Fighting  
+#400 Eternatus - Poison · Dragon

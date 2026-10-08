@@ -1,0 +1,112 @@
+110 cards
+
+Volbeat - B4a #001 - DIAMOND1 - GRASS
+Illumise - B4a #002 - DIAMOND1 - GRASS
+Snivy - B4a #003 - DIAMOND1 - GRASS
+Servine - B4a #004 - DIAMOND2 - GRASS
+Serperior - B4a #005 - DIAMOND3 - GRASS
+Team Rocket's Magmar - B4a #006 - DIAMOND1 - FIRE
+Team Rocket's Moltres ex - B4a #007 - DIAMOND4 - FIRE
+Team Rocket's Houndour - B4a #008 - DIAMOND1 - FIRE
+Team Rocket's Houndoom - B4a #009 - DIAMOND1 - FIRE
+Fennekin - B4a #010 - DIAMOND1 - FIRE
+Braixen - B4a #011 - DIAMOND2 - FIRE
+Delphox - B4a #012 - DIAMOND3 - FIRE
+Team Rocket's Lapras - B4a #013 - DIAMOND2 - WATER
+Team Rocket's Articuno ex - B4a #014 - DIAMOND4 - WATER
+Wingull - B4a #015 - DIAMOND1 - WATER
+Pelipper - B4a #016 - DIAMOND2 - WATER
+Hisuian Basculin - B4a #017 - DIAMOND1 - WATER
+Hisuian Basculegion - B4a #018 - DIAMOND2 - WATER
+Team Rocket's Voltorb - B4a #019 - DIAMOND1 - LIGHTNING
+Team Rocket's Electrode - B4a #020 - DIAMOND2 - LIGHTNING
+Team Rocket's Zapdos ex - B4a #021 - DIAMOND4 - LIGHTNING
+Blitzle - B4a #022 - DIAMOND1 - LIGHTNING
+Zebstrika - B4a #023 - DIAMOND2 - LIGHTNING
+Team Rocket's Pincurchin - B4a #024 - DIAMOND1 - LIGHTNING
+Team Rocket's Slowpoke - B4a #025 - DIAMOND1 - PSYCHIC
+Team Rocket's Slowking ex - B4a #026 - DIAMOND4 - PSYCHIC
+Team Rocket's Drowzee - B4a #027 - DIAMOND1 - PSYCHIC
+Team Rocket's Hypno - B4a #028 - DIAMOND2 - PSYCHIC
+Team Rocket's Mr. Mime - B4a #029 - DIAMOND1 - PSYCHIC
+Team Rocket's Mewtwo - B4a #030 - DIAMOND3 - PSYCHIC
+Espurr - B4a #031 - DIAMOND1 - PSYCHIC
+Meowstic - B4a #032 - DIAMOND2 - PSYCHIC
+Oranguru - B4a #033 - DIAMOND2 - PSYCHIC
+Gimmighoul - B4a #034 - DIAMOND1 - PSYCHIC
+Cubone - B4a #035 - DIAMOND1 - FIGHTING
+Marowak - B4a #036 - DIAMOND2 - FIGHTING
+Landorus - B4a #037 - DIAMOND3 - FIGHTING
+Team Rocket's Ekans - B4a #038 - DIAMOND1 - DARKNESS
+Team Rocket's Arbok - B4a #039 - DIAMOND2 - DARKNESS
+Team Rocket's Grimer - B4a #040 - DIAMOND1 - DARKNESS
+Team Rocket's Muk - B4a #041 - DIAMOND2 - DARKNESS
+Team Rocket's Koffing - B4a #042 - DIAMOND1 - DARKNESS
+Team Rocket's Weezing ex - B4a #043 - DIAMOND4 - DARKNESS
+Team Rocket's Sneasel - B4a #044 - DIAMOND1 - DARKNESS
+Togedemaru - B4a #045 - DIAMOND1 - METAL
+Cufant - B4a #046 - DIAMOND1 - METAL
+Copperajah - B4a #047 - DIAMOND2 - METAL
+Team Rocket's Tinkatink - B4a #048 - DIAMOND1 - METAL
+Team Rocket's Tinkatuff - B4a #049 - DIAMOND2 - METAL
+Team Rocket's Tinkaton - B4a #050 - DIAMOND3 - METAL
+Gholdengo - B4a #051 - DIAMOND2 - METAL
+Gible - B4a #052 - DIAMOND1 - DRAGON
+Gabite - B4a #053 - DIAMOND2 - DRAGON
+Garchomp - B4a #054 - DIAMOND3 - DRAGON
+Duraludon - B4a #055 - DIAMOND2 - DRAGON
+Archaludon - B4a #056 - DIAMOND3 - DRAGON
+Regidrago - B4a #057 - DIAMOND2 - DRAGON
+Team Rocket's Rattata - B4a #058 - DIAMOND1 - COLORLESS
+Team Rocket's Raticate ex - B4a #059 - DIAMOND4 - COLORLESS
+Team Rocket's Meowth - B4a #060 - DIAMOND1 - COLORLESS
+Team Rocket's Persian - B4a #061 - DIAMOND2 - COLORLESS
+Team Rocket's Kecleon - B4a #062 - DIAMOND1 - COLORLESS
+Happiny - B4a #063 - DIAMOND3 - COLORLESS
+Furfrou - B4a #064 - DIAMOND1 - COLORLESS
+Lechonk - B4a #065 - DIAMOND1 - COLORLESS
+Oinkologne - B4a #066 - DIAMOND1 - COLORLESS
+Team Rocket's Thieving Machine - B4a #067 - DIAMOND1 - TRAINER
+Team Rocket's Goo-zooka - B4a #068 - DIAMOND2 - TRAINER
+Team Rocket's Researcher - B4a #069 - DIAMOND2 - TRAINER
+Team Rocket's Master Plan - B4a #070 - DIAMOND2 - TRAINER
+Team Rocket's Boss - B4a #071 - DIAMOND2 - TRAINER
+Arcade - B4a #072 - DIAMOND2 - ARENA
+Delphox - B4a #073 - STAR1 - FIRE
+Team Rocket's Hypno - B4a #074 - STAR1 - PSYCHIC
+Team Rocket's Tinkaton - B4a #075 - STAR1 - METAL
+Team Rocket's Kecleon - B4a #076 - STAR1 - COLORLESS
+Happiny - B4a #077 - STAR1 - COLORLESS
+Lechonk - B4a #078 - STAR1 - COLORLESS
+Team Rocket's Moltres ex - B4a #079 - STAR1 - FIRE
+Team Rocket's Articuno ex - B4a #080 - STAR2 - WATER
+Team Rocket's Zapdos ex - B4a #081 - STAR2 - LIGHTNING
+Team Rocket's Slowking ex - B4a #082 - STAR2 - PSYCHIC
+Team Rocket's Weezing ex - B4a #083 - STAR2 - DARKNESS
+Team Rocket's Raticate ex - B4a #084 - STAR2 - COLORLESS
+Team Rocket's Researcher - B4a #085 - STAR2 - TRAINER
+Team Rocket's Master Plan - B4a #086 - STAR2 - TRAINER
+Team Rocket's Boss - B4a #087 - STAR2 - TRAINER
+Team Rocket's Moltres ex - B4a #088 - STAR2 - FIRE
+Team Rocket's Articuno ex - B4a #089 - STAR2 - WATER
+Team Rocket's Zapdos ex - B4a #090 - STAR2 - LIGHTNING
+Team Rocket's Slowking ex - B4a #091 - STAR2 - PSYCHIC
+Team Rocket's Weezing ex - B4a #092 - STAR2 - DARKNESS
+Team Rocket's Raticate ex - B4a #093 - STAR2 - COLORLESS
+Team Rocket's Master Plan - B4a #094 - STAR2 - TRAINER
+Vulpix - B4a #095 - STAR3 - FIRE
+Ninetales - B4a #096 - SHINY1 - FIRE
+Goldeen - B4a #097 - SHINY1 - WATER
+Seaking - B4a #098 - SHINY1 - WATER
+Toxel - B4a #099 - SHINY1 - LIGHTNING
+Sinistea - B4a #100 - SHINY1 - PSYCHIC
+Polteageist - B4a #101 - SHINY1 - PSYCHIC
+Mawile - B4a #102 - SHINY1 - METAL
+Taillow - B4a #103 - SHINY1 - COLORLESS
+Swellow - B4a #104 - SHINY1 - COLORLESS
+Mega Charizard Y ex - B4a #105 - SHINY2 - FIRE
+Toxtricity ex - B4a #106 - SHINY2 - LIGHTNING
+Mimikyu ex - B4a #107 - SHINY2 - PSYCHIC
+Mega Mawile ex - B4a #108 - SHINY2 - METAL
+Gholdengo - B4a #109 - CROWN - METAL
+Team Rocket's Goo-zooka - B4a #110 - CROWN - TRAINER

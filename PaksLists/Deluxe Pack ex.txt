@@ -1,0 +1,381 @@
+379 cards
+
+Bulbasaur - A4b #001 - DIAMOND1 - GRASS
+Bulbasaur - A4b #002 - DIAMOND1 - GRASS
+Ivysaur - A4b #003 - DIAMOND2 - GRASS
+Ivysaur - A4b #004 - DIAMOND2 - GRASS
+Venusaur ex - A4b #005 - DIAMOND4 - GRASS
+Weedle - A4b #006 - DIAMOND1 - GRASS
+Weedle - A4b #007 - DIAMOND1 - GRASS
+Kakuna - A4b #008 - DIAMOND2 - GRASS
+Kakuna - A4b #009 - DIAMOND2 - GRASS
+Beedrill ex - A4b #010 - DIAMOND4 - GRASS
+Exeggcute - A4b #011 - DIAMOND1 - GRASS
+Exeggcute - A4b #012 - DIAMOND1 - GRASS
+Exeggutor ex - A4b #013 - DIAMOND4 - GRASS
+Hoppip - A4b #014 - DIAMOND1 - GRASS
+Hoppip - A4b #015 - DIAMOND1 - GRASS
+Skiploom - A4b #016 - DIAMOND2 - GRASS
+Skiploom - A4b #017 - DIAMOND2 - GRASS
+Jumpluff - A4b #018 - DIAMOND3 - GRASS
+Jumpluff - A4b #019 - DIAMOND3 - GRASS
+Yanma - A4b #020 - DIAMOND1 - GRASS
+Yanma - A4b #021 - DIAMOND1 - GRASS
+Yanmega ex - A4b #022 - DIAMOND4 - GRASS
+Shuckle ex - A4b #023 - DIAMOND4 - GRASS
+Celebi ex - A4b #024 - DIAMOND4 - GRASS
+Cherubi - A4b #025 - DIAMOND1 - GRASS
+Cherubi - A4b #026 - DIAMOND1 - GRASS
+Cherrim - A4b #027 - DIAMOND2 - GRASS
+Cherrim - A4b #028 - DIAMOND2 - GRASS
+Leafeon ex - A4b #029 - DIAMOND4 - GRASS
+Shaymin - A4b #030 - DIAMOND3 - GRASS
+Shaymin - A4b #031 - DIAMOND3 - GRASS
+Snivy - A4b #032 - DIAMOND1 - GRASS
+Snivy - A4b #033 - DIAMOND1 - GRASS
+Servine - A4b #034 - DIAMOND2 - GRASS
+Servine - A4b #035 - DIAMOND2 - GRASS
+Serperior - A4b #036 - DIAMOND3 - GRASS
+Serperior - A4b #037 - DIAMOND3 - GRASS
+Rowlet - A4b #038 - DIAMOND1 - GRASS
+Rowlet - A4b #039 - DIAMOND1 - GRASS
+Dartrix - A4b #040 - DIAMOND2 - GRASS
+Dartrix - A4b #041 - DIAMOND2 - GRASS
+Decidueye ex - A4b #042 - DIAMOND4 - GRASS
+Dhelmise ex - A4b #043 - DIAMOND4 - GRASS
+Buzzwole ex - A4b #044 - DIAMOND4 - GRASS
+Pheromosa - A4b #045 - DIAMOND2 - GRASS
+Pheromosa - A4b #046 - DIAMOND2 - GRASS
+Kartana - A4b #047 - DIAMOND1 - GRASS
+Kartana - A4b #048 - DIAMOND1 - GRASS
+Sprigatito - A4b #049 - DIAMOND1 - GRASS
+Sprigatito - A4b #050 - DIAMOND1 - GRASS
+Floragato - A4b #051 - DIAMOND2 - GRASS
+Floragato - A4b #052 - DIAMOND2 - GRASS
+Meowscarada - A4b #053 - DIAMOND3 - GRASS
+Meowscarada - A4b #054 - DIAMOND3 - GRASS
+Charmander - A4b #055 - DIAMOND1 - FIRE
+Charmander - A4b #056 - DIAMOND1 - FIRE
+Charmeleon - A4b #057 - DIAMOND2 - FIRE
+Charmeleon - A4b #058 - DIAMOND2 - FIRE
+Charizard ex - A4b #059 - DIAMOND4 - FIRE
+Charizard ex - A4b #060 - DIAMOND4 - FIRE
+Growlithe - A4b #061 - DIAMOND1 - FIRE
+Growlithe - A4b #062 - DIAMOND1 - FIRE
+Arcanine ex - A4b #063 - DIAMOND4 - FIRE
+Flareon - A4b #064 - DIAMOND3 - FIRE
+Flareon - A4b #065 - DIAMOND3 - FIRE
+Flareon ex - A4b #066 - DIAMOND4 - FIRE
+Moltres ex - A4b #067 - DIAMOND4 - FIRE
+Ho-Oh ex - A4b #068 - DIAMOND4 - FIRE
+Torkoal - A4b #069 - DIAMOND1 - FIRE
+Torkoal - A4b #070 - DIAMOND1 - FIRE
+Chimchar - A4b #071 - DIAMOND1 - FIRE
+Chimchar - A4b #072 - DIAMOND1 - FIRE
+Monferno - A4b #073 - DIAMOND2 - FIRE
+Monferno - A4b #074 - DIAMOND2 - FIRE
+Infernape ex - A4b #075 - DIAMOND4 - FIRE
+Heatran - A4b #076 - DIAMOND3 - FIRE
+Heatran - A4b #077 - DIAMOND3 - FIRE
+Litten - A4b #078 - DIAMOND1 - FIRE
+Litten - A4b #079 - DIAMOND1 - FIRE
+Torracat - A4b #080 - DIAMOND2 - FIRE
+Torracat - A4b #081 - DIAMOND2 - FIRE
+Incineroar ex - A4b #082 - DIAMOND4 - FIRE
+Squirtle - A4b #083 - DIAMOND1 - WATER
+Squirtle - A4b #084 - DIAMOND1 - WATER
+Wartortle - A4b #085 - DIAMOND2 - WATER
+Wartortle - A4b #086 - DIAMOND2 - WATER
+Blastoise ex - A4b #087 - DIAMOND4 - WATER
+Horsea - A4b #088 - DIAMOND1 - WATER
+Horsea - A4b #089 - DIAMOND1 - WATER
+Seadra - A4b #090 - DIAMOND2 - WATER
+Seadra - A4b #091 - DIAMOND2 - WATER
+Kingdra ex - A4b #092 - DIAMOND4 - WATER
+Staryu - A4b #093 - DIAMOND1 - WATER
+Staryu - A4b #094 - DIAMOND1 - WATER
+Starmie ex - A4b #095 - DIAMOND4 - WATER
+Magikarp - A4b #096 - DIAMOND1 - WATER
+Magikarp - A4b #097 - DIAMOND1 - WATER
+Gyarados ex - A4b #098 - DIAMOND4 - WATER
+Vaporeon - A4b #099 - DIAMOND3 - WATER
+Vaporeon - A4b #100 - DIAMOND3 - WATER
+Articuno ex - A4b #101 - DIAMOND4 - WATER
+Corphish - A4b #102 - DIAMOND1 - WATER
+Corphish - A4b #103 - DIAMOND1 - WATER
+Crawdaunt - A4b #104 - DIAMOND3 - WATER
+Crawdaunt - A4b #105 - DIAMOND3 - WATER
+Glaceon ex - A4b #106 - DIAMOND4 - WATER
+Palkia ex - A4b #107 - DIAMOND4 - WATER
+Manaphy - A4b #108 - DIAMOND2 - WATER
+Manaphy - A4b #109 - DIAMOND2 - WATER
+Froakie - A4b #110 - DIAMOND1 - WATER
+Froakie - A4b #111 - DIAMOND1 - WATER
+Frogadier - A4b #112 - DIAMOND2 - WATER
+Frogadier - A4b #113 - DIAMOND2 - WATER
+Greninja - A4b #114 - DIAMOND3 - WATER
+Greninja - A4b #115 - DIAMOND3 - WATER
+Popplio - A4b #116 - DIAMOND1 - WATER
+Popplio - A4b #117 - DIAMOND1 - WATER
+Brionne - A4b #118 - DIAMOND1 - WATER
+Brionne - A4b #119 - DIAMOND1 - WATER
+Primarina ex - A4b #120 - DIAMOND4 - WATER
+Crabominable ex - A4b #121 - DIAMOND4 - WATER
+Wishiwashi - A4b #122 - DIAMOND1 - WATER
+Wishiwashi - A4b #123 - DIAMOND1 - WATER
+Wishiwashi ex - A4b #124 - DIAMOND4 - WATER
+Wiglett - A4b #125 - DIAMOND1 - WATER
+Wiglett - A4b #126 - DIAMOND1 - WATER
+Wugtrio ex - A4b #127 - DIAMOND4 - WATER
+Pikachu - A4b #128 - DIAMOND1 - LIGHTNING
+Pikachu - A4b #129 - DIAMOND1 - LIGHTNING
+Alolan Raichu ex - A4b #130 - DIAMOND4 - LIGHTNING
+Pikachu ex - A4b #131 - DIAMOND4 - LIGHTNING
+Pikachu ex - A4b #132 - DIAMOND4 - LIGHTNING
+Magnemite - A4b #133 - DIAMOND1 - LIGHTNING
+Magnemite - A4b #134 - DIAMOND1 - LIGHTNING
+Magneton - A4b #135 - DIAMOND3 - LIGHTNING
+Magneton - A4b #136 - DIAMOND3 - LIGHTNING
+Magnezone - A4b #137 - DIAMOND3 - LIGHTNING
+Magnezone - A4b #138 - DIAMOND3 - LIGHTNING
+Zapdos ex - A4b #139 - DIAMOND4 - LIGHTNING
+Chinchou - A4b #140 - DIAMOND1 - LIGHTNING
+Chinchou - A4b #141 - DIAMOND1 - LIGHTNING
+Lanturn ex - A4b #142 - DIAMOND4 - LIGHTNING
+Pachirisu - A4b #143 - DIAMOND2 - LIGHTNING
+Pachirisu - A4b #144 - DIAMOND2 - LIGHTNING
+Pachirisu ex - A4b #145 - DIAMOND4 - LIGHTNING
+Oricorio - A4b #146 - DIAMOND3 - LIGHTNING
+Oricorio - A4b #147 - DIAMOND3 - LIGHTNING
+Tapu Koko ex - A4b #148 - DIAMOND4 - LIGHTNING
+Zeraora - A4b #149 - DIAMOND3 - LIGHTNING
+Zeraora - A4b #150 - DIAMOND3 - LIGHTNING
+Gastly - A4b #151 - DIAMOND1 - PSYCHIC
+Gastly - A4b #152 - DIAMOND1 - PSYCHIC
+Haunter - A4b #153 - DIAMOND2 - PSYCHIC
+Haunter - A4b #154 - DIAMOND2 - PSYCHIC
+Gengar ex - A4b #155 - DIAMOND4 - PSYCHIC
+Jynx - A4b #156 - DIAMOND1 - PSYCHIC
+Jynx - A4b #157 - DIAMOND1 - PSYCHIC
+Mewtwo ex - A4b #158 - DIAMOND4 - PSYCHIC
+Mew ex - A4b #159 - DIAMOND4 - PSYCHIC
+Espeon ex - A4b #160 - DIAMOND4 - PSYCHIC
+Misdreavus - A4b #161 - DIAMOND1 - PSYCHIC
+Misdreavus - A4b #162 - DIAMOND1 - PSYCHIC
+Mismagius ex - A4b #163 - DIAMOND4 - PSYCHIC
+Ralts - A4b #164 - DIAMOND1 - PSYCHIC
+Ralts - A4b #165 - DIAMOND1 - PSYCHIC
+Kirlia - A4b #166 - DIAMOND1 - PSYCHIC
+Kirlia - A4b #167 - DIAMOND1 - PSYCHIC
+Gardevoir - A4b #168 - DIAMOND3 - PSYCHIC
+Gardevoir - A4b #169 - DIAMOND3 - PSYCHIC
+Giratina - A4b #170 - DIAMOND3 - PSYCHIC
+Giratina - A4b #171 - DIAMOND3 - PSYCHIC
+Giratina ex - A4b #172 - DIAMOND4 - PSYCHIC
+Swirlix - A4b #173 - DIAMOND1 - PSYCHIC
+Swirlix - A4b #174 - DIAMOND1 - PSYCHIC
+Slurpuff - A4b #175 - DIAMOND2 - PSYCHIC
+Slurpuff - A4b #176 - DIAMOND2 - PSYCHIC
+Sylveon ex - A4b #177 - DIAMOND4 - PSYCHIC
+Oricorio - A4b #178 - DIAMOND2 - PSYCHIC
+Oricorio - A4b #179 - DIAMOND2 - PSYCHIC
+Cosmog - A4b #180 - DIAMOND1 - PSYCHIC
+Cosmog - A4b #181 - DIAMOND1 - PSYCHIC
+Cosmoem - A4b #182 - DIAMOND2 - PSYCHIC
+Cosmoem - A4b #183 - DIAMOND2 - PSYCHIC
+Lunala ex - A4b #184 - DIAMOND4 - PSYCHIC
+Milcery - A4b #185 - DIAMOND1 - PSYCHIC
+Milcery - A4b #186 - DIAMOND1 - PSYCHIC
+Alcremie - A4b #187 - DIAMOND2 - PSYCHIC
+Alcremie - A4b #188 - DIAMOND2 - PSYCHIC
+Machop - A4b #189 - DIAMOND1 - FIGHTING
+Machop - A4b #190 - DIAMOND1 - FIGHTING
+Machoke - A4b #191 - DIAMOND2 - FIGHTING
+Machoke - A4b #192 - DIAMOND2 - FIGHTING
+Machamp ex - A4b #193 - DIAMOND4 - FIGHTING
+Cubone - A4b #194 - DIAMOND1 - FIGHTING
+Cubone - A4b #195 - DIAMOND1 - FIGHTING
+Marowak ex - A4b #196 - DIAMOND4 - FIGHTING
+Aerodactyl ex - A4b #197 - DIAMOND4 - FIGHTING
+Sudowoodo - A4b #198 - DIAMOND2 - FIGHTING
+Sudowoodo - A4b #199 - DIAMOND2 - FIGHTING
+Phanpy - A4b #200 - DIAMOND1 - FIGHTING
+Phanpy - A4b #201 - DIAMOND1 - FIGHTING
+Donphan ex - A4b #202 - DIAMOND4 - FIGHTING
+Nosepass - A4b #203 - DIAMOND1 - FIGHTING
+Nosepass - A4b #204 - DIAMOND1 - FIGHTING
+Gible - A4b #205 - DIAMOND1 - FIGHTING
+Gible - A4b #206 - DIAMOND1 - FIGHTING
+Gabite - A4b #207 - DIAMOND1 - FIGHTING
+Gabite - A4b #208 - DIAMOND1 - FIGHTING
+Garchomp ex - A4b #209 - DIAMOND4 - FIGHTING
+Riolu - A4b #210 - DIAMOND1 - FIGHTING
+Riolu - A4b #211 - DIAMOND1 - FIGHTING
+Lucario - A4b #212 - DIAMOND3 - FIGHTING
+Lucario - A4b #213 - DIAMOND3 - FIGHTING
+Lucario ex - A4b #214 - DIAMOND4 - FIGHTING
+Gallade ex - A4b #215 - DIAMOND4 - FIGHTING
+Drilbur - A4b #216 - DIAMOND1 - FIGHTING
+Drilbur - A4b #217 - DIAMOND1 - FIGHTING
+Crabrawler - A4b #218 - DIAMOND1 - FIGHTING
+Crabrawler - A4b #219 - DIAMOND1 - FIGHTING
+Rockruff - A4b #220 - DIAMOND1 - FIGHTING
+Rockruff - A4b #221 - DIAMOND1 - FIGHTING
+Lycanroc ex - A4b #222 - DIAMOND4 - FIGHTING
+Passimian ex - A4b #223 - DIAMOND4 - FIGHTING
+Marshadow - A4b #224 - DIAMOND3 - FIGHTING
+Marshadow - A4b #225 - DIAMOND3 - FIGHTING
+Zubat - A4b #226 - DIAMOND1 - DARKNESS
+Zubat - A4b #227 - DIAMOND1 - DARKNESS
+Golbat - A4b #228 - DIAMOND1 - DARKNESS
+Golbat - A4b #229 - DIAMOND1 - DARKNESS
+Crobat - A4b #230 - DIAMOND3 - DARKNESS
+Crobat - A4b #231 - DIAMOND3 - DARKNESS
+Crobat ex - A4b #232 - DIAMOND4 - DARKNESS
+Alolan Grimer - A4b #233 - DIAMOND1 - DARKNESS
+Alolan Grimer - A4b #234 - DIAMOND1 - DARKNESS
+Alolan Muk ex - A4b #235 - DIAMOND4 - DARKNESS
+Paldean Wooper - A4b #236 - DIAMOND1 - DARKNESS
+Paldean Wooper - A4b #237 - DIAMOND1 - DARKNESS
+Paldean Clodsire ex - A4b #238 - DIAMOND4 - DARKNESS
+Umbreon - A4b #239 - DIAMOND3 - DARKNESS
+Umbreon - A4b #240 - DIAMOND3 - DARKNESS
+Umbreon ex - A4b #241 - DIAMOND4 - DARKNESS
+Sneasel - A4b #242 - DIAMOND1 - DARKNESS
+Sneasel - A4b #243 - DIAMOND1 - DARKNESS
+Weavile ex - A4b #244 - DIAMOND4 - DARKNESS
+Darkrai ex - A4b #245 - DIAMOND4 - DARKNESS
+Nihilego - A4b #246 - DIAMOND3 - DARKNESS
+Nihilego - A4b #247 - DIAMOND3 - DARKNESS
+Guzzlord ex - A4b #248 - DIAMOND4 - DARKNESS
+Alolan Diglett - A4b #249 - DIAMOND1 - METAL
+Alolan Diglett - A4b #250 - DIAMOND1 - METAL
+Alolan Dugtrio ex - A4b #251 - DIAMOND4 - METAL
+Skarmory ex - A4b #252 - DIAMOND4 - METAL
+Probopass ex - A4b #253 - DIAMOND4 - METAL
+Dialga ex - A4b #254 - DIAMOND4 - METAL
+Excadrill - A4b #255 - DIAMOND2 - METAL
+Excadrill - A4b #256 - DIAMOND2 - METAL
+Klefki - A4b #257 - DIAMOND3 - METAL
+Klefki - A4b #258 - DIAMOND3 - METAL
+Solgaleo ex - A4b #259 - DIAMOND4 - METAL
+Magearna - A4b #260 - DIAMOND3 - METAL
+Magearna - A4b #261 - DIAMOND3 - METAL
+Tinkatink - A4b #262 - DIAMOND1 - METAL
+Tinkatink - A4b #263 - DIAMOND1 - METAL
+Tinkatuff - A4b #264 - DIAMOND2 - METAL
+Tinkatuff - A4b #265 - DIAMOND2 - METAL
+Tinkaton ex - A4b #266 - DIAMOND4 - METAL
+Dratini - A4b #267 - DIAMOND1 - DRAGON
+Dratini - A4b #268 - DIAMOND1 - DRAGON
+Dragonair - A4b #269 - DIAMOND1 - DRAGON
+Dragonair - A4b #270 - DIAMOND1 - DRAGON
+Dragonite ex - A4b #271 - DIAMOND4 - DRAGON
+Pidgey - A4b #272 - DIAMOND1 - COLORLESS
+Pidgey - A4b #273 - DIAMOND1 - COLORLESS
+Pidgeotto - A4b #274 - DIAMOND1 - COLORLESS
+Pidgeotto - A4b #275 - DIAMOND1 - COLORLESS
+Pidgeot ex - A4b #276 - DIAMOND4 - COLORLESS
+Jigglypuff - A4b #277 - DIAMOND1 - COLORLESS
+Jigglypuff - A4b #278 - DIAMOND1 - COLORLESS
+Wigglytuff ex - A4b #279 - DIAMOND4 - COLORLESS
+Farfetch'd - A4b #280 - DIAMOND1 - COLORLESS
+Farfetch'd - A4b #281 - DIAMOND1 - COLORLESS
+Lickitung - A4b #282 - DIAMOND1 - COLORLESS
+Lickitung - A4b #283 - DIAMOND1 - COLORLESS
+Lickilicky ex - A4b #284 - DIAMOND4 - COLORLESS
+Eevee - A4b #285 - DIAMOND1 - COLORLESS
+Eevee - A4b #286 - DIAMOND1 - COLORLESS
+Eevee ex - A4b #287 - DIAMOND4 - COLORLESS
+Snorlax ex - A4b #288 - DIAMOND4 - COLORLESS
+Lugia ex - A4b #289 - DIAMOND4 - COLORLESS
+Skitty - A4b #290 - DIAMOND1 - COLORLESS
+Skitty - A4b #291 - DIAMOND1 - COLORLESS
+Delcatty - A4b #292 - DIAMOND2 - COLORLESS
+Delcatty - A4b #293 - DIAMOND2 - COLORLESS
+Bidoof - A4b #294 - DIAMOND1 - COLORLESS
+Bidoof - A4b #295 - DIAMOND1 - COLORLESS
+Bibarel ex - A4b #296 - DIAMOND4 - COLORLESS
+Shaymin - A4b #297 - DIAMOND3 - COLORLESS
+Shaymin - A4b #298 - DIAMOND3 - COLORLESS
+Arceus ex - A4b #299 - DIAMOND4 - COLORLESS
+Type: Null - A4b #300 - DIAMOND2 - COLORLESS
+Type: Null - A4b #301 - DIAMOND2 - COLORLESS
+Silvally - A4b #302 - DIAMOND3 - COLORLESS
+Silvally - A4b #303 - DIAMOND3 - COLORLESS
+Celesteela - A4b #304 - DIAMOND3 - COLORLESS
+Celesteela - A4b #305 - DIAMOND3 - COLORLESS
+Cyclizar - A4b #306 - DIAMOND2 - COLORLESS
+Cyclizar - A4b #307 - DIAMOND2 - COLORLESS
+Eevee Bag - A4b #308 - DIAMOND2 - ITEM
+Eevee Bag - A4b #309 - DIAMOND2 - ITEM
+Elemental Switch - A4b #310 - DIAMOND2 - ITEM
+Elemental Switch - A4b #311 - DIAMOND2 - ITEM
+Old Amber - A4b #312 - DIAMOND1 - ITEM
+Old Amber - A4b #313 - DIAMOND1 - ITEM
+Rare Candy - A4b #314 - DIAMOND2 - ITEM
+Rare Candy - A4b #315 - DIAMOND2 - ITEM
+Pokemon Communication - A4b #316 - DIAMOND2 - ITEM
+Pokemon Communication - A4b #317 - DIAMOND2 - ITEM
+Electrical Cord - A4b #318 - DIAMOND2 - TOOL
+Electrical Cord - A4b #319 - DIAMOND2 - TOOL
+Giant Cape - A4b #320 - DIAMOND2 - TOOL
+Giant Cape - A4b #321 - DIAMOND2 - TOOL
+Rocky Helmet - A4b #322 - DIAMOND2 - TOOL
+Rocky Helmet - A4b #323 - DIAMOND2 - TOOL
+Leaf Cape - A4b #324 - DIAMOND2 - TOOL
+Leaf Cape - A4b #325 - DIAMOND2 - TOOL
+Cyrus - A4b #326 - DIAMOND2 - SUPPORTER
+Cyrus - A4b #327 - DIAMOND2 - SUPPORTER
+Erika - A4b #328 - DIAMOND2 - SUPPORTER
+Erika - A4b #329 - DIAMOND2 - SUPPORTER
+Irida - A4b #330 - DIAMOND2 - SUPPORTER
+Irida - A4b #331 - DIAMOND2 - SUPPORTER
+Lyra - A4b #332 - DIAMOND2 - SUPPORTER
+Lyra - A4b #333 - DIAMOND2 - SUPPORTER
+Giovanni - A4b #334 - DIAMOND2 - SUPPORTER
+Giovanni - A4b #335 - DIAMOND2 - SUPPORTER
+Silver - A4b #336 - DIAMOND2 - SUPPORTER
+Silver - A4b #337 - DIAMOND2 - SUPPORTER
+Sabrina - A4b #338 - DIAMOND2 - SUPPORTER
+Sabrina - A4b #339 - DIAMOND2 - SUPPORTER
+Iono - A4b #340 - DIAMOND2 - SUPPORTER
+Iono - A4b #341 - DIAMOND2 - SUPPORTER
+Dawn - A4b #342 - DIAMOND2 - SUPPORTER
+Dawn - A4b #343 - DIAMOND2 - SUPPORTER
+Mars - A4b #344 - DIAMOND2 - SUPPORTER
+Mars - A4b #345 - DIAMOND2 - SUPPORTER
+Leaf - A4b #346 - DIAMOND2 - SUPPORTER
+Leaf - A4b #347 - DIAMOND2 - SUPPORTER
+Lillie - A4b #348 - DIAMOND2 - SUPPORTER
+Lillie - A4b #349 - DIAMOND2 - SUPPORTER
+Lusamine - A4b #350 - DIAMOND2 - SUPPORTER
+Lusamine - A4b #351 - DIAMOND2 - SUPPORTER
+Red - A4b #352 - DIAMOND2 - SUPPORTER
+Red - A4b #353 - DIAMOND2 - SUPPORTER
+Floragato - A4b #354 - STAR1 - GRASS
+Crawdaunt - A4b #355 - STAR1 - WATER
+Greninja - A4b #356 - STAR1 - WATER
+Gardevoir - A4b #357 - STAR1 - PSYCHIC
+Slurpuff - A4b #358 - STAR1 - PSYCHIC
+Farfetch'd - A4b #359 - STAR1 - COLORLESS
+Buzzwole ex - A4b #360 - STAR2 - GRASS
+Charizard ex - A4b #361 - STAR2 - FIRE
+Ho-Oh ex - A4b #362 - STAR2 - FIRE
+Palkia ex - A4b #363 - STAR2 - WATER
+Pikachu ex - A4b #364 - STAR2 - LIGHTNING
+Mewtwo ex - A4b #365 - STAR2 - PSYCHIC
+Mew ex - A4b #366 - STAR2 - PSYCHIC
+Lunala ex - A4b #367 - STAR2 - PSYCHIC
+Dialga ex - A4b #368 - STAR2 - METAL
+Solgaleo ex - A4b #369 - STAR2 - METAL
+Eevee ex - A4b #370 - STAR2 - COLORLESS
+Lugia ex - A4b #371 - STAR2 - COLORLESS
+Arceus ex - A4b #372 - STAR2 - COLORLESS
+Professor's Research - A4b #373 - STAR2 - SUPPORTER
+Lillie - A4b #374 - STAR2 - SUPPORTER
+Lusamine - A4b #375 - STAR2 - SUPPORTER
+Pikachu ex - A4b #376 - STAR3 - LIGHTNING
+Giratina ex - A4b #377 - STAR2 - PSYCHIC
+Darkrai ex - A4b #378 - STAR2 - DARKNESS
+Rare Candy - A4b #379 - CROWN - ITEM

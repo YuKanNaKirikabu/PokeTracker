@@ -1,0 +1,236 @@
+234 cards
+
+Tangela - B3 #001 - DIAMOND1 - GRASS
+Tangrowth - B3 #002 - DIAMOND2 - GRASS
+Heracross - B3 #003 - DIAMOND2 - GRASS
+Celebi - B3 #004 - DIAMOND3 - GRASS
+Treecko - B3 #005 - DIAMOND1 - GRASS
+Grovyle - B3 #006 - DIAMOND2 - GRASS
+Sceptile - B3 #007 - DIAMOND3 - GRASS
+Mega Sceptile ex - B3 #008 - DIAMOND4 - GRASS
+Surskit - B3 #009 - DIAMOND1 - GRASS
+Masquerain - B3 #010 - DIAMOND1 - GRASS
+Shroomish - B3 #011 - DIAMOND1 - GRASS
+Breloom - B3 #012 - DIAMOND2 - GRASS
+Budew - B3 #013 - DIAMOND3 - GRASS
+Carnivine - B3 #014 - DIAMOND1 - GRASS
+Sewaddle - B3 #015 - DIAMOND1 - GRASS
+Swadloon - B3 #016 - DIAMOND1 - GRASS
+Leavanny - B3 #017 - DIAMOND2 - GRASS
+Durant - B3 #018 - DIAMOND1 - GRASS
+Applin - B3 #019 - DIAMOND1 - GRASS
+Flapple - B3 #020 - DIAMOND3 - GRASS
+Numel - B3 #021 - DIAMOND1 - FIRE
+Camerupt - B3 #022 - DIAMOND2 - FIRE
+Mega Camerupt ex - B3 #023 - DIAMOND4 - FIRE
+Castform Sunny Form - B3 #024 - DIAMOND1 - FIRE
+Victini - B3 #025 - DIAMOND3 - FIRE
+Tepig - B3 #026 - DIAMOND1 - FIRE
+Pignite - B3 #027 - DIAMOND2 - FIRE
+Emboar - B3 #028 - DIAMOND3 - FIRE
+Darumaka - B3 #029 - DIAMOND1 - FIRE
+Darmanitan - B3 #030 - DIAMOND2 - FIRE
+Larvesta - B3 #031 - DIAMOND1 - FIRE
+Volcarona - B3 #032 - DIAMOND2 - FIRE
+Poliwag - B3 #033 - DIAMOND1 - WATER
+Poliwhirl - B3 #034 - DIAMOND2 - WATER
+Politoed - B3 #035 - DIAMOND3 - WATER
+Paldean Tauros - B3 #036 - DIAMOND2 - WATER
+Vaporeon ex - B3 #037 - DIAMOND4 - WATER
+Wooper - B3 #038 - DIAMOND1 - WATER
+Quagsire - B3 #039 - DIAMOND2 - WATER
+Castform Rainy Form - B3 #040 - DIAMOND1 - WATER
+Castform Snowy Form - B3 #041 - DIAMOND1 - WATER
+Clamperl - B3 #042 - DIAMOND1 - WATER
+Huntail - B3 #043 - DIAMOND2 - WATER
+Gorebyss - B3 #044 - DIAMOND2 - WATER
+Regice - B3 #045 - DIAMOND2 - WATER
+Cubchoo - B3 #046 - DIAMOND1 - WATER
+Beartic - B3 #047 - DIAMOND2 - WATER
+Sobble - B3 #048 - DIAMOND1 - WATER
+Drizzile - B3 #049 - DIAMOND2 - WATER
+Inteleon - B3 #050 - DIAMOND3 - WATER
+Rapid Strike Urshifu - B3 #051 - DIAMOND3 - WATER
+Magnemite - B3 #052 - DIAMOND1 - LIGHTNING
+Magneton - B3 #053 - DIAMOND2 - LIGHTNING
+Magnezone ex - B3 #054 - DIAMOND4 - LIGHTNING
+Voltorb - B3 #055 - DIAMOND1 - LIGHTNING
+Electrode - B3 #056 - DIAMOND1 - LIGHTNING
+Chinchou - B3 #057 - DIAMOND1 - LIGHTNING
+Lanturn - B3 #058 - DIAMOND2 - LIGHTNING
+Zekrom - B3 #059 - DIAMOND3 - LIGHTNING
+Toxel - B3 #060 - DIAMOND1 - LIGHTNING
+Toxtricity - B3 #061 - DIAMOND3 - LIGHTNING
+Morpeko - B3 #062 - DIAMOND1 - LIGHTNING
+Ralts - B3 #063 - DIAMOND1 - PSYCHIC
+Kirlia - B3 #064 - DIAMOND2 - PSYCHIC
+Espurr - B3 #065 - DIAMOND1 - PSYCHIC
+Meowstic - B3 #066 - DIAMOND3 - PSYCHIC
+Diancie - B3 #067 - DIAMOND3 - PSYCHIC
+Oricorio - B3 #068 - DIAMOND1 - PSYCHIC
+Hatenna - B3 #069 - DIAMOND1 - PSYCHIC
+Hattrem - B3 #070 - DIAMOND2 - PSYCHIC
+Hatterene - B3 #071 - DIAMOND3 - PSYCHIC
+Bramblin - B3 #072 - DIAMOND1 - PSYCHIC
+Brambleghast - B3 #073 - DIAMOND3 - PSYCHIC
+Gligar - B3 #074 - DIAMOND1 - FIGHTING
+Gliscor - B3 #075 - DIAMOND2 - FIGHTING
+Trapinch - B3 #076 - DIAMOND1 - FIGHTING
+Regirock - B3 #077 - DIAMOND2 - FIGHTING
+Bonsly - B3 #078 - DIAMOND3 - FIGHTING
+Riolu - B3 #079 - DIAMOND1 - FIGHTING
+Lucario - B3 #080 - DIAMOND3 - FIGHTING
+Mega Lucario ex - B3 #081 - DIAMOND4 - FIGHTING
+Croagunk - B3 #082 - DIAMOND1 - FIGHTING
+Toxicroak - B3 #083 - DIAMOND2 - FIGHTING
+Gallade - B3 #084 - DIAMOND3 - FIGHTING
+Throh - B3 #085 - DIAMOND1 - FIGHTING
+Sawk - B3 #086 - DIAMOND1 - FIGHTING
+Dwebble - B3 #087 - DIAMOND1 - FIGHTING
+Crustle ex - B3 #088 - DIAMOND4 - FIGHTING
+Meloetta - B3 #089 - DIAMOND3 - FIGHTING
+Stufful - B3 #090 - DIAMOND1 - FIGHTING
+Bewear - B3 #091 - DIAMOND2 - FIGHTING
+Rolycoly - B3 #092 - DIAMOND1 - FIGHTING
+Carkol - B3 #093 - DIAMOND2 - FIGHTING
+Coalossal - B3 #094 - DIAMOND3 - FIGHTING
+Silicobra - B3 #095 - DIAMOND1 - FIGHTING
+Sandaconda - B3 #096 - DIAMOND2 - FIGHTING
+Kubfu - B3 #097 - DIAMOND1 - FIGHTING
+Zubat - B3 #098 - DIAMOND1 - DARKNESS
+Golbat - B3 #099 - DIAMOND2 - DARKNESS
+Crobat - B3 #100 - DIAMOND3 - DARKNESS
+Koffing - B3 #101 - DIAMOND1 - DARKNESS
+Weezing - B3 #102 - DIAMOND2 - DARKNESS
+Qwilfish - B3 #103 - DIAMOND1 - DARKNESS
+Seviper - B3 #104 - DIAMOND1 - DARKNESS
+Zorua - B3 #105 - DIAMOND1 - DARKNESS
+Zoroark ex - B3 #106 - DIAMOND4 - DARKNESS
+Foongus - B3 #107 - DIAMOND1 - DARKNESS
+Amoonguss - B3 #108 - DIAMOND2 - DARKNESS
+Vullaby - B3 #109 - DIAMOND1 - DARKNESS
+Mandibuzz - B3 #110 - DIAMOND2 - DARKNESS
+Inkay - B3 #111 - DIAMOND1 - DARKNESS
+Malamar - B3 #112 - DIAMOND2 - DARKNESS
+Single Strike Urshifu - B3 #113 - DIAMOND3 - DARKNESS
+Zarude - B3 #114 - DIAMOND3 - DARKNESS
+Bombirdier - B3 #115 - DIAMOND3 - DARKNESS
+Registeel - B3 #116 - DIAMOND2 - METAL
+Bronzor - B3 #117 - DIAMOND1 - METAL
+Bronzong - B3 #118 - DIAMOND2 - METAL
+Pawniard - B3 #119 - DIAMOND1 - METAL
+Bisharp - B3 #120 - DIAMOND2 - METAL
+Magearna - B3 #121 - DIAMOND2 - METAL
+Meltan - B3 #122 - DIAMOND1 - METAL
+Melmetal - B3 #123 - DIAMOND3 - METAL
+Corviknight ex - B3 #124 - DIAMOND4 - METAL
+Vibrava - B3 #125 - DIAMOND2 - DRAGON
+Flygon ex - B3 #126 - DIAMOND4 - DRAGON
+Chansey - B3 #127 - DIAMOND1 - COLORLESS
+Blissey - B3 #128 - DIAMOND3 - COLORLESS
+Eevee - B3 #129 - DIAMOND1 - COLORLESS
+Dunsparce - B3 #130 - DIAMOND3 - COLORLESS
+Teddiursa - B3 #131 - DIAMOND1 - COLORLESS
+Ursaring - B3 #132 - DIAMOND2 - COLORLESS
+Castform - B3 #133 - DIAMOND1 - COLORLESS
+Regigigas - B3 #134 - DIAMOND3 - COLORLESS
+Patrat - B3 #135 - DIAMOND1 - COLORLESS
+Watchog - B3 #136 - DIAMOND1 - COLORLESS
+Lillipup - B3 #137 - DIAMOND1 - COLORLESS
+Herdier - B3 #138 - DIAMOND2 - COLORLESS
+Stoutland - B3 #139 - DIAMOND3 - COLORLESS
+Audino - B3 #140 - DIAMOND2 - COLORLESS
+Mega Audino ex - B3 #141 - DIAMOND4 - COLORLESS
+Minccino - B3 #142 - DIAMOND1 - COLORLESS
+Cinccino - B3 #143 - DIAMOND1 - COLORLESS
+Furfrou - B3 #144 - DIAMOND2 - COLORLESS
+Rookidee - B3 #145 - DIAMOND1 - COLORLESS
+Corvisquire - B3 #146 - DIAMOND2 - COLORLESS
+Field Blower - B3 #147 - DIAMOND2 - ITEM
+Lucky Egg - B3 #148 - DIAMOND2 - TOOL
+Korrina - B3 #149 - DIAMOND2 - SUPPORTER
+Cabbie - B3 #150 - DIAMOND2 - SUPPORTER
+Cheren - B3 #151 - DIAMOND2 - SUPPORTER
+Parasol Lady - B3 #152 - DIAMOND2 - SUPPORTER
+Fragrant Forest - B3 #153 - DIAMOND2 - STADIUM
+Arena of Antiquity - B3 #154 - DIAMOND2 - STADIUM
+Bounded Field - B3 #155 - DIAMOND2 - STADIUM
+Treecko - B3 #156 - STAR1 - GRASS
+Grovyle - B3 #157 - STAR1 - GRASS
+Shroomish - B3 #158 - STAR1 - GRASS
+Budew - B3 #159 - STAR1 - GRASS
+Flapple - B3 #160 - STAR1 - GRASS
+Tepig - B3 #161 - STAR1 - FIRE
+Quagsire - B3 #162 - STAR1 - WATER
+Zekrom - B3 #163 - STAR1 - LIGHTNING
+Morpeko - B3 #164 - STAR1 - LIGHTNING
+Meowstic - B3 #165 - STAR1 - PSYCHIC
+Oricorio - B3 #166 - STAR1 - PSYCHIC
+Brambleghast - B3 #167 - STAR1 - PSYCHIC
+Bonsly - B3 #168 - STAR1 - FIGHTING
+Riolu - B3 #169 - STAR1 - FIGHTING
+Meloetta - B3 #170 - STAR1 - FIGHTING
+Carkol - B3 #171 - STAR1 - FIGHTING
+Kubfu - B3 #172 - STAR1 - FIGHTING
+Seviper - B3 #173 - STAR1 - DARKNESS
+Zorua - B3 #174 - STAR1 - DARKNESS
+Malamar - B3 #175 - STAR1 - DARKNESS
+Bisharp - B3 #176 - STAR1 - METAL
+Meltan - B3 #177 - STAR1 - METAL
+Castform - B3 #178 - STAR1 - COLORLESS
+Cinccino - B3 #179 - STAR1 - COLORLESS
+Mega Sceptile ex - B3 #180 - STAR2 - GRASS
+Mega Camerupt ex - B3 #181 - STAR2 - FIRE
+Vaporeon ex - B3 #182 - STAR2 - WATER
+Magnezone ex - B3 #183 - STAR2 - LIGHTNING
+Mega Lucario ex - B3 #184 - STAR2 - FIGHTING
+Crustle ex - B3 #185 - STAR2 - FIGHTING
+Zoroark ex - B3 #186 - STAR2 - DARKNESS
+Corviknight ex - B3 #187 - STAR2 - METAL
+Flygon ex - B3 #188 - STAR2 - DRAGON
+Mega Audino ex - B3 #189 - STAR2 - COLORLESS
+Korrina - B3 #190 - STAR2 - SUPPORTER
+Cabbie - B3 #191 - STAR2 - SUPPORTER
+Cheren - B3 #192 - STAR2 - SUPPORTER
+Parasol Lady - B3 #193 - STAR2 - SUPPORTER
+Mega Sceptile ex - B3 #194 - STAR2 - GRASS
+Mega Camerupt ex - B3 #195 - STAR2 - FIRE
+Vaporeon ex - B3 #196 - STAR2 - WATER
+Magnezone ex - B3 #197 - STAR2 - LIGHTNING
+Crustle ex - B3 #198 - STAR2 - FIGHTING
+Zoroark ex - B3 #199 - STAR2 - DARKNESS
+Corviknight ex - B3 #200 - STAR2 - METAL
+Flygon ex - B3 #201 - STAR2 - DRAGON
+Mega Audino ex - B3 #202 - STAR2 - COLORLESS
+Sobble - B3 #203 - STAR3 - WATER
+Mega Lucario ex - B3 #204 - STAR3 - FIGHTING
+Cottonee - B3 #205 - SHINY1 - GRASS
+Torchic - B3 #206 - SHINY1 - FIRE
+Combusken - B3 #207 - SHINY1 - FIRE
+Blaziken - B3 #208 - SHINY1 - FIRE
+Frillish - B3 #209 - SHINY1 - WATER
+Jellicent - B3 #210 - SHINY1 - WATER
+Onix - B3 #211 - SHINY1 - FIGHTING
+Zubat - B3 #212 - SHINY1 - DARKNESS
+Golbat - B3 #213 - SHINY1 - DARKNESS
+Crobat - B3 #214 - SHINY1 - DARKNESS
+Grimer - B3 #215 - SHINY1 - DARKNESS
+Muk - B3 #216 - SHINY1 - DARKNESS
+Absol - B3 #217 - SHINY1 - DARKNESS
+Skrelp - B3 #218 - SHINY1 - DARKNESS
+Steelix - B3 #219 - SHINY1 - METAL
+Chansey - B3 #220 - SHINY1 - COLORLESS
+Blissey - B3 #221 - SHINY1 - COLORLESS
+Porygon - B3 #222 - SHINY1 - COLORLESS
+Porygon2 - B3 #223 - SHINY1 - COLORLESS
+Porygon-Z - B3 #224 - SHINY1 - COLORLESS
+Whimsicott ex - B3 #225 - SHINY2 - GRASS
+Mega Blaziken ex - B3 #226 - SHINY2 - FIRE
+Greninja ex - B3 #227 - SHINY2 - WATER
+Jolteon ex - B3 #228 - SHINY2 - LIGHTNING
+Hitmonchan ex - B3 #229 - SHINY2 - FIGHTING
+Mega Absol ex - B3 #230 - SHINY2 - DARKNESS
+Dragalge ex - B3 #231 - SHINY2 - DARKNESS
+Mega Steelix ex - B3 #232 - SHINY2 - METAL
+Celebi - B3 #233 - CROWN - GRASS
+Bombirdier - B3 #234 - CROWN - DARKNESS
