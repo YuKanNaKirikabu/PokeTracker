@@ -16,6 +16,7 @@ const POKEDEX_TYPE_CACHE = new Map();
 const GAME_POKEDEX_CACHE = new Map();
 const POKEDEX_CARD_CACHE = new Map();
 const GAME_POKEDEX_LOADING = new Map();
+let GAME_POKEDEX_CATALOG_LOADING = null;
 let POKEDEX_NAMES_LOADING = null;
 
 const POKEDEX_VALIDATION_ANCHORS = [
@@ -225,31 +226,75 @@ function parseGamePokedexList(raw, game) {
   });
 }
 
+async function loadGamePokedexCatalog() {
+  if (!GAME_POKEDEX_CATALOG_LOADING) {
+    GAME_POKEDEX_CATALOG_LOADING = (async () => {
+      const response = await fetch("Lists/GamePokedexes/catalog.json.gz.b64");
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const encoded = (await response.text()).trim();
+      const binary = atob(encoded);
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      if (typeof DecompressionStream === "undefined") {
+        throw new Error("This browser does not support gzip decompression");
+      }
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+      return new Response(stream).json();
+    })().catch((error) => {
+      GAME_POKEDEX_CATALOG_LOADING = null;
+      throw error;
+    });
+  }
+  return GAME_POKEDEX_CATALOG_LOADING;
+}
+
+async function fetchGamePokedexEntries(game) {
+  if (game.dataKey) {
+    const catalog = await loadGamePokedexCatalog();
+    const rows = catalog[game.dataKey];
+    if (!Array.isArray(rows)) throw new Error(`Missing game data: ${game.dataKey}`);
+    return rows.map((row, index) => {
+      const number = Number(row[0]);
+      const nameEn = String(row[1] || "").trim();
+      return {
+        number: Number.isFinite(number) ? number : index + 1,
+        numberStr: String(Number.isFinite(number) ? number : index + 1).padStart(3, "0"),
+        nameEn,
+        nameRu: null,
+        types: parsePokedexTypes(row[2]),
+      };
+    });
+  }
+
+  const response = await fetch(game.listPath);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return parseGamePokedexList(await response.text(), game);
+}
+
+function dedupeGamePokedexEntries(list) {
+  const seen = new Set();
+  return list.filter((entry) => {
+    const key = normalizePokemonName(entry.nameEn);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 export async function loadGamePokedexes() {
-  const tasks = GAME_POKEDEXES.map(async (game) => {
+  await Promise.all(GAME_POKEDEXES.map(async (game) => {
     if (!game.listPath) {
       GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
       return;
     }
     try {
-      const response = await fetch(game.listPath);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const raw = await response.text();
-      const seen = new Set();
-      const list = parseGamePokedexList(raw, game).filter((entry) => {
-        const key = normalizePokemonName(entry.nameEn);
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
+      const list = dedupeGamePokedexEntries(await fetchGamePokedexEntries(game));
       const byName = new Set(list.map((entry) => normalizePokemonName(entry.nameEn)));
       GAME_POKEDEX_CACHE.set(game.id, { list, byName, loaded: true });
     } catch (err) {
       console.warn(`Game pokedex load failed for ${game.id}:`, err.message);
       GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
     }
-  });
-  await Promise.all(tasks);
+  }));
 }
 
 export async function ensureGamePokedexLoaded(gameId) {
@@ -261,13 +306,7 @@ export async function ensureGamePokedexLoaded(gameId) {
   }
 
   const game = getGamePokedexConfig(gameId);
-  if (!game) {
-    const empty = { list: [], byName: new Set(), loaded: true };
-    GAME_POKEDEX_CACHE.set(gameId, empty);
-    return empty;
-  }
-
-  if (!game.listPath) {
+  if (!game || !game.listPath) {
     const empty = { list: [], byName: new Set(), loaded: true };
     GAME_POKEDEX_CACHE.set(gameId, empty);
     return empty;
@@ -275,16 +314,7 @@ export async function ensureGamePokedexLoaded(gameId) {
 
   const loader = (async () => {
     try {
-      const response = await fetch(game.listPath);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const raw = await response.text();
-      const seen = new Set();
-      const list = parsePokedexText(raw, 3).filter((entry) => {
-        const key = normalizePokemonName(entry.nameEn);
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
+      const list = dedupeGamePokedexEntries(await fetchGamePokedexEntries(game));
       const byName = new Set(list.map((entry) => normalizePokemonName(entry.nameEn)));
       const data = { list, byName, loaded: true };
       GAME_POKEDEX_CACHE.set(gameId, data);
