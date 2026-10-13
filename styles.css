@@ -1941,11 +1941,11 @@ body.theme-light .game-icon {
   }
 }
 
-/* Game Pokédex catalogue cards and their per-browser favorites. */
+
+
+/* Game Pokédex catalogue favorites */
 .game-pokedex-choice-card {
   position: relative;
-  padding: 0;
-  overflow: hidden;
 }
 
 .game-pokedex-choice-main {
@@ -1955,8 +1955,6 @@ body.theme-light .game-icon {
   align-items: stretch;
   gap: 10px;
   width: 100%;
-  min-height: 260px;
-  padding: 20px;
   color: var(--text);
   text-decoration: none;
 }
@@ -1966,18 +1964,7 @@ body.theme-light .game-icon {
 }
 
 .game-pokedex-choice-main .choice-title {
-  padding-right: 30px;
-}
-
-.game-pokedex-code-logo {
-  letter-spacing: 1px;
-}
-
-.game-pokedex-code {
-  margin-top: auto;
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 0.3px;
+  padding-right: 28px;
 }
 
 .game-pokedex-favorite {
@@ -1987,26 +1974,37 @@ body.theme-light .game-icon {
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--panel);
-  color: var(--text);
-  font-size: 30px;
-  line-height: 1;
+  width: 34px;
+  height: 34px;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
   cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  transition: transform 0.15s ease, color 0.15s ease;
 }
 
 .game-pokedex-favorite:hover {
-  transform: scale(1.06);
-  background: var(--panel-light);
+  transform: scale(1.1);
+}
+
+.game-pokedex-star {
+  display: block;
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linejoin: round;
+  transition: fill 0.15s ease, color 0.15s ease;
 }
 
 .game-pokedex-favorite.is-favorite {
   color: #ffd54a;
-  border-color: rgba(255, 213, 74, 0.4);
 }
 
+.game-pokedex-favorite.is-favorite .game-pokedex-star {
+  fill: #ffd54a;
+  stroke: #ffd54a;
+}
