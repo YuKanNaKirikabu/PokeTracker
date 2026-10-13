@@ -23,29 +23,33 @@ export function formatCardCode(card) {
   return `${base} #${formatCardNumber(card.number)}`;
 }
 
+function getTypeToken(value) {
+  if (typeof value !== 'string') return '';
+  const cleaned = value.split(/[?#]/, 1)[0].split('/').pop() || value;
+  return decodeURIComponent(cleaned).replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim().toUpperCase();
+}
+
 export function getCardCategory(card) {
-  const type = String(card.type || "").trim().toUpperCase();
-  if (ENERGY_TYPES.has(type)) return "POKEMON";
+  const raw = String(card.type || '').trim();
+  const type = getTypeToken(raw);
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return ENERGY_TYPES.has(type) ? 'POKEMON' : 'OTHER';
+  if (ENERGY_TYPES.has(type)) return 'POKEMON';
   if (TRAINER_TYPES.includes(type)) return type;
-  return "OTHER";
+  return type || 'OTHER';
 }
 
 export function renderCardTypeBadge(card) {
-  const type = String(card.type || "").trim().toUpperCase();
+  const raw = String(card.type || '').trim();
+  const type = getTypeToken(raw) || 'UNKNOWN';
+  if (raw.startsWith('http://') || raw.startsWith('https://')) return '<span class="icon-badge type-badge"><img src="' + raw + '" alt="' + type + '" /></span>';
   if (ENERGY_TYPES.has(type)) {
     const typeIcon = TYPE_ICONS[type] || TYPE_ICONS.COLORLESS;
-    return `<span class="icon-badge type-badge"><img src="${typeIcon}" alt="${type}" /></span>`;
+    return '<span class="icon-badge type-badge"><img src="' + typeIcon + '" alt="' + type + '" /></span>';
   }
-  return `<span class="type-text-badge">${type || "UNKNOWN"}</span>`;
+  return '<span class="type-text-badge">' + type + '</span>';
 }
 
-function getFallbackCardImage(url) {
-  if (!url) return "";
-  if (url.includes("/Images/Packs/MEGA SHINE/")) {
-    return url.replace("/Images/Packs/MEGA SHINE/", "/Images/Packs/Mega Shine/");
-  }
-  return "";
-}
+function getFallbackCardImage() { return ''; }
 
 function syncCardsSaveButton() {
   const button = document.getElementById("cardsSaveBtn");
@@ -107,7 +111,7 @@ export function renderCardGrid(cards, options = {}) {
           const heartFill = wished ? `url(#${gradientId})` : "none";
           const heartStroke = wished ? "rgba(255, 120, 160, 0.95)" : "rgba(255, 255, 255, 0.75)";
           const displayCode = formatCardCode(card);
-          const rarityIcon = RARITY_ICONS[card.rarity] || "https://storage.yandexcloud.net/poketracker/Images/Rarity/DIAMOND1.png";
+          const rarityIcon = String(card.rarity || "").startsWith("http") ? card.rarity : (RARITY_ICONS[card.rarity] || "https://storage.yandexcloud.net/poketracker/Images/Rarity/DIAMOND1.webp");
           const fallbackImage = getFallbackCardImage(card.image);
           const fallbackAttr = fallbackImage ? ` data-fallback-src="${fallbackImage}"` : "";
           const wishlistHtml = showWishlist && !owned

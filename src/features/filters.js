@@ -14,6 +14,22 @@ import {
     getCardCategory,
 } from "./cards.js";
 
+function iconToken(value) {
+  const raw = String(value || '');
+  const cleaned = raw.split(/[?#]/, 1)[0].split('/').pop() || raw;
+  try { return decodeURIComponent(cleaned).replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim().toUpperCase(); }
+  catch { return cleaned.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim().toUpperCase(); }
+}
+function availableRarities() {
+  const values = [...new Set((state.data?.cards || []).map((card) => card.rarity).filter(Boolean))];
+  return values.length ? values.sort((a, b) => { const ai = RARITIES.indexOf(iconToken(a)), bi = RARITIES.indexOf(iconToken(b)); return (ai < 0 ? 999 : ai) - (bi < 0 ? 999 : bi); }) : RARITIES;
+}
+function availableTypes() {
+  const values = [...new Set((state.data?.cards || []).filter((card) => getCardCategory(card) === 'POKEMON').map((card) => card.type).filter(Boolean))];
+  return values.length ? values : TYPES;
+}
+function iconUrl(value, fallbackMap) { return /^https?:\/\//i.test(String(value || '')) ? value : (fallbackMap[value] || ''); }
+
 export function applyFilters(cards) {
   return cards
     .filter((card) => {
@@ -21,7 +37,13 @@ export function applyFilters(cards) {
         if (card.pack !== state.filters.pack) return false;
       }
       if (state.filters.pack === "ALL" && state.filters.packFilters && state.filters.packFilters.size) {
-        if (!state.filters.packFilters.has(card.pack)) return false;
+        const matches = [...state.filters.packFilters].some((key) => {
+          const [packId, subpackId] = key.split("::");
+          if (card.pack !== packId) return false;
+          if (!subpackId) return true;
+          return Array.isArray(card.subpacks) && card.subpacks.some((name) => String(name).toLowerCase() === subpackId.toLowerCase());
+        });
+        if (!matches) return false;
       }
       if (state.filters.query) {
         const q = state.filters.query.toLowerCase();
@@ -64,22 +86,17 @@ export function applyFilters(cards) {
       if (state.filters.sort === "name") base = a.name.localeCompare(b.name, "ru") * dir;
       else if (state.filters.sort === "rarity") {
         const order = RARITIES;
-        const aIndex = order.indexOf(a.rarity);
-        const bIndex = order.indexOf(b.rarity);
+        const aIndex = order.indexOf(iconToken(a.rarity));
+        const bIndex = order.indexOf(iconToken(b.rarity));
         base = (aIndex - bIndex) * dir;
       } else {
         base = (a.number - b.number) * dir;
       }
-      const deluxeId = "DELUXE PACK EX";
-      if (a.name === b.name && a.rarity === b.rarity && a.pack !== b.pack) {
-        if (a.pack === deluxeId) return 1;
-        if (b.pack === deluxeId) return -1;
-      }
       if (base !== 0) return base;
       if (state.filters.sort === "rarity") {
         const order = RARITIES;
-        const aIndex = order.indexOf(a.rarity);
-        const bIndex = order.indexOf(b.rarity);
+        const aIndex = order.indexOf(iconToken(a.rarity));
+        const bIndex = order.indexOf(iconToken(b.rarity));
         return (aIndex - bIndex) * dir;
       }
       return (a.number - b.number) * dir;
@@ -165,10 +182,10 @@ export function renderFilters(extraGroups = "", options = {}) {
       <div class="filter-group">
         <h4>${t("filters.rarity")}</h4>
         <div class="filter-pills" id="rarityPills">
-          ${RARITIES.map(
+          ${availableRarities().map(
             (rarity) => `
               <button class="icon-pill ${state.filters.rarities.has(rarity) ? "active" : ""}" data-rarity="${rarity}">
-                <img src="${RARITY_ICONS[rarity]}" alt="${rarity}" />
+                <img src="${iconUrl(rarity, RARITY_ICONS)}" alt="${iconToken(rarity)}" />
               </button>
             `
           ).join(" ")}
@@ -177,10 +194,10 @@ export function renderFilters(extraGroups = "", options = {}) {
       <div class="filter-group">
         <h4>${t("filters.type")}</h4>
         <div class="filter-pills" id="typePills">
-          ${TYPES.map(
+          ${availableTypes().map(
             (type) => `
               <button class="icon-pill ${state.filters.types.has(type) ? "active" : ""}" data-type="${type}">
-                <img src="${TYPE_ICONS[type]}" alt="${type}" />
+                <img src="${iconUrl(type, TYPE_ICONS)}" alt="${iconToken(type)}" />
               </button>
             `
           ).join(" ")}
@@ -233,7 +250,15 @@ function resetAllPackFilters() {
 }
 
 export function renderAllPackGroup() {
-  const packs = state.data?.packs || [];
+  const packs = (state.data?.packs || []).flatMap((pack) => {
+    if (pack.kind === "collection") {
+      return (pack.subpacks || []).map((subpack) => ({
+        id: `${pack.id}::${subpack.id || subpack.display}`,
+        display: `${pack.display || pack.id} — ${subpack.display || subpack.id}`,
+      }));
+    }
+    return [pack];
+  });
   if (!packs.length) return "";
   const isOpen = !!state.ui.packFiltersOpen;
   return `

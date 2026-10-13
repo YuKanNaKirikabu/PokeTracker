@@ -1,28 +1,12 @@
-import {
-    CELESTIAL_GUARDIANS_ID,
-    CELESTIAL_GUARDIANS_SUBPACKS,
-    GENETIC_APEX_ID,
-    GENETIC_APEX_SUBPACKS,
-    MEGA_RISING_ID,
-    MEGA_RISING_SUBPACKS,
-    PACKS_ORDER,
-    SPACE_TIME_SMACKDOWN_ID,
-    SPACE_TIME_SMACKDOWN_SUBPACKS,
-    WISDOM_SEA_SKY_ID,
-    WISDOM_SEA_SKY_SUBPACKS,
-} from "../config/packs.js";
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
 import { saveDataToFile } from "../core/storage.js";
+import { getPack, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
 
 function renderCardsSaveButton() {
-  return `
-    <button class="game-pokedex-save-btn left" id="cardsSaveBtn" type="button" disabled>
-      ${t("gamePokedex.save")}
-    </button>
-  `;
+  return `<button class="game-pokedex-save-btn left" id="cardsSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button>`;
 }
 
 function setCardsDirty(isDirty) {
@@ -43,215 +27,57 @@ function attachCardsSaveButton() {
   setCardsDirty(Boolean(state.ui.cardsDirty));
 }
 
-function normalizeMegaShineLogoUrl(url) {
-  if (!url) return "";
-  return String(url)
-    .replace("/PacksLogos/Mega-Shine.webp", "/PacksLogos/Mega%20Shine.png")
-    .replace("/PacksLogos/Mega Shine.png", "/PacksLogos/Mega%20Shine.png");
-}
-
-function renderPackLogoImage(logoUrl, altText) {
-  const primaryLogo = normalizeMegaShineLogoUrl(logoUrl);
-  return `<img src="${primaryLogo}" alt="${altText}" class="pack-logo" loading="lazy" decoding="async" />`;
-}
-
-function normalizeGeneticSubpack(raw) {
-  if (!raw) return "all";
-  const value = raw.toLowerCase();
-  if (value === "charizard" || value === "mewtwo" || value === "pikachu") return value;
-  return "all";
-}
-
-function renderGeneticApexGroup(activeKey) {
+function renderSubpackSelector(pack, activeSubpack) {
+  const children = getSubpacks(pack);
+  if (!children.length) return "";
+  const activeId = activeSubpack?.id || "all";
   return `
     <div class="filter-group">
-      <h4>Genetic Apex</h4>
-      <div class="toggle-group" id="geneticGroup">
-        ${GENETIC_APEX_SUBPACKS.map(
-          (sub) => `
-            <button class="toggle-btn ${activeKey === sub.key ? "active" : ""}" data-subpack="${sub.key}">${sub.key === "all" ? t("common.all") : sub.label}</button>
-          `
-        ).join("")}
+      <h4>${pack.display || pack.id}</h4>
+      <div class="toggle-group" id="subpackGroup">
+        <button class="toggle-btn ${activeId === "all" ? "active" : ""}" data-subpack="all" type="button">${t("common.all")}</button>
+        ${children.map((subpack) => {
+          const id = subpack.id || subpack.display;
+          return `<button class="toggle-btn ${id === activeId ? "active" : ""}" data-subpack="${id}" type="button">${subpack.display || id}</button>`;
+        }).join("")}
       </div>
     </div>
   `;
 }
 
-function attachGeneticApexEvents() {
-  const group = document.getElementById("geneticGroup");
+function attachSubpackEvents(pack, activeSubpack) {
+  const group = document.getElementById("subpackGroup");
   if (!group) return;
   group.addEventListener("click", (event) => {
-    const btn = event.target.closest(".toggle-btn");
-    if (!btn) return;
-    const subpack = btn.dataset.subpack;
-    const query = subpack && subpack !== "all" ? `?sub=${encodeURIComponent(subpack)}` : "";
-    location.hash = `#/pack/${encodeURIComponent(GENETIC_APEX_ID)}${query}`;
+    const button = event.target.closest("[data-subpack]");
+    if (!button) return;
+    const value = button.dataset.subpack;
+    const query = value && value !== "all" ? `?sub=${encodeURIComponent(value)}` : "";
+    location.hash = `#/pack/${encodeURIComponent(pack.id)}${query}`;
   });
 }
 
-function normalizeMegaRisingSubpack(raw) {
-  if (!raw) return "all";
-  const value = raw.toLowerCase();
-  if (value === "gyarados" || value === "blaziken" || value === "altaria") return value;
-  return "all";
+function renderPackMedia(pack, activeSubpack) {
+  if (pack.kind === "collection") {
+    const subpacks = getSubpacks(pack);
+    const selected = activeSubpack ? [activeSubpack] : subpacks;
+    return `<div class="pack-children-media">${selected.map((sub) => {
+      const url = sub.logo || sub.artwork || "";
+      return url ? `<img src="${url}" alt="${sub.display || sub.id}" class="pack-logo" loading="lazy" decoding="async" />` : "";
+    }).join("")}</div>`;
+  }
+  const url = pack.logo || pack.artwork || "";
+  return url ? `<img src="${url}" alt="${pack.display || pack.id}" class="pack-logo" loading="lazy" decoding="async" />` : "";
 }
 
-function renderMegaRisingGroup(activeKey) {
-  return `
-    <div class="filter-group">
-      <h4>Mega Rising</h4>
-      <div class="toggle-group" id="megaRisingGroup">
-        ${MEGA_RISING_SUBPACKS.map(
-          (sub) => `
-            <button class="toggle-btn ${activeKey === sub.key ? "active" : ""}" data-subpack="${sub.key}">${sub.key === "all" ? t("common.all") : sub.label}</button>
-          `
-        ).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function attachMegaRisingEvents() {
-  const group = document.getElementById("megaRisingGroup");
-  if (!group) return;
-  group.addEventListener("click", (event) => {
-    const btn = event.target.closest(".toggle-btn");
-    if (!btn) return;
-    const subpack = btn.dataset.subpack;
-    const query = subpack && subpack !== "all" ? `?sub=${encodeURIComponent(subpack)}` : "";
-    location.hash = `#/pack/${encodeURIComponent(MEGA_RISING_ID)}${query}`;
-  });
-}
-
-function normalizeWisdomSeaSkySubpack(raw) {
-  if (!raw) return "all";
-  const value = raw.toLowerCase();
-  if (value === "ho-oh" || value === "lugia") return value;
-  return "all";
-}
-
-function renderWisdomSeaSkyGroup(activeKey) {
-  return `
-    <div class="filter-group">
-      <h4>Wisdom of Sea and Sky</h4>
-      <div class="toggle-group" id="wisdomSeaSkyGroup">
-        ${WISDOM_SEA_SKY_SUBPACKS.map(
-          (sub) => `
-            <button class="toggle-btn ${activeKey === sub.key ? "active" : ""}" data-subpack="${sub.key}">${sub.key === "all" ? t("common.all") : sub.label}</button>
-          `
-        ).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function attachWisdomSeaSkyEvents() {
-  const group = document.getElementById("wisdomSeaSkyGroup");
-  if (!group) return;
-  group.addEventListener("click", (event) => {
-    const btn = event.target.closest(".toggle-btn");
-    if (!btn) return;
-    const subpack = btn.dataset.subpack;
-    const query = subpack && subpack !== "all" ? `?sub=${encodeURIComponent(subpack)}` : "";
-    location.hash = `#/pack/${encodeURIComponent(WISDOM_SEA_SKY_ID)}${query}`;
-  });
-}
-
-function normalizeCelestialGuardiansSubpack(raw) {
-  if (!raw) return "all";
-  const value = raw.toLowerCase();
-  if (value === "solgaleo" || value === "lunala") return value;
-  return "all";
-}
-
-function renderCelestialGuardiansGroup(activeKey) {
-  return `
-    <div class="filter-group">
-      <h4>Celestial Guardians</h4>
-      <div class="toggle-group" id="celestialGuardiansGroup">
-        ${CELESTIAL_GUARDIANS_SUBPACKS.map(
-          (sub) => `
-            <button class="toggle-btn ${activeKey === sub.key ? "active" : ""}" data-subpack="${sub.key}">${sub.key === "all" ? t("common.all") : sub.label}</button>
-          `
-        ).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function attachCelestialGuardiansEvents() {
-  const group = document.getElementById("celestialGuardiansGroup");
-  if (!group) return;
-  group.addEventListener("click", (event) => {
-    const btn = event.target.closest(".toggle-btn");
-    if (!btn) return;
-    const subpack = btn.dataset.subpack;
-    const query = subpack && subpack !== "all" ? `?sub=${encodeURIComponent(subpack)}` : "";
-    location.hash = `#/pack/${encodeURIComponent(CELESTIAL_GUARDIANS_ID)}${query}`;
-  });
-}
-
-function normalizeSpaceTimeSmackdownSubpack(raw) {
-  if (!raw) return "all";
-  const value = raw.toLowerCase();
-  if (value === "dialga" || value === "palkia") return value;
-  return "all";
-}
-
-function renderSpaceTimeSmackdownGroup(activeKey) {
-  return `
-    <div class="filter-group">
-      <h4>Space-Time Smackdown</h4>
-      <div class="toggle-group" id="spaceTimeSmackdownGroup">
-        ${SPACE_TIME_SMACKDOWN_SUBPACKS.map(
-          (sub) => `
-            <button class="toggle-btn ${activeKey === sub.key ? "active" : ""}" data-subpack="${sub.key}">${sub.key === "all" ? t("common.all") : sub.label}</button>
-          `
-        ).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function attachSpaceTimeSmackdownEvents() {
-  const group = document.getElementById("spaceTimeSmackdownGroup");
-  if (!group) return;
-  group.addEventListener("click", (event) => {
-    const btn = event.target.closest(".toggle-btn");
-    if (!btn) return;
-    const subpack = btn.dataset.subpack;
-    const query = subpack && subpack !== "all" ? `?sub=${encodeURIComponent(subpack)}` : "";
-    location.hash = `#/pack/${encodeURIComponent(SPACE_TIME_SMACKDOWN_ID)}${query}`;
-  });
-}
-
-function resolvePackLogo(pack) {
-  const orderItem = PACKS_ORDER.find((item) => item.id === pack?.id);
-  return (
-    pack?.logo
-    || pack?.artwork
-    || orderItem?.artwork
-    || "https://storage.yandexcloud.net/poketracker/Images/Artworks/ALL.png"
-  );
-}
-
-export function renderPack(packTitle, subpack) {
+export function renderPack(packTitle, subpackValue) {
   const app = document.getElementById("app");
   state.filters.pack = packTitle;
 
-  if (!state.data || !state.data.cards || state.data.cards.length === 0) {
-    app.innerHTML = `
-      <section class="placeholder">
-        <h1 class="section-title">${t("pack.loadErrorTitle")}</h1>
-        <p>${t("pack.loadErrorText")}</p>
-        <p style="color: var(--muted); font-size: 12px;">${t("pack.loadErrorHint")}</p>
-      </section>
-    `;
+  if (!state.data?.cards?.length) {
+    app.innerHTML = `<section class="placeholder"><h1 class="section-title">${t("pack.loadErrorTitle")}</h1><p>${t("pack.loadErrorText")}</p><p style="color:var(--muted);font-size:12px">${t("pack.loadErrorHint")}</p></section>`;
     return;
   }
-
-  const packName = packTitle === "ALL" ? "ALL" : packTitle;
-  const packData = state.data.packs.find((p) => p.id === packName);
 
   if (packTitle === "ALL") {
     const cards = applyFilters(state.data.cards);
@@ -259,204 +85,39 @@ export function renderPack(packTitle, subpack) {
     app.innerHTML = `
       <section class="pack-page">
         ${renderFilters(renderAllPackGroup(), { showApplyButton: true })}
-        <div>
-          <h1 class="section-title">${t("pack.allTitle")}</h1>
-          <p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p>
-          ${renderCardGrid(cards)}
-        </div>
-      </section>
-      ${renderCardsSaveButton()}
-    `;
+        <div><h1 class="section-title">${t("pack.allTitle")}</h1><p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p>${renderCardGrid(cards)}</div>
+      </section>${renderCardsSaveButton()}`;
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
     attachCardsSaveButton();
     return;
   }
 
-  if (packTitle === GENETIC_APEX_ID && packData) {
-    const activeSubpack = normalizeGeneticSubpack(subpack);
-    state.filters.geneticApex = activeSubpack;
-    const baseCards = state.data.cards.filter((card) => card.pack === packData.id);
-    const subpackName = GENETIC_APEX_SUBPACKS.find((sub) => sub.key === activeSubpack)?.name;
-    const visibleCards = activeSubpack === "all"
-      ? baseCards
-      : baseCards.filter((card) => card.subpacks?.includes(subpackName));
-    const cards = applyFilters(visibleCards);
-    const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
-    const logo = GENETIC_APEX_SUBPACKS.find((sub) => sub.key === activeSubpack)?.logo || packData.logo;
-    app.innerHTML = `
-      <section class="pack-page">
-        ${renderFilters(renderGeneticApexGroup(activeSubpack))}
-        <div>
-          <div class="pack-header">
-            ${renderPackLogoImage(logo, packData.display)}
-          </div>
-          <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
-        </div>
-      </section>
-      ${renderCardsSaveButton()}
-    `;
-    attachFilterEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack));
-    attachGeneticApexEvents();
-    attachCardEvents(() => renderPack(GENETIC_APEX_ID, activeSubpack), { rerenderOnToggle: false });
-    attachCardsSaveButton();
+  const pack = getPack(packTitle);
+  if (!pack) {
+    app.innerHTML = `<section class="placeholder"><h1 class="section-title">${packTitle}</h1><p>${t("pack.notAdded")}</p></section>`;
     return;
   }
 
-  if (packTitle === MEGA_RISING_ID && packData) {
-    const activeSubpack = normalizeMegaRisingSubpack(subpack);
-    state.filters.megaRising = activeSubpack;
-    const baseCards = state.data.cards.filter((card) => card.pack === packData.id);
-    const subpackName = MEGA_RISING_SUBPACKS.find((sub) => sub.key === activeSubpack)?.name;
-    const visibleCards = activeSubpack === "all"
-      ? baseCards
-      : baseCards.filter((card) => card.subpacks?.includes(subpackName));
-    const cards = applyFilters(visibleCards);
-    const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
-    const logo = MEGA_RISING_SUBPACKS.find((sub) => sub.key === activeSubpack)?.logo || packData.logo;
-    app.innerHTML = `
-      <section class="pack-page">
-        ${renderFilters(renderMegaRisingGroup(activeSubpack))}
-        <div>
-          <div class="pack-header">
-            ${renderPackLogoImage(logo, packData.display)}
-          </div>
-          <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
-        </div>
-      </section>
-      ${renderCardsSaveButton()}
-    `;
-    attachFilterEvents(() => renderPack(MEGA_RISING_ID, activeSubpack));
-    attachMegaRisingEvents();
-    attachCardEvents(() => renderPack(MEGA_RISING_ID, activeSubpack), { rerenderOnToggle: false });
-    attachCardsSaveButton();
-    return;
-  }
+  const activeSubpack = resolveSubpack(pack, subpackValue);
+  const visibleCards = filterPackCards(state.data.cards, pack, activeSubpack);
+  const cards = applyFilters(visibleCards);
+  const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
+  const selector = renderSubpackSelector(pack, activeSubpack);
+  const title = activeSubpack ? (activeSubpack.display || activeSubpack.id) : (pack.display || pack.id);
 
-  if (packTitle === WISDOM_SEA_SKY_ID && packData) {
-    const activeSubpack = normalizeWisdomSeaSkySubpack(subpack);
-    state.filters.wisdomSeaSky = activeSubpack;
-    const baseCards = state.data.cards.filter((card) => card.pack === packData.id);
-    const subpackName = WISDOM_SEA_SKY_SUBPACKS.find((sub) => sub.key === activeSubpack)?.name;
-    const visibleCards = activeSubpack === "all"
-      ? baseCards
-      : baseCards.filter((card) => card.subpacks?.includes(subpackName));
-    const cards = applyFilters(visibleCards);
-    const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
-    const logo = WISDOM_SEA_SKY_SUBPACKS.find((sub) => sub.key === activeSubpack)?.logo || packData.logo;
-    app.innerHTML = `
-      <section class="pack-page">
-        ${renderFilters(renderWisdomSeaSkyGroup(activeSubpack))}
-        <div>
-          <div class="pack-header">
-            ${renderPackLogoImage(logo, packData.display)}
-          </div>
-          <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
-        </div>
-      </section>
-      ${renderCardsSaveButton()}
-    `;
-    attachFilterEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack));
-    attachWisdomSeaSkyEvents();
-    attachCardEvents(() => renderPack(WISDOM_SEA_SKY_ID, activeSubpack), { rerenderOnToggle: false });
-    attachCardsSaveButton();
-    return;
-  }
-
-  if (packTitle === CELESTIAL_GUARDIANS_ID && packData) {
-    const activeSubpack = normalizeCelestialGuardiansSubpack(subpack);
-    state.filters.celestialGuardians = activeSubpack;
-    const baseCards = state.data.cards.filter((card) => card.pack === packData.id);
-    const subpackName = CELESTIAL_GUARDIANS_SUBPACKS.find((sub) => sub.key === activeSubpack)?.name;
-    const visibleCards = activeSubpack === "all"
-      ? baseCards
-      : baseCards.filter((card) => card.subpacks?.includes(subpackName));
-    const cards = applyFilters(visibleCards);
-    const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
-    const logo = CELESTIAL_GUARDIANS_SUBPACKS.find((sub) => sub.key === activeSubpack)?.logo || packData.logo;
-    app.innerHTML = `
-      <section class="pack-page">
-        ${renderFilters(renderCelestialGuardiansGroup(activeSubpack))}
-        <div>
-          <div class="pack-header">
-            ${renderPackLogoImage(logo, packData.display)}
-          </div>
-          <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
-        </div>
-      </section>
-      ${renderCardsSaveButton()}
-    `;
-    attachFilterEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack));
-    attachCelestialGuardiansEvents();
-    attachCardEvents(() => renderPack(CELESTIAL_GUARDIANS_ID, activeSubpack), { rerenderOnToggle: false });
-    attachCardsSaveButton();
-    return;
-  }
-
-  if (packTitle === SPACE_TIME_SMACKDOWN_ID && packData) {
-    const activeSubpack = normalizeSpaceTimeSmackdownSubpack(subpack);
-    state.filters.spaceTimeSmackdown = activeSubpack;
-    const baseCards = state.data.cards.filter((card) => card.pack === packData.id);
-    const subpackName = SPACE_TIME_SMACKDOWN_SUBPACKS.find((sub) => sub.key === activeSubpack)?.name;
-    const visibleCards = activeSubpack === "all"
-      ? baseCards
-      : baseCards.filter((card) => card.subpacks?.includes(subpackName));
-    const cards = applyFilters(visibleCards);
-    const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
-    const logo = SPACE_TIME_SMACKDOWN_SUBPACKS.find((sub) => sub.key === activeSubpack)?.logo || packData.logo;
-    app.innerHTML = `
-      <section class="pack-page">
-        ${renderFilters(renderSpaceTimeSmackdownGroup(activeSubpack))}
-        <div>
-          <div class="pack-header">
-            ${renderPackLogoImage(logo, packData.display)}
-          </div>
-          <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
-          ${renderCardGrid(cards)}
-        </div>
-      </section>
-      ${renderCardsSaveButton()}
-    `;
-    attachFilterEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack));
-    attachSpaceTimeSmackdownEvents();
-    attachCardEvents(() => renderPack(SPACE_TIME_SMACKDOWN_ID, activeSubpack), { rerenderOnToggle: false });
-    attachCardsSaveButton();
-    return;
-  }
-
-  if (!packData) {
-    app.innerHTML = `
-      <section class="placeholder">
-        <h1 class="section-title">${packTitle}</h1>
-        <p>${t("pack.notAdded")}</p>
-      </section>
-    `;
-    return;
-  }
-
-  const cards = applyFilters(state.data.cards.filter((card) => card.pack === packData.id));
-  const ownedCount = state.data.cards.filter(
-    (card) => card.pack === packData.id && state.owned.has(formatCardId(card))
-  ).length;
-  const logo = resolvePackLogo(packData);
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters()}
+      ${renderFilters(selector)}
       <div>
-        <div class="pack-header">
-          <img src="${logo}" alt="${packData.display}" class="pack-logo" loading="lazy" decoding="async" />
-        </div>
-        <p class="section-subtitle">${ownedCount}/${packData.count}</p>
+        <div class="pack-header">${renderPackMedia(pack, activeSubpack)}</div>
+        <h1 class="section-title">${title}</h1>
+        <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
         ${renderCardGrid(cards)}
       </div>
-    </section>
-    ${renderCardsSaveButton()}
-  `;
-  attachFilterEvents(() => renderPack(packTitle));
-  attachCardEvents(() => renderPack(packTitle), { rerenderOnToggle: false });
+    </section>${renderCardsSaveButton()}`;
+  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
+  attachSubpackEvents(pack, activeSubpack);
+  attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });
   attachCardsSaveButton();
 }

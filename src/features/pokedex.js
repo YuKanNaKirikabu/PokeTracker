@@ -436,13 +436,7 @@ export function renderPokemonTypeIcons(types, sizeClass = "") {
     .join("");
 }
 
-function getCardImageFallback(url) {
-  if (!url) return "";
-  if (url.includes("/Images/Packs/MEGA SHINE/")) {
-    return url.replace("/Images/Packs/MEGA SHINE/", "/Images/Packs/Mega Shine/");
-  }
-  return "";
-}
+function getCardImageFallback() { return ""; }
 
 export function renderPokedexCardItem(card) {
   const cardId = formatCardId(card);
