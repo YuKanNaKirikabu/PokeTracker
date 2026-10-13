@@ -67,21 +67,21 @@ export function renderNintPokedexesHome() {
         ${sortedGames.map((game) => {
           const isFavorite = favorites.includes(game.id);
           const logoClass = game.icons.length > 1 ? "choice-logo choice-logo--row" : "choice-logo";
-          const logos = game.icons.length
-            ? game.icons.map((icon) => `<img src="${icon.src}" alt="${icon.alt}" loading="lazy" decoding="async" />`).join("")
-            : `<span>${game.codeName}</span>`;
+          const logoClass = game.icons.length > 1 ? "choice-logo choice-logo--row" : "choice-logo";
+          const logos = game.icons
+            .map((icon) => `<img src="${icon.src}" alt="${icon.alt}" loading="lazy" decoding="async" />`)
+            .join("");
           const description = game.status === "coming-soon"
             ? "Coming 2027"
             : `${game.pokemonCount} Pokémon`;
           return `
             <div class="choice-card game-pokedex-choice-card">
               <a class="game-pokedex-choice-main" href="#/projects/pokedexes/${game.id}">
-                <div class="${logoClass} ${game.icons.length ? "" : "choice-logo--plain game-pokedex-code-logo"}">
+                <div class="${logoClass}">
                   ${logos}
                 </div>
                 <div class="choice-title">${game.title}</div>
                 <div class="choice-desc">${getGenerationLabel(game.generation)} · ${description}</div>
-                <div class="game-pokedex-code">Code: ${game.codeName}</div>
               </a>
               <button
                 class="game-pokedex-favorite ${isFavorite ? "is-favorite" : ""}"
@@ -90,7 +90,11 @@ export function renderNintPokedexesHome() {
                 aria-label="${isFavorite ? "Remove from favorites" : "Add to favorites"}"
                 aria-pressed="${isFavorite}"
                 title="${isFavorite ? "Remove from favorites" : "Add to favorites"}"
-              >${isFavorite ? "★" : "☆"}</button>
+              >
+                <svg viewBox="0 0 24 24" class="game-pokedex-star" aria-hidden="true">
+                  <path d="M12 2.8l2.82 5.72 6.31.92-4.56 4.44 1.08 6.28L12 17.2l-5.65 2.96 1.08-6.28-4.56-4.44 6.31-.92L12 2.8z"></path>
+                </svg>
+              </button>
             </div>
           `;
         }).join("")}
