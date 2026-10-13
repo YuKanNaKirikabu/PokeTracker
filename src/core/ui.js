@@ -49,7 +49,7 @@ export function setBrandMode(mode) {
 
   if (mode === "mobile") {
     logoImg.style.display = "block";
-    logoImg.src = "https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.png";
+    logoImg.src = "https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.webp";
     logoImg.alt = t("brand.mobileAlt");
     logoText.style.display = "none";
     link.setAttribute("href", "#/mobile");
@@ -58,7 +58,7 @@ export function setBrandMode(mode) {
   }
 
   logoImg.style.display = "block";
-  logoImg.src = "https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.png";
+  logoImg.src = "https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.webp";
   logoImg.alt = t("app.title");
   logoText.style.display = "none";
   link.setAttribute("href", "#/");

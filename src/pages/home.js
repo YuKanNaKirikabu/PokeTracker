@@ -11,7 +11,7 @@ export function renderHome() {
       <div class="choice-grid">
         <a class="choice-card" href="#/mobile">
           <div class="choice-logo">
-            <img src="https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.png" alt="${t("home.mobileTitle")}" loading="lazy" decoding="async" />
+            <img src="https://storage.yandexcloud.net/poketracker/Images/MainLogos/TCGM.webp" alt="${t("home.mobileTitle")}" loading="lazy" decoding="async" />
           </div>
           <div class="choice-title">${t("home.mobileTitle")}</div>
           <div class="choice-desc">${t("home.mobileDesc")}</div>
@@ -25,7 +25,7 @@ export function renderHome() {
         </a>
         <a class="choice-card" href="#/projects">
           <div class="choice-logo">
-            <img src="https://storage.yandexcloud.net/poketracker/Images/MainLogos/nintendo.png" alt="${t("home.projectsTitle")}" loading="lazy" decoding="async" />
+            <img src="https://storage.yandexcloud.net/poketracker/Images/MainLogos/nintendo.webp" alt="${t("home.projectsTitle")}" loading="lazy" decoding="async" />
           </div>
           <div class="choice-title">${t("home.projectsTitle")}</div>
           <div class="choice-desc">${t("home.projectsDesc")}</div>

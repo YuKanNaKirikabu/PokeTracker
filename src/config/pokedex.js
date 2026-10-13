@@ -8,8 +8,8 @@ export const GAME_POKEDEXES = [
     title: "Sword & Shield",
     listPath: "Lists/GamePokedexes//Sword & Shield/Pokedex.txt",
     icons: [
-      { src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Sword.jpg", alt: "Sword" },
-      { src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Shield.jpg", alt: "Shield" },
+      { src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Sword.webp", alt: "Sword" },
+      { src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Shield.webp", alt: "Shield" },
     ],
     pageSize: 30,
     fixedPages: 14,
@@ -18,13 +18,13 @@ export const GAME_POKEDEXES = [
     id: "legends-arceus",
     title: "Legends Arceus",
     listPath: "Lists/GamePokedexes//Legends Arceus/Pokedex.txt",
-    icons: [{ src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Arceus.jpg", alt: "Legends Arceus" }],
+    icons: [{ src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Arceus.webp", alt: "Legends Arceus" }],
   },
   {
     id: "legends-za",
     title: "Legends Z-A",
     listPath: "Lists/GamePokedexes//Legends Z-A/Pokedex.txt",
-    icons: [{ src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Z-A.jpg", alt: "Legends Z-A" }],
+    icons: [{ src: "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Z-A.webp", alt: "Legends Z-A" }],
   },
 ];
 

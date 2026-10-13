@@ -415,14 +415,14 @@ export function getPokedexIconPath(entry) {
   if (!entry?.number || !entry?.nameEn) return null;
   if (entry.number > 1025) return null;
   const safeName = sanitizePokemonFileName(entry.nameEn);
-  return `https://storage.yandexcloud.net/poketracker/Images/Pokedex/0001-1025 Original/${entry.numberStr}_${encodeURIComponent(safeName)}.png`;
+  return `https://storage.yandexcloud.net/poketracker/Images/Pokedex/0001-1025 Original/${entry.numberStr}_${encodeURIComponent(safeName)}.webp`;
 }
 
 export function getPokedexSpriteFallback(entry) {
   if (!entry?.number) return null;
   const number = Number(entry.number);
   if (!Number.isFinite(number) || number < 1) return null;
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png`;
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.webp`;
 }
 
 export function renderPokemonTypeIcons(types, sizeClass = "") {
@@ -443,7 +443,7 @@ export function renderPokedexCardItem(card) {
   const owned = state.owned.has(cardId);
   const wished = state.wishlist?.has(cardId) ?? false;
   const displayCode = formatCardCode(card);
-  const rarityIcon = RARITY_ICONS[card.rarity] || "https://storage.yandexcloud.net/poketracker/Images/Rarity/DIAMOND1.png";
+  const rarityIcon = RARITY_ICONS[card.rarity] || "https://storage.yandexcloud.net/poketracker/Images/Rarity/DIAMOND1.webp";
   const safeId = cardId.replace(/[^a-z0-9_-]/gi, "");
   const gradientId = `heartGradient-${safeId}`;
   const heartFill = wished ? `url(#${gradientId})` : "none";
