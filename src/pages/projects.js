@@ -2,6 +2,33 @@ import { GAME_POKEDEXES } from "../config/pokedex.js";
 import { t } from "../core/i18n.js";
 import { setBrandSubtitle, setPageTitle } from "../core/ui.js";
 
+const FAVORITE_GAME_POKEDEXES_KEY = "poketracker:favorite-game-pokedexes";
+
+function getFavoriteGamePokedexes() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(FAVORITE_GAME_POKEDEXES_KEY) || "[]");
+    return Array.isArray(saved) ? saved.filter((id) => GAME_POKEDEXES.some((game) => game.id === id)) : [];
+  } catch {
+    return [];
+  }
+}
+
+function getGenerationLabel(generation) {
+  const roman = { 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI", 7: "VII", 8: "VIII", 9: "IX", 10: "X" };
+  return `Generation ${roman[generation] || generation}`;
+}
+
+function sortGamePokedexes(favorites) {
+  return [...GAME_POKEDEXES].sort((a, b) => {
+    const aFavoriteIndex = favorites.indexOf(a.id);
+    const bFavoriteIndex = favorites.indexOf(b.id);
+    if (aFavoriteIndex !== -1 && bFavoriteIndex !== -1) return aFavoriteIndex - bFavoriteIndex;
+    if (aFavoriteIndex !== -1) return -1;
+    if (bFavoriteIndex !== -1) return 1;
+    return GAME_POKEDEXES.indexOf(a) - GAME_POKEDEXES.indexOf(b);
+  });
+}
+
 export function renderProjects() {
   const app = document.getElementById("app");
   setBrandSubtitle(t("projects.title"));
@@ -28,29 +55,67 @@ export function renderNintPokedexesHome() {
   const app = document.getElementById("app");
   setBrandSubtitle(t("projects.pokedexesTitle"));
   setPageTitle(t("projects.pokedexesTitle"));
+
+  const favorites = getFavoriteGamePokedexes();
+  const sortedGames = sortGamePokedexes(favorites);
+
   app.innerHTML = `
     <section>
       <h1 class="section-title">${t("projects.pokedexesTitle")}</h1>
       <p class="section-subtitle">${t("projects.pokedexesSubtitle")}</p>
-      <div class="choice-grid">
-        ${GAME_POKEDEXES.map((game) => {
+      <div class="choice-grid game-pokedex-choice-grid">
+        ${sortedGames.map((game) => {
+          const isFavorite = favorites.includes(game.id);
           const logoClass = game.icons.length > 1 ? "choice-logo choice-logo--row" : "choice-logo";
-          const logos = game.icons
-            .map(
-              (icon) => `<img src="${icon.src}" alt="${icon.alt}" loading="lazy" decoding="async" />`
-            )
-            .join("");
+          const logos = game.icons.length
+            ? game.icons.map((icon) => `<img src="${icon.src}" alt="${icon.alt}" loading="lazy" decoding="async" />`).join("")
+            : `<span>${game.codeName}</span>`;
+          const description = game.status === "coming-soon"
+            ? "Coming 2027"
+            : `${game.pokemonCount} Pokémon`;
           return `
-            <a class="choice-card" href="#/projects/pokedexes/${game.id}">
-              <div class="${logoClass}">
-                ${logos}
-              </div>
-              <div class="choice-title">${game.title}</div>
-              <div class="choice-desc">${t("projects.open")}</div>
-            </a>
+            <div class="choice-card game-pokedex-choice-card">
+              <a class="game-pokedex-choice-main" href="#/projects/pokedexes/${game.id}">
+                <div class="${logoClass} ${game.icons.length ? "" : "choice-logo--plain game-pokedex-code-logo"}">
+                  ${logos}
+                </div>
+                <div class="choice-title">${game.title}</div>
+                <div class="choice-desc">${getGenerationLabel(game.generation)} · ${description}</div>
+                <div class="game-pokedex-code">Code: ${game.codeName}</div>
+              </a>
+              <button
+                class="game-pokedex-favorite ${isFavorite ? "is-favorite" : ""}"
+                type="button"
+                data-favorite-game="${game.id}"
+                aria-label="${isFavorite ? "Remove from favorites" : "Add to favorites"}"
+                aria-pressed="${isFavorite}"
+                title="${isFavorite ? "Remove from favorites" : "Add to favorites"}"
+              >${isFavorite ? "★" : "☆"}</button>
+            </div>
           `;
         }).join("")}
       </div>
     </section>
   `;
+
+  app.querySelectorAll("[data-favorite-game]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const gameId = button.dataset.favoriteGame;
+      const nextFavorites = getFavoriteGamePokedexes();
+      const currentIndex = nextFavorites.indexOf(gameId);
+      if (currentIndex !== -1) {
+        nextFavorites.splice(currentIndex, 1);
+      } else {
+        nextFavorites.unshift(gameId);
+      }
+      try {
+        localStorage.setItem(FAVORITE_GAME_POKEDEXES_KEY, JSON.stringify(nextFavorites));
+      } catch (error) {
+        console.warn("Could not save favorite game Pokédexes:", error);
+      }
+      renderNintPokedexesHome();
+    });
+  });
 }
