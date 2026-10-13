@@ -96,7 +96,7 @@ export function normalizePokedexType(typeRaw) {
 export function parsePokedexTypes(typeRaw) {
   if (!typeRaw) return null;
   const parts = String(typeRaw)
-    .split(/[\/,&]/)
+    .split(/[\\/,&·•]/)
     .map((part) => part.trim())
     .filter(Boolean)
     .map(normalizePokedexType)
