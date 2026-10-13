@@ -30,7 +30,7 @@ function availableTypes() {
 }
 function iconUrl(value, fallbackMap) { return /^https?:\/\//i.test(String(value || '')) ? value : (fallbackMap[value] || ''); }
 function availableCardTypeFilters() {
-  const configured = availableCardTypeFilters().map((item) => ({ ...item, label: t(item.labelKey) }));
+  const configured = CARD_TYPE_FILTERS.map((item) => ({ ...item, label: t(item.labelKey) }));
   const known = new Set(configured.map((item) => item.id));
   const extra = [...new Set((state.data?.cards || []).map((card) => getCardCategory(card)))]
     .filter((id) => id && id !== 'POKEMON' && id !== 'OTHER' && !known.has(id))
