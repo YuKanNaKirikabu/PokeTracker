@@ -77,7 +77,7 @@ export function renderGamePokedex(gameId) {
   if (!config.listPath) {
     const roman = { 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI", 7: "VII", 8: "VIII", 9: "IX", 10: "X" };
     const generation = `Generation ${roman[config.generation] || config.generation}`;
-    const details = [generation, `Code: ${config.codeName}`];
+    const details = [generation];
     if (Number.isFinite(config.pokemonCount)) details.push(`${config.pokemonCount} Pokémon`);
     setBrandSubtitle(config.title);
     setPageTitle(config.title);
