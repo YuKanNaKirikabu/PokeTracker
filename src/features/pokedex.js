@@ -205,6 +205,26 @@ export function getGamePokedexConfig(gameId) {
   return GAME_POKEDEXES.find((game) => game.id === gameId);
 }
 
+function parseGamePokedexList(raw, game) {
+  const numbered = parsePokedexText(raw, 3);
+  if (numbered.length) return numbered;
+
+  const names = String(raw || "").split(/\\r?\\n/)
+    .map((name) => name.trim())
+    .filter(Boolean);
+  const startNumber = Number.isInteger(game?.startNumber) ? game.startNumber : 1;
+  return names.map((nameEn, index) => {
+    const number = startNumber + index;
+    return {
+      number,
+      numberStr: String(number).padStart(3, "0"),
+      nameEn,
+      nameRu: null,
+      types: null,
+    };
+  });
+}
+
 export async function loadGamePokedexes() {
   const tasks = GAME_POKEDEXES.map(async (game) => {
     if (!game.listPath) {
@@ -216,7 +236,7 @@ export async function loadGamePokedexes() {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const raw = await response.text();
       const seen = new Set();
-      const list = parsePokedexText(raw, 3).filter((entry) => {
+      const list = parseGamePokedexList(raw, game).filter((entry) => {
         const key = normalizePokemonName(entry.nameEn);
         if (!key || seen.has(key)) return false;
         seen.add(key);
