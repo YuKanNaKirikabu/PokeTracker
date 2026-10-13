@@ -67,7 +67,6 @@ export function renderNintPokedexesHome() {
         ${sortedGames.map((game) => {
           const isFavorite = favorites.includes(game.id);
           const logoClass = game.icons.length > 1 ? "choice-logo choice-logo--row" : "choice-logo";
-          const logoClass = game.icons.length > 1 ? "choice-logo choice-logo--row" : "choice-logo";
           const logos = game.icons
             .map((icon) => `<img src="${icon.src}" alt="${icon.alt}" loading="lazy" decoding="async" />`)
             .join("");
