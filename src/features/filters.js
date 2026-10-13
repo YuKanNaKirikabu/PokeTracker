@@ -29,6 +29,14 @@ function availableTypes() {
   return values.length ? values : TYPES;
 }
 function iconUrl(value, fallbackMap) { return /^https?:\/\//i.test(String(value || '')) ? value : (fallbackMap[value] || ''); }
+function availableCardTypeFilters() {
+  const configured = availableCardTypeFilters().map((item) => ({ ...item, label: t(item.labelKey) }));
+  const known = new Set(configured.map((item) => item.id));
+  const extra = [...new Set((state.data?.cards || []).map((card) => getCardCategory(card)))]
+    .filter((id) => id && id !== 'POKEMON' && id !== 'OTHER' && !known.has(id))
+    .map((id) => ({ id, label: id }));
+  return [...configured, ...extra];
+}
 
 export function applyFilters(cards) {
   return cards
@@ -174,7 +182,7 @@ export function renderFilters(extraGroups = "", options = {}) {
         <div class="toggle-group" id="cardTypeGroup">
           ${CARD_TYPE_FILTERS.map(
             (item) => `
-              <button class="toggle-btn ${state.filters.cardType === item.id ? "active" : ""}" data-card-type="${item.id}">${t(item.labelKey)}</button>
+              <button class="toggle-btn ${state.filters.cardType === item.id ? "active" : ""}" data-card-type="${item.id}">${item.label || t(item.labelKey)}</button>
             `
           ).join("")}
         </div>
