@@ -1,3 +1,4 @@
+
 import { RARITY_ICONS, TYPE_ICONS } from "../config/packs.js";
 import {
     GAME_POKEDEXES,
@@ -206,10 +207,6 @@ export function getGamePokedexConfig(gameId) {
 
 export async function loadGamePokedexes() {
   const tasks = GAME_POKEDEXES.map(async (game) => {
-    if (!game.listPath) {
-      GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
-      return;
-    }
     try {
       const response = await fetch(game.listPath);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -234,7 +231,7 @@ export async function ensureGamePokedexLoaded(gameId) {
   }
 
   const game = getGamePokedexConfig(gameId);
-  if (!game || !game.listPath) {
+  if (!game) {
     const empty = { list: [], byName: new Set(), loaded: true };
     GAME_POKEDEX_CACHE.set(gameId, empty);
     return empty;
@@ -382,26 +379,80 @@ export function getPokemonCardMatches(nameEn) {
   return matches;
 }
 
+const POKEDEX_NON_POKEMON_CARD_TYPES = new Set([
+  "ITEM",
+  "TOOL",
+  "POKEMON TOOL",
+  "SUPPORTER",
+  "STADIUM",
+  "TRAINER",
+  "ENERGY",
+  "POKEMON",
+  "OTHER",
+  "UNKNOWN",
+]);
+
+function extractPokedexCardType(typeRaw) {
+  if (typeRaw == null) return null;
+
+  let value = String(typeRaw).trim();
+  if (!value) return null;
+
+  // Convert a type-icon URL such as ".../Types/Psychic.webp" to "PSYCHIC".
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      const url = new URL(value);
+      value = decodeURIComponent(url.pathname.split("/").pop() || "");
+    } catch {
+      value = value.split(/[?#]/, 1)[0].split("/").pop() || "";
+    }
+    value = value.replace(/\.[^.]+$/, "");
+  }
+
+  value = value
+    .replace(/[-_]+/g, " ")
+    .trim()
+    .toUpperCase();
+
+  if (!value || POKEDEX_NON_POKEMON_CARD_TYPES.has(value)) return null;
+
+  const normalized = normalizePokedexType(value);
+  if (!normalized || POKEDEX_NON_POKEMON_CARD_TYPES.has(normalized)) return null;
+
+  // Ignore values that do not correspond to an icon in the project's type map.
+  if (!Object.prototype.hasOwnProperty.call(TYPE_ICONS, normalized)) return null;
+
+  return normalized;
+}
+
 export function getPokemonTypes(nameEn) {
   const key = normalizePokemonName(nameEn);
   if (POKEDEX_TYPE_CACHE.has(key)) return POKEDEX_TYPE_CACHE.get(key);
+
   const types = new Set();
+
   getPokemonCardMatches(nameEn).forEach((card) => {
-    if (card.type) {
-      const normalized = String(card.type).trim().toUpperCase();
-      if (!normalized) return;
-      if (["ITEM", "TOOL", "SUPPORTER"].includes(normalized)) return;
-      types.add(normalized);
-    }
+    const type = extractPokedexCardType(card.type);
+    if (type) types.add(type);
   });
-  let list = types.size ? [...types] : [];
+
+  let list = [...types];
+
+  // Use the Pokédex text list only if no usable type was found in card data.
   if (!list.length) {
     const lookup = POKEDEX_LOOKUP?.get(key);
     if (lookup?.types?.length) {
-      list = [...lookup.types];
+      lookup.types.forEach((typeRaw) => {
+        const type = extractPokedexCardType(typeRaw);
+        if (type) types.add(type);
+      });
+      list = [...types];
     }
   }
+
+  // Colorless is only the fallback when no valid type can be determined.
   if (!list.length) list = ["COLORLESS"];
+
   POKEDEX_TYPE_CACHE.set(key, list);
   return list;
 }
@@ -583,4 +634,3 @@ export function renderPokedexDetail(entry) {
     </div>
   `;
 }
-
