@@ -206,6 +206,10 @@ export function getGamePokedexConfig(gameId) {
 
 export async function loadGamePokedexes() {
   const tasks = GAME_POKEDEXES.map(async (game) => {
+    if (!game.listPath) {
+      GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
+      return;
+    }
     try {
       const response = await fetch(game.listPath);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -230,7 +234,7 @@ export async function ensureGamePokedexLoaded(gameId) {
   }
 
   const game = getGamePokedexConfig(gameId);
-  if (!game) {
+  if (!game || !game.listPath) {
     const empty = { list: [], byName: new Set(), loaded: true };
     GAME_POKEDEX_CACHE.set(gameId, empty);
     return empty;
