@@ -180,7 +180,7 @@ export function renderFilters(extraGroups = "", options = {}) {
       <div class="filter-group">
         <h4>${t("filters.cardType")}</h4>
         <div class="toggle-group" id="cardTypeGroup">
-          ${CARD_TYPE_FILTERS.map(
+          ${availableCardTypeFilters().map(
             (item) => `
               <button class="toggle-btn ${state.filters.cardType === item.id ? "active" : ""}" data-card-type="${item.id}">${item.label || t(item.labelKey)}</button>
             `
