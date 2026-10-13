@@ -207,11 +207,21 @@ export function getGamePokedexConfig(gameId) {
 
 export async function loadGamePokedexes() {
   const tasks = GAME_POKEDEXES.map(async (game) => {
+    if (!game.listPath) {
+      GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
+      return;
+    }
     try {
       const response = await fetch(game.listPath);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const raw = await response.text();
-      const list = parsePokedexText(raw, 3);
+      const seen = new Set();
+      const list = parsePokedexText(raw, 3).filter((entry) => {
+        const key = normalizePokemonName(entry.nameEn);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
       const byName = new Set(list.map((entry) => normalizePokemonName(entry.nameEn)));
       GAME_POKEDEX_CACHE.set(game.id, { list, byName, loaded: true });
     } catch (err) {
@@ -237,12 +247,24 @@ export async function ensureGamePokedexLoaded(gameId) {
     return empty;
   }
 
+  if (!game.listPath) {
+    const empty = { list: [], byName: new Set(), loaded: true };
+    GAME_POKEDEX_CACHE.set(gameId, empty);
+    return empty;
+  }
+
   const loader = (async () => {
     try {
       const response = await fetch(game.listPath);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const raw = await response.text();
-      const list = parsePokedexText(raw, 3);
+      const seen = new Set();
+      const list = parsePokedexText(raw, 3).filter((entry) => {
+        const key = normalizePokemonName(entry.nameEn);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
       const byName = new Set(list.map((entry) => normalizePokemonName(entry.nameEn)));
       const data = { list, byName, loaded: true };
       GAME_POKEDEX_CACHE.set(gameId, data);
