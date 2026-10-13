@@ -73,6 +73,26 @@ export function renderGamePokedex(gameId) {
     renderPlaceholder(t("projects.pokedexesTitle"), t("gamePokedex.empty"));
     return;
   }
+
+  if (!config.listPath) {
+    const roman = { 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI", 7: "VII", 8: "VIII", 9: "IX", 10: "X" };
+    const generation = `Generation ${roman[config.generation] || config.generation}`;
+    const details = [generation, `Code: ${config.codeName}`];
+    if (Number.isFinite(config.pokemonCount)) details.push(`${config.pokemonCount} Pokémon`);
+    setBrandSubtitle(config.title);
+    setPageTitle(config.title);
+    setPokedexSearchVisible(false);
+    app.innerHTML = `
+      <section class="placeholder game-pokedex-placeholder">
+        <h1 class="section-title">${config.title}</h1>
+        <p class="section-subtitle">${details.join(" · ")}</p>
+        <p>${config.status === "coming-soon" ? "Coming 2027" : t("gamePokedex.empty")}</p>
+        <a class="settings-btn secondary" href="#/projects/pokedexes">${t("gamePokedex.back")}</a>
+      </section>
+    `;
+    return;
+  }
+
   getPokedexList();
   const data = getGamePokedexData(gameId);
   const list = data.list || [];
