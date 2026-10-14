@@ -1,4 +1,5 @@
 import { GAME_POKEDEXES } from "../config/pokedex.js";
+import { loadGameDexCatalog } from "../features/pokedex.js";
 import { t } from "../core/i18n.js";
 import { setBrandSubtitle, setPageTitle } from "../core/ui.js";
 
@@ -51,11 +52,17 @@ export function renderProjects() {
   `;
 }
 
-export function renderNintPokedexesHome() {
+export async function renderNintPokedexesHome() {
   const app = document.getElementById("app");
   setBrandSubtitle(t("projects.pokedexesTitle"));
   setPageTitle(t("projects.pokedexesTitle"));
 
+  try {
+    if (!GAME_POKEDEXES.length) await loadGameDexCatalog();
+  } catch (error) {
+    app.innerHTML = `<section class="placeholder"><h1 class="section-title">${t("projects.pokedexesTitle")}</h1><p>Не удалось загрузить GameDex.json.</p><p>${String(error.message || error)}</p></section>`;
+    return;
+  }
   const favorites = getFavoriteGamePokedexes();
   const sortedGames = sortGamePokedexes(favorites);
 
