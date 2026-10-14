@@ -426,7 +426,16 @@ export const GAME_POKEDEXES = [
     "status": "ready",
     "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
     "dataKey": "Red & Blue",
-    "icons": []
+    "icons": [
+      {
+        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Red.webp",
+        "alt": "Red"
+      },
+      {
+        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Blue.webp",
+        "alt": "Blue"
+      }
+    ]
   }
 ];
 
