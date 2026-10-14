@@ -41,7 +41,7 @@ export function renderProjects() {
       <div class="choice-grid">
         <a class="choice-card" href="#/projects/pokedexes">
           <div class="choice-logo choice-logo--row">
-            <img src="https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Yellow.webp" alt="Shield" loading="lazy" decoding="async" />
+            <img src="https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Yellow.webp" alt="Yellow" loading="lazy" decoding="async" />
           </div>
           <div class="choice-title">${t("projects.nintTitle")}</div>
           <div class="choice-desc">${t("projects.nintDesc")}</div>
