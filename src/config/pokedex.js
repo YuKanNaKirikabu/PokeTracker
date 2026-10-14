@@ -32,7 +32,7 @@ export const GAME_POKEDEXES = [
     "listPath": "Lists/GamePokedexes/Legends Z-A/Pokedex.txt",
     "icons": [
       {
-        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Z-A.jpg",
+        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Z-A.webp",
         "alt": "Legends: Z-A"
       }
     ]
@@ -67,7 +67,7 @@ export const GAME_POKEDEXES = [
     "listPath": "Lists/GamePokedexes/Legends Arceus/Pokedex.txt",
     "icons": [
       {
-        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Arceus.jpg",
+        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Arceus.webp",
         "alt": "Legends: Arceus"
       }
     ]
@@ -104,6 +104,10 @@ export const GAME_POKEDEXES = [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Sword.webp",
         "alt": "Sword"
+      },
+      {
+        "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Shield.webp",
+        "alt": "Shield"
       }
     ],
     "pageSize": 30,
