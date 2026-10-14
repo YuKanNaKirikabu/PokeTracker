@@ -88,7 +88,6 @@ export async function renderNintPokedexesHome() {
                 <div class="choice-title">${game.title}</div>
                 <div class="choice-desc game-pokedex-generation">${getGenerationLabel(game.generation)}</div>
                 <div class="choice-desc game-pokedex-count">${description}</div>
-                <div class="game-pokedex-code">Code: ${game.codeName}</div>
               </a>
               <button
                 class="game-pokedex-favorite ${isFavorite ? "is-favorite" : ""}"
