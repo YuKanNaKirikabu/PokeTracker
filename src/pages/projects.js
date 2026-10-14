@@ -1,7 +1,7 @@
 import { GAME_POKEDEXES } from "../config/pokedex.js";
-import { loadGameDexCatalog } from "../features/pokedex.js";
 import { t } from "../core/i18n.js";
 import { setBrandSubtitle, setPageTitle } from "../core/ui.js";
+import { loadGameDexCatalog } from "../features/pokedex.js";
 
 const FAVORITE_GAME_POKEDEXES_KEY = "poketracker:favorite-game-pokedexes";
 
@@ -41,8 +41,7 @@ export function renderProjects() {
       <div class="choice-grid">
         <a class="choice-card" href="#/projects/pokedexes">
           <div class="choice-logo choice-logo--row">
-            <img src="https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Sword.webp" alt="Sword" loading="lazy" decoding="async" />
-            <img src="https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Shield.webp" alt="Shield" loading="lazy" decoding="async" />
+            <img src="https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Yellow.webp" alt="Shield" loading="lazy" decoding="async" />
           </div>
           <div class="choice-title">${t("projects.nintTitle")}</div>
           <div class="choice-desc">${t("projects.nintDesc")}</div>
