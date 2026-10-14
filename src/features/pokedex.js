@@ -16,7 +16,8 @@ const POKEDEX_TYPE_CACHE = new Map();
 const GAME_POKEDEX_CACHE = new Map();
 const POKEDEX_CARD_CACHE = new Map();
 const GAME_POKEDEX_LOADING = new Map();
-let GAME_POKEDEX_CATALOG_LOADING = null;
+let GAME_DEX_LOAD_PROMISE = null;
+let GAME_DEX_LOAD_ERROR = null;
 let POKEDEX_NAMES_LOADING = null;
 
 const POKEDEX_VALIDATION_ANCHORS = [
@@ -203,71 +204,111 @@ export function getPokedexEntryByName(nameEn) {
 }
 
 export function getGamePokedexConfig(gameId) {
-  return GAME_POKEDEXES.find((game) => game.id === gameId);
+  return GAME_POKEDEXES.find((game) => game.id === gameId) || null;
 }
 
-function parseGamePokedexList(raw, game) {
-  const numbered = parsePokedexText(raw, 3);
-  if (numbered.length) return numbered;
+export function getGameDexLoadError() {
+  return GAME_DEX_LOAD_ERROR;
+}
 
-  const names = String(raw || "").split(/\\r?\\n/)
-    .map((name) => name.trim())
+function firstDefined(object, keys, fallback = undefined) {
+  for (const key of keys) if (object && object[key] !== undefined && object[key] !== null) return object[key];
+  return fallback;
+}
+
+function normalizeIcon(icon, alt = "") {
+  if (typeof icon === "string") return { src: icon, alt };
+  if (!icon || typeof icon !== "object") return null;
+  const src = firstDefined(icon, ["src", "url", "image", "imageUrl"]);
+  return src ? { src: String(src), alt: String(firstDefined(icon, ["alt", "name", "title"], alt)) } : null;
+}
+
+function normalizeIcons(game) {
+  const raw = firstDefined(game, ["icons", "images", "versions"], []);
+  const icons = (Array.isArray(raw) ? raw : [raw])
+    .map((item) => normalizeIcon(item, String(firstDefined(game, ["title", "name"], ""))))
     .filter(Boolean);
-  const startNumber = Number.isInteger(game?.startNumber) ? game.startNumber : 1;
-  return names.map((nameEn, index) => {
-    const number = startNumber + index;
-    return {
-      number,
-      numberStr: String(number).padStart(3, "0"),
-      nameEn,
-      nameRu: null,
-      types: null,
-    };
-  });
+  if (icons.length) return icons;
+  const single = normalizeIcon(firstDefined(game, ["icon", "image", "imageUrl", "logo"]), String(firstDefined(game, ["title", "name"], "")));
+  return single ? [single] : [];
 }
 
-async function loadGamePokedexCatalog() {
-  if (!GAME_POKEDEX_CATALOG_LOADING) {
-    GAME_POKEDEX_CATALOG_LOADING = (async () => {
-      const response = await fetch("Lists/GamePokedexes/catalog.json.gz.b64");
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const encoded = (await response.text()).trim();
-      const binary = atob(encoded);
-      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-      if (typeof DecompressionStream === "undefined") {
-        throw new Error("This browser does not support gzip decompression");
-      }
-      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-      return new Response(stream).json();
+function normalizeEntry(entry, index, dex = null) {
+  let number = NaN, nameEn = "", nameRu = null, types = null;
+  if (typeof entry === "string") nameEn = entry.trim();
+  else if (Array.isArray(entry)) {
+    number = Number(entry[0]); nameEn = String(entry[1] || "").trim();
+    types = parsePokedexTypes(entry[2]); nameRu = entry[3] == null ? null : String(entry[3]);
+  } else if (entry && typeof entry === "object") {
+    number = Number(firstDefined(entry, ["number", "no", "dexNumber", "nationalNumber"]));
+    nameEn = String(firstDefined(entry, ["nameEn", "englishName", "name", "pokemon", "pokemonName", "en"], "")).trim();
+    const ru = firstDefined(entry, ["nameRu", "russianName", "ru"], null);
+    nameRu = ru == null ? null : String(ru);
+    types = parsePokedexTypes(firstDefined(entry, ["types", "type", "pokemonTypes"], null));
+  }
+  if (!nameEn) return null;
+  if (!Number.isFinite(number) || number < 1) number = index + 1;
+  return { number, numberStr: String(number).padStart(3, "0"), nameEn, nameRu, types, dexId: dex?.id || null };
+}
+
+function normalizeDex(dex, index) {
+  const entries = firstDefined(dex, ["entries", "pokemon", "pokemons", "list", "members"], []);
+  return {
+    id: String(firstDefined(dex, ["id", "slug", "key", "name", "title"], `dex-${index + 1}`)),
+    title: String(firstDefined(dex, ["title", "name", "label"], `Pokédex ${index + 1}`)),
+    entries: Array.isArray(entries) ? entries.map((entry, entryIndex) => normalizeEntry(entry, entryIndex, dex)).filter(Boolean) : [],
+  };
+}
+
+function normalizeGame(game, index) {
+  if (!game || typeof game !== "object") return null;
+  const title = String(firstDefined(game, ["title", "name", "game", "label"], "")).trim();
+  if (!title) return null;
+  const id = String(firstDefined(game, ["id", "slug", "key", "codeName"], title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")));
+  const gen = Number(firstDefined(game, ["generation", "gen"], NaN));
+  const rawDexes = firstDefined(game, ["dexes", "pokedexes", "regionalDexes"], []);
+  const dexes = Array.isArray(rawDexes) ? rawDexes.map(normalizeDex) : [];
+  if (!dexes.length) {
+    const entries = firstDefined(game, ["entries", "pokemon", "pokemons", "list"], []);
+    if (Array.isArray(entries)) dexes.push({ id: "national", title: "Pokédex", entries: entries.map((entry, i) => normalizeEntry(entry, i)).filter(Boolean) });
+  }
+  const total = dexes.reduce((sum, dex) => sum + dex.entries.length, 0);
+  const count = Number(firstDefined(game, ["pokemonCount", "count", "totalPokemon", "total"], NaN));
+  return {
+    id, title,
+    generation: Number.isFinite(gen) && gen > 0 ? gen : null,
+    codeName: String(firstDefined(game, ["codeName", "code", "shortName"], "")),
+    pokemonCount: Number.isFinite(count) && count >= 0 ? count : total,
+    status: String(firstDefined(game, ["status"], total ? "ready" : "coming-soon")),
+    icons: normalizeIcons(game),
+    listPath: total ? "GameDex.json" : null,
+    pageSize: Number(firstDefined(game, ["pageSize"], 30)),
+    dexes, activeDexId: dexes[0]?.id || null, entries: dexes[0]?.entries || [], catalogIndex: index,
+  };
+}
+
+export async function loadGameDexCatalog() {
+  if (!GAME_DEX_LOAD_PROMISE) {
+    GAME_DEX_LOAD_PROMISE = (async () => {
+      const response = await fetch("https://storage.yandexcloud.net/poketracker/data/GameDex.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`GameDex.json: HTTP ${response.status}`);
+      const payload = await response.json();
+      const rawGames = Array.isArray(payload) ? payload : firstDefined(payload, ["games", "gameCatalog", "catalog"], null);
+      if (!Array.isArray(rawGames)) throw new Error("GameDex.json must contain a games[] array.");
+      const games = rawGames.map(normalizeGame).filter(Boolean);
+      if (!games.length) throw new Error("GameDex.json contains no valid games.");
+      GAME_POKEDEXES.splice(0, GAME_POKEDEXES.length, ...games);
+      GAME_POKEDEX_CACHE.clear();
+      GAME_POKEDEX_LOADING.clear();
+      GAME_DEX_LOAD_ERROR = null;
+      return games;
     })().catch((error) => {
-      GAME_POKEDEX_CATALOG_LOADING = null;
+      GAME_DEX_LOAD_ERROR = error;
+      console.error("Failed to load GameDex.json:", error);
       throw error;
-    });
+    }).finally(() => { GAME_DEX_LOAD_PROMISE = null; });
   }
-  return GAME_POKEDEX_CATALOG_LOADING;
-}
-
-async function fetchGamePokedexEntries(game) {
-  if (game.dataKey) {
-    const catalog = await loadGamePokedexCatalog();
-    const rows = catalog[game.dataKey];
-    if (!Array.isArray(rows)) throw new Error(`Missing game data: ${game.dataKey}`);
-    return rows.map((row, index) => {
-      const number = Number(row[0]);
-      const nameEn = String(row[1] || "").trim();
-      return {
-        number: Number.isFinite(number) ? number : index + 1,
-        numberStr: String(Number.isFinite(number) ? number : index + 1).padStart(3, "0"),
-        nameEn,
-        nameRu: null,
-        types: parsePokedexTypes(row[2]),
-      };
-    });
-  }
-
-  const response = await fetch(game.listPath);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return parseGamePokedexList(await response.text(), game);
+  return GAME_DEX_LOAD_PROMISE;
 }
 
 function dedupeGamePokedexEntries(list) {
@@ -281,62 +322,37 @@ function dedupeGamePokedexEntries(list) {
 }
 
 export async function loadGamePokedexes() {
-  await Promise.all(GAME_POKEDEXES.map(async (game) => {
-    if (!game.listPath) {
-      GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
-      return;
-    }
-    try {
-      const list = dedupeGamePokedexEntries(await fetchGamePokedexEntries(game));
-      const byName = new Set(list.map((entry) => normalizePokemonName(entry.nameEn)));
-      GAME_POKEDEX_CACHE.set(game.id, { list, byName, loaded: true });
-    } catch (err) {
-      console.warn(`Game pokedex load failed for ${game.id}:`, err.message);
-      GAME_POKEDEX_CACHE.set(game.id, { list: [], byName: new Set(), loaded: true });
-    }
-  }));
+  await loadGameDexCatalog();
+  await Promise.all(GAME_POKEDEXES.map((game) => ensureGamePokedexLoaded(game.id)));
 }
 
 export async function ensureGamePokedexLoaded(gameId) {
   const cached = GAME_POKEDEX_CACHE.get(gameId);
   if (cached?.loaded) return cached;
-
-  if (GAME_POKEDEX_LOADING.has(gameId)) {
-    return GAME_POKEDEX_LOADING.get(gameId);
-  }
-
+  if (GAME_POKEDEX_LOADING.has(gameId)) return GAME_POKEDEX_LOADING.get(gameId);
   const game = getGamePokedexConfig(gameId);
-  if (!game || !game.listPath) {
-    const empty = { list: [], byName: new Set(), loaded: true };
-    GAME_POKEDEX_CACHE.set(gameId, empty);
-    return empty;
+  if (!game) {
+    const missing = { list: [], byName: new Set(), loaded: true, error: new Error(`Unknown game: ${gameId}`) };
+    GAME_POKEDEX_CACHE.set(gameId, missing);
+    return missing;
   }
-
-  const loader = (async () => {
-    try {
-      const list = dedupeGamePokedexEntries(await fetchGamePokedexEntries(game));
-      const byName = new Set(list.map((entry) => normalizePokemonName(entry.nameEn)));
-      const data = { list, byName, loaded: true };
-      GAME_POKEDEX_CACHE.set(gameId, data);
-      return data;
-    } catch (err) {
-      console.warn(`Game pokedex load failed for ${gameId}:`, err.message);
-      const fallback = { list: [], byName: new Set(), loaded: true };
-      GAME_POKEDEX_CACHE.set(gameId, fallback);
-      return fallback;
-    } finally {
-      GAME_POKEDEX_LOADING.delete(gameId);
-    }
-  })();
-
+  const loader = Promise.resolve().then(() => {
+    const dex = game.dexes?.find((item) => item.id === game.activeDexId) || game.dexes?.[0];
+    const list = dedupeGamePokedexEntries((dex?.entries || game.entries || []).map((entry, index) => ({
+      ...entry,
+      number: Number.isFinite(entry.number) ? entry.number : index + 1,
+      numberStr: String(Number.isFinite(entry.number) ? entry.number : index + 1).padStart(3, "0"),
+    })));
+    const data = { list, byName: new Set(list.map((entry) => normalizePokemonName(entry.nameEn))), loaded: true, error: null };
+    GAME_POKEDEX_CACHE.set(gameId, data);
+    return data;
+  }).finally(() => GAME_POKEDEX_LOADING.delete(gameId));
   GAME_POKEDEX_LOADING.set(gameId, loader);
   return loader;
 }
 
 export function getGamePokedexData(gameId) {
-  if (!GAME_POKEDEX_CACHE.has(gameId)) {
-    GAME_POKEDEX_CACHE.set(gameId, { list: [], byName: new Set(), loaded: false });
-  }
+  if (!GAME_POKEDEX_CACHE.has(gameId)) GAME_POKEDEX_CACHE.set(gameId, { list: [], byName: new Set(), loaded: false, error: null });
   return GAME_POKEDEX_CACHE.get(gameId);
 }
 
