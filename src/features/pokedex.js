@@ -292,7 +292,11 @@ export async function loadGameDexCatalog() {
   if (!GAME_DEX_LOAD_PROMISE) {
     GAME_DEX_LOAD_PROMISE = (async () => {
       const response = await fetch("/api/game-dex", { cache: "no-store" });
-      if (!response.ok) {\n        let details = "";\n        try { details = (await response.json()).error || ""; } catch {}\n        throw new Error(`GameDex.json: HTTP ${response.status}${details ? ` — ${details}` : ""}`);\n      }
+      if (!response.ok) {
+        let details = "";
+        try { details = (await response.json()).error || ""; } catch {}
+        throw new Error(`GameDex.json: HTTP ${response.status}${details ? ` — ${details}` : ""}`);
+      }
       const payload = await response.json();
       const rawGames = Array.isArray(payload) ? payload : firstDefined(payload, ["games", "gameCatalog", "catalog"], null);
       if (!Array.isArray(rawGames)) throw new Error("GameDex.json must contain a games[] array.");
