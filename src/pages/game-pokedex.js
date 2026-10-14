@@ -4,6 +4,7 @@ import { saveGamePokedexToFile } from "../core/storage.js";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";
 import {
     ensureGamePokedexLoaded,
+    loadGameDexCatalog,
     getGamePokedexConfig,
     getGamePokedexData,
     getGamePokedexMarks,
@@ -66,15 +67,22 @@ function ensureGamePokedexGuard() {
   ensureGamePokedexGuard.bound = true;
 }
 
-export function renderGamePokedex(gameId) {
+export async function renderGamePokedex(gameId) {
   const app = document.getElementById("app");
+  if (!getGamePokedexConfig(gameId)) {
+    try { await loadGameDexCatalog(); }
+    catch (error) {
+      renderPlaceholder(t("projects.pokedexesTitle"), `Не удалось загрузить GameDex.json: ${String(error.message || error)}`);
+      return;
+    }
+  }
   const config = getGamePokedexConfig(gameId);
   if (!config) {
     renderPlaceholder(t("projects.pokedexesTitle"), t("gamePokedex.empty"));
     return;
   }
 
-  if (!config.listPath) {
+  if (!config.listPath && !config.dexes?.some((dex) => dex.entries.length)) {
     const roman = { 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI", 7: "VII", 8: "VIII", 9: "IX", 10: "X" };
     const generation = `Generation ${roman[config.generation] || config.generation}`;
     const details = [generation];
