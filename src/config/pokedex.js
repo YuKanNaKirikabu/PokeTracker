@@ -27,10 +27,9 @@ export const GAME_POKEDEXES = [
     "title": "Legends: Z-A",
     "generation": 9,
     "codeName": "LZA",
-    "pokemonCount": 232,
+    "pokemonCount": 364,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "legends-za",
+    "listPath": "Lists/GamePokedexes/Legends Z-A/Pokedex.txt",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Z-A.webp",
@@ -45,8 +44,8 @@ export const GAME_POKEDEXES = [
     "codeName": "SV",
     "pokemonCount": 400,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "scarlet-violet",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Scarlet & Violet",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Scarlet.webp",
@@ -65,8 +64,7 @@ export const GAME_POKEDEXES = [
     "codeName": "PLA",
     "pokemonCount": 242,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "legends-arceus",
+    "listPath": "Lists/GamePokedexes/Legends Arceus/Pokedex.txt",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Legends Arceus.webp",
@@ -81,8 +79,8 @@ export const GAME_POKEDEXES = [
     "codeName": "BDSP",
     "pokemonCount": 151,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "brilliant-diamond-shining-pearl",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Brilliant Diamond & Shining Pearl",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Brilliant Diamond.webp",
@@ -99,10 +97,9 @@ export const GAME_POKEDEXES = [
     "title": "Sword & Shield",
     "generation": 8,
     "codeName": "SwSh",
-    "pokemonCount": 400,
+    "pokemonCount": 664,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "sword-shield",
+    "listPath": "Lists/GamePokedexes/Sword & Shield/Pokedex.txt",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Sword.webp",
@@ -123,8 +120,8 @@ export const GAME_POKEDEXES = [
     "codeName": "LGPE",
     "pokemonCount": 153,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "lets-go-pikachu-eevee",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Let's Go Pikachu & Let's Go Eevee",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Let's Go, Pikachu!.webp",
@@ -143,8 +140,8 @@ export const GAME_POKEDEXES = [
     "codeName": "USUM",
     "pokemonCount": 403,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "ultra-sun-ultra-moon",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Ultra Sun & Ultra Moon",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Ultra Sun.webp",
@@ -163,8 +160,8 @@ export const GAME_POKEDEXES = [
     "codeName": "SM",
     "pokemonCount": 302,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "sun-moon",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Sun & Moon",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Sun.webp",
@@ -183,8 +180,8 @@ export const GAME_POKEDEXES = [
     "codeName": "ORAS",
     "pokemonCount": 211,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "omega-ruby-alpha-sapphire",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Omega Ruby & Alpha Sapphire",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Omega Ruby.webp",
@@ -203,8 +200,8 @@ export const GAME_POKEDEXES = [
     "codeName": "XY",
     "pokemonCount": 457,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "x-y",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "X & Y",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/X.webp",
@@ -223,8 +220,8 @@ export const GAME_POKEDEXES = [
     "codeName": "B2W2",
     "pokemonCount": 301,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "black-2-white-2",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Black & White 2",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Black 2.webp",
@@ -243,8 +240,8 @@ export const GAME_POKEDEXES = [
     "codeName": "BW",
     "pokemonCount": 156,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "black-white",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Black & White",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Black.webp",
@@ -263,8 +260,8 @@ export const GAME_POKEDEXES = [
     "codeName": "HGSS",
     "pokemonCount": 256,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "heartgold-soulsilver",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "HeartGold & SoulSilver",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/HeartGold.webp",
@@ -283,8 +280,8 @@ export const GAME_POKEDEXES = [
     "codeName": "Pt",
     "pokemonCount": 210,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "platinum",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Platinum",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Platinum.webp",
@@ -299,8 +296,8 @@ export const GAME_POKEDEXES = [
     "codeName": "DP",
     "pokemonCount": 151,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "diamond-pearl",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Diamond & Pearl",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Diamond.webp",
@@ -319,8 +316,8 @@ export const GAME_POKEDEXES = [
     "codeName": "E",
     "pokemonCount": 202,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "emerald",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Emerald",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Emerald.webp",
@@ -335,8 +332,8 @@ export const GAME_POKEDEXES = [
     "codeName": "FRLG",
     "pokemonCount": 151,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "firered-leafgreen",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "FireRed & LeafGreen",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/FireRed.webp",
@@ -355,8 +352,8 @@ export const GAME_POKEDEXES = [
     "codeName": "RS",
     "pokemonCount": 202,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "ruby-sapphire",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Ruby & Sapphire",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Ruby.webp",
@@ -375,8 +372,8 @@ export const GAME_POKEDEXES = [
     "codeName": "C",
     "pokemonCount": 251,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "crystal",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Crystal",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Crystal.webp",
@@ -391,8 +388,8 @@ export const GAME_POKEDEXES = [
     "codeName": "GS",
     "pokemonCount": 251,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "gold-silver",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Gold & Silver",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Gold.webp",
@@ -411,8 +408,8 @@ export const GAME_POKEDEXES = [
     "codeName": "Y",
     "pokemonCount": 151,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "yellow",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Yellow",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Yellow.webp",
@@ -427,8 +424,8 @@ export const GAME_POKEDEXES = [
     "codeName": "RB",
     "pokemonCount": 151,
     "status": "ready",
-    "listPath": "https://storage.yandexcloud.net/poketracker/data/GameDex.json",
-    "dataKey": "red-blue",
+    "listPath": "Lists/GamePokedexes/catalog.json.gz.b64",
+    "dataKey": "Red & Blue",
     "icons": [
       {
         "src": "https://storage.yandexcloud.net/poketracker/Images/Pokedex/GameIcons/Red.webp",
