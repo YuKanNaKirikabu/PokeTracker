@@ -229,16 +229,9 @@ function parseGamePokedexList(raw, game) {
 async function loadGamePokedexCatalog() {
   if (!GAME_POKEDEX_CATALOG_LOADING) {
     GAME_POKEDEX_CATALOG_LOADING = (async () => {
-      const response = await fetch("Lists/GamePokedexes/catalog.json.gz.b64");
+      const response = await fetch("https://storage.yandexcloud.net/poketracker/data/GameDex.json");
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const encoded = (await response.text()).trim();
-      const binary = atob(encoded);
-      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-      if (typeof DecompressionStream === "undefined") {
-        throw new Error("This browser does not support gzip decompression");
-      }
-      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-      return new Response(stream).json();
+      return response.json();
     })().catch((error) => {
       GAME_POKEDEX_CATALOG_LOADING = null;
       throw error;
@@ -248,26 +241,26 @@ async function loadGamePokedexCatalog() {
 }
 
 async function fetchGamePokedexEntries(game) {
-  if (game.dataKey) {
-    const catalog = await loadGamePokedexCatalog();
-    const rows = catalog[game.dataKey];
-    if (!Array.isArray(rows)) throw new Error(`Missing game data: ${game.dataKey}`);
-    return rows.map((row, index) => {
-      const number = Number(row[0]);
-      const nameEn = String(row[1] || "").trim();
-      return {
-        number: Number.isFinite(number) ? number : index + 1,
-        numberStr: String(Number.isFinite(number) ? number : index + 1).padStart(3, "0"),
-        nameEn,
-        nameRu: null,
-        types: parsePokedexTypes(row[2]),
-      };
-    });
-  }
+  const catalog = await loadGamePokedexCatalog();
+  const sourceGame = (catalog.games || []).find((item) => item.id === (game.dataKey || game.id));
+  if (!sourceGame) throw new Error(`Missing game data: ${game.dataKey || game.id}`);
 
-  const response = await fetch(game.listPath);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return parseGamePokedexList(await response.text(), game);
+  const dexes = Array.isArray(sourceGame.dexes) ? sourceGame.dexes : [];
+  const selectedDexId = state.ui.gamePokedexDex?.[game.id];
+  const dex = dexes.find((item) => item.id === selectedDexId) || dexes[0];
+  if (!dex || !Array.isArray(dex.entries)) return [];
+
+  return dex.entries.map((row, index) => {
+    const number = Number(row.number);
+    const nameEn = String(row.name || row.nameEn || "").trim();
+    return {
+      number: Number.isFinite(number) ? number : index + 1,
+      numberStr: String(Number.isFinite(number) ? number : index + 1).padStart(3, "0"),
+      nameEn,
+      nameRu: row.nameRu || null,
+      types: Array.isArray(row.types) ? row.types : parsePokedexTypes(row.types),
+    };
+  }).filter((entry) => entry.nameEn);
 }
 
 function dedupeGamePokedexEntries(list) {
