@@ -4,6 +4,7 @@ import { saveGamePokedexToFile } from "../core/storage.js";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";
 import {
     ensureGamePokedexLoaded,
+    invalidateGamePokedexData,
     loadGameDexCatalog,
     getGamePokedexConfig,
     getGamePokedexData,
@@ -205,6 +206,15 @@ export async function renderGamePokedex(gameId) {
             ${t("gamePokedex.range", { start: rangeStart, end: rangeEnd })}
           </div>
         </div>
+        ${config.dexes && config.dexes.length > 1 ? `
+          <div class="game-pokedex-versions game-pokedex-dexes" id="gamePokedexDexes">
+            ${config.dexes.map((dex) => `
+              <button class="version-btn ${dex.id === (state.ui.gamePokedexDex?.[gameId] || config.activeDexId) ? "active" : ""}" data-dex-id="${dex.id}" type="button">
+                ${dex.title}
+              </button>
+            `).join("")}
+          </div>
+        ` : ""}
         ${config.icons && config.icons.length > 1 ? `
           <div class="game-pokedex-versions" id="gamePokedexVersions">
             ${config.icons.map((icon, idx) => `
@@ -316,7 +326,16 @@ export async function renderGamePokedex(gameId) {
     });
   });
 
-  document.querySelectorAll(".version-btn").forEach((btn) => {
+  app.querySelectorAll("[data-dex-id]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.ui.gamePokedexDex = state.ui.gamePokedexDex || {};
+      state.ui.gamePokedexDex[gameId] = btn.dataset.dexId;
+      invalidateGamePokedexData(gameId);
+      renderGamePokedex(gameId);
+    });
+  });
+
+  document.querySelectorAll(".version-btn[data-version]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const version = parseInt(btn.dataset.version, 10);
       state.ui.gamePokedexVersion = state.ui.gamePokedexVersion || {};
