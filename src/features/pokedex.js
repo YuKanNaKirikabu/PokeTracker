@@ -367,30 +367,26 @@ export function getGamePokedexData(gameId) {
   return GAME_POKEDEX_CACHE.get(gameId);
 }
 
-export function getGamePokedexMarks(gameId, versionIndex = 0) {
+function getGamePokedexMarksKey(gameId, versionIndex = 0) {
   const config = getGamePokedexConfig(gameId);
-  const hasMultipleVersions = config?.icons?.length > 1;
-  const key = hasMultipleVersions ? `${gameId}-v${versionIndex}` : gameId;
+  const records = state.ui.gamePokedex || {};
+  const versionKey = `${gameId}-v${versionIndex}`;
+  // Keep existing per-version marks readable if older catalog metadata is absent.
+  if (config?.icons?.length > 1 || Object.prototype.hasOwnProperty.call(records, versionKey)) return versionKey;
+  return gameId;
+}
+
+export function getGamePokedexMarks(gameId, versionIndex = 0) {
+  const key = getGamePokedexMarksKey(gameId, versionIndex);
   const record = state.ui.gamePokedex?.[key] || {};
-  return {
-    blue: new Set(record.blue || []),
-    red: new Set(record.red || []),
-    sort: record.sort || "found",
-  };
+  return { blue: new Set(record.blue || []), red: new Set(record.red || []), sort: record.sort || "found" };
 }
 
 export function setGamePokedexMarks(gameId, marks, versionIndex = 0) {
   if (!state.ui.gamePokedex) state.ui.gamePokedex = {};
-  const config = getGamePokedexConfig(gameId);
-  const hasMultipleVersions = config?.icons?.length > 1;
-  const key = hasMultipleVersions ? `${gameId}-v${versionIndex}` : gameId;
-  state.ui.gamePokedex[key] = {
-    blue: [...marks.blue],
-    red: [...marks.red],
-    sort: marks.sort || "found",
-  };
+  const key = getGamePokedexMarksKey(gameId, versionIndex);
+  state.ui.gamePokedex[key] = { blue: [...marks.blue], red: [...marks.red], sort: marks.sort || "found" };
 }
-
 export function isPokemonMarkedInGame(nameEn, gameId, versionIndex = null) {
   const key = normalizePokemonName(nameEn);
   const data = getGamePokedexData(gameId);
