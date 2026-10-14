@@ -3,7 +3,7 @@ import { applyTranslations, t } from "./core/i18n.js";
 import { initStorage, loadBootstrapFromFile } from "./core/storage.js";
 import { applyTheme, normalizeUiSettings } from "./core/theme.js";
 import { setupSidePanel } from "./core/ui.js";
-import { loadPokedexNamesFromFile, loadGameDexCatalog } from "./features/pokedex.js";
+import { loadPokedexNamesFromFile, loadGamePokedexes } from "./features/pokedex.js";
 import { renderRoute } from "./router.js";
 
 function setupImageErrorDiagnostics() {
@@ -53,7 +53,7 @@ async function init() {
     await loadData();
     await loadBootstrapFromFile();
     await loadPokedexNamesFromFile();
-    try { await loadGameDexCatalog(); } catch (error) { console.warn("GameDex catalog unavailable:", error.message); }
+    try { await loadGamePokedexes(); } catch (error) { console.warn("GameDex catalog unavailable:", error.message); }
     normalizeUiSettings();
     applyTheme();
     applyTranslations();
