@@ -16,6 +16,7 @@ const POKEDEX_TYPE_CACHE = new Map();
 const GAME_POKEDEX_CACHE = new Map();
 const POKEDEX_CARD_CACHE = new Map();
 const GAME_POKEDEX_LOADING = new Map();
+let GAME_DEX_POKEMON_INDEX = null;
 let GAME_DEX_LOAD_PROMISE = null;
 let GAME_DEX_LOAD_ERROR = null;
 let POKEDEX_NAMES_LOADING = null;
@@ -298,6 +299,7 @@ export async function loadGameDexCatalog() {
       const games = rawGames.map(normalizeGame).filter(Boolean);
       if (!games.length) throw new Error("GameDex.json contains no valid games.");
       GAME_POKEDEXES.splice(0, GAME_POKEDEXES.length, ...games);
+      GAME_DEX_POKEMON_INDEX = payload && !Array.isArray(payload) && payload.pokemon && typeof payload.pokemon === "object" ? payload.pokemon : null;
       GAME_POKEDEX_CACHE.clear();
       GAME_POKEDEX_LOADING.clear();
       GAME_DEX_LOAD_ERROR = null;
@@ -337,7 +339,8 @@ export async function ensureGamePokedexLoaded(gameId) {
     return missing;
   }
   const loader = Promise.resolve().then(() => {
-    const dex = game.dexes?.find((item) => item.id === game.activeDexId) || game.dexes?.[0];
+    const selectedDexId = state.ui.gamePokedexDex?.[gameId] || game.activeDexId;
+    const dex = game.dexes?.find((item) => item.id === selectedDexId) || game.dexes?.[0];
     const list = dedupeGamePokedexEntries((dex?.entries || game.entries || []).map((entry, index) => ({
       ...entry,
       number: Number.isFinite(entry.number) ? entry.number : index + 1,
@@ -349,6 +352,14 @@ export async function ensureGamePokedexLoaded(gameId) {
   }).finally(() => GAME_POKEDEX_LOADING.delete(gameId));
   GAME_POKEDEX_LOADING.set(gameId, loader);
   return loader;
+}
+
+export function getGameDexPokemonIndex() {
+  return GAME_DEX_POKEMON_INDEX;
+}
+
+export function invalidateGamePokedexData(gameId) {
+  GAME_POKEDEX_CACHE.delete(gameId);
 }
 
 export function getGamePokedexData(gameId) {
