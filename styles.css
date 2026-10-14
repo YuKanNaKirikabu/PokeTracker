@@ -2008,3 +2008,20 @@ body.theme-light .game-icon {
   fill: #ffd54a;
   stroke: #ffd54a;
 }
+
+
+/* Keep paired game-version buttons in the top-right slot and dex selectors below. */
+.game-pokedex-header.has-game-versions-and-dexes #gamePokedexVersions {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.game-pokedex-header.has-game-versions-and-dexes #gamePokedexDexes {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  align-self: start;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+}
