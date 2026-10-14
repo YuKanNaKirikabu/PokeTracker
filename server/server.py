@@ -128,6 +128,8 @@ class APIHandler(SimpleHTTPRequestHandler):
             self.handle_bootstrap()
         elif parsed.path == '/api/cards':
             self.handle_cards()
+        elif parsed.path == '/api/game-dex':
+            self.handle_game_dex()
         elif parsed.path == '/api/load':
             self.handle_load()
         elif parsed.path == '/api/load-settings':
@@ -344,6 +346,33 @@ class APIHandler(SimpleHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+
+    def handle_game_dex(self):
+        try:
+            remote_url = "https://storage.yandexcloud.net/poketracker/data/GameDex.json"
+            req = Request(f"{remote_url}?_ts={int(time.time())}", method='GET')
+            with urlopen(req, timeout=15) as response:
+                payload = json.loads(response.read().decode('utf-8'))
+
+            if not isinstance(payload, dict) or not isinstance(payload.get('games'), list):
+                raise ValueError("GameDex.json must contain a games[] array.")
+
+            body = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Cache-Control', 'no-store')
+            self.end_headers()
+            self.wfile.write(body)
+        except HTTPError as err:
+            self.send_response(err.code)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(json.dumps({'error': f"GameDex.json upstream HTTP {err.code}"}).encode('utf-8'))
+        except Exception as err:
+            self.send_response(502)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(json.dumps({'error': f"Could not load GameDex.json: {err}"}).encode('utf-8'))
 
     def handle_cards(self):
         try:
