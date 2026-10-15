@@ -201,6 +201,169 @@ body.theme-light .menu-toggle img {
   transform: translateY(-1px);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.profile-menu {
+  position: relative;
+}
+
+.profile-toggle {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(124, 131, 255, 0.25);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.profile-toggle:hover {
+  background: var(--panel-strong);
+  border-color: rgba(124, 131, 255, 0.45);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 170px;
+  padding: 8px;
+  border: 1px solid var(--header-border);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: 0 14px 32px rgba(5, 8, 20, 0.35);
+  z-index: 40;
+}
+
+.profile-dropdown a,
+.profile-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-dropdown a:hover,
+.profile-dropdown button:hover {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.profile-dropdown .profile-dropdown-logout {
+  color: var(--danger);
+}
+
+.profile-dropdown .profile-dropdown-logout:hover {
+  background: rgba(245, 114, 114, 0.16);
+  color: var(--danger);
+}
+
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.profile-heading,
+.profile-data-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.profile-heading .section-title {
+  margin-bottom: 0;
+}
+
+.profile-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(245, 114, 114, 0.45);
+  border-radius: 10px;
+  padding: 9px 12px;
+  background: rgba(245, 114, 114, 0.12);
+  color: var(--danger);
+  font: inherit;
+  cursor: pointer;
+}
+
+.profile-logout:hover {
+  background: rgba(245, 114, 114, 0.22);
+}
+
+.profile-data-section {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(124, 131, 255, 0.12);
+}
+
+.profile-data-heading h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.profile-all-link {
+  color: var(--accent-strong);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.profile-all-link:hover {
+  text-decoration: underline;
+}
+
+.profile-card-preview {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.profile-card-preview-item {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.profile-card-preview-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.72;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--panel-light);
+}
+
+.profile-card-preview-item span {
+  display: block;
+  overflow: hidden;
+  margin-top: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-empty {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .side-overlay {
   position: fixed;
   inset: 0;
@@ -1393,6 +1556,17 @@ body.theme-light .game-icon {
   line-height: 1.5;
 }
 
+.settings-input {
+  display: block;
+  width: min(100%, 360px);
+  margin: 10px 0;
+  padding: 10px 12px;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
 .settings-stats {
   display: flex;
   gap: 24px;
@@ -1625,6 +1799,15 @@ body.theme-light .game-icon {
 }
 
 @media (max-width: 700px) {
+  .profile-heading {
+    align-items: flex-start;
+  }
+
+  .profile-card-preview {
+    grid-template-columns: repeat(5, minmax(62px, 1fr));
+    gap: 6px;
+  }
+
   .game-pokedex-grid {
     grid-template-columns: repeat(3, minmax(120px, 1fr));
   }

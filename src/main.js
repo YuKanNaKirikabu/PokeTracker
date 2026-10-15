@@ -1,8 +1,10 @@
 import { loadData } from "./core/data.js";
+import { loadAuth } from "./core/auth.js";
 import { applyTranslations, t } from "./core/i18n.js";
-import { initStorage, loadBootstrapFromFile } from "./core/storage.js";
+import { initStorage, loadBootstrapFromFile, loadDataFromFile, saveDataToFile } from "./core/storage.js";
 import { applyTheme, normalizeUiSettings } from "./core/theme.js";
-import { setupSidePanel } from "./core/ui.js";
+import { state } from "./core/state.js";
+import { setupProfileMenu, setupSidePanel } from "./core/ui.js";
 import { loadPokedexNamesFromFile, loadGamePokedexes } from "./features/pokedex.js";
 import { renderRoute } from "./router.js";
 
@@ -50,17 +52,71 @@ function setupImageErrorDiagnostics() {
 async function init() {
   try {
     initStorage();
-    await loadData();
-    await loadBootstrapFromFile();
-    await loadPokedexNamesFromFile();
-    try { await loadGamePokedexes(); } catch (error) { console.warn("GameDex catalog unavailable:", error.message); }
+    await loadAuth();
+    const cardsPromise = loadData();
+    const bootstrapPromise = loadBootstrapFromFile();
+    let userDataPromise = Promise.resolve();
+    if (state.user) {
+      userDataPromise = loadDataFromFile()
+        .then(() => window.dispatchEvent(new CustomEvent("userdataready")))
+        .catch((error) => console.error("Ошибка загрузки коллекции:", error));
+    }
+    loadPokedexNamesFromFile().catch((error) => console.warn("Pokedex names unavailable:", error.message));
+    loadGamePokedexes().catch((error) => console.warn("GameDex catalog unavailable:", error.message));
     normalizeUiSettings();
     applyTheme();
     applyTranslations();
     setupImageErrorDiagnostics();
     setupSidePanel();
+    setupProfileMenu();
     renderRoute();
+    let saveTimer = null;
+    window.addEventListener("cardsdatachanged", () => {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        try {
+          await saveDataToFile();
+          state.ui.cardsDirty = false;
+          window.dispatchEvent(new CustomEvent("cardsdatasaved"));
+        } catch (error) {
+          console.error("Ошибка автоматического сохранения коллекции:", error);
+        }
+      }, 400);
+    });
     window.addEventListener("hashchange", renderRoute);
+    window.addEventListener("cardsdataready", () => {
+      if (
+        location.hash.startsWith("#/pack/")
+        || location.hash === "#/all"
+        || location.hash === "#/collection"
+        || location.hash === "#/wishlist"
+        || location.hash === "#/profile"
+        || location.hash.startsWith("#/pokedex")
+      ) {
+        renderRoute();
+      }
+    });
+    window.addEventListener("userdataready", () => {
+      if (location.hash === "#/collection" || location.hash === "#/wishlist" || location.hash === "#/profile") {
+        renderRoute();
+      }
+    });
+    bootstrapPromise
+      .then(() => {
+        normalizeUiSettings();
+        applyTheme();
+        applyTranslations();
+        renderRoute();
+      })
+      .catch((error) => console.error("Ошибка загрузки настроек:", error));
+    cardsPromise
+      .then(() => {
+        if (location.hash === "#/profile") renderRoute();
+      })
+      .catch((error) => console.error("Ошибка загрузки карточек:", error));
+    userDataPromise.then(() => {
+      if (location.hash === "#/profile") renderRoute();
+    });
   } catch (err) {
     console.error("Init error:", err);
     const app = document.getElementById("app");

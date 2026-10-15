@@ -1,5 +1,4 @@
 
-import { RARITY_ICONS, TYPE_ICONS } from "../config/packs.js";
 import {
     GAME_POKEDEXES,
     POKEDEX_DESCRIPTIONS,
@@ -518,8 +517,11 @@ function extractPokedexCardType(typeRaw) {
   const normalized = normalizePokedexType(value);
   if (!normalized || POKEDEX_NON_POKEMON_CARD_TYPES.has(normalized)) return null;
 
-  // Ignore values that do not correspond to an icon in the project's type map.
-  if (!Object.prototype.hasOwnProperty.call(TYPE_ICONS, normalized)) return null;
+  const cloudTypes = new Set((state.data?.cards || []).map((card) => {
+    const fileName = String(card.type || "").split(/[?#]/, 1)[0].split("/").pop() || "";
+    return fileName.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim().toUpperCase();
+  }));
+  if (!cloudTypes.has(normalized)) return null;
 
   return normalized;
 }
@@ -584,7 +586,10 @@ export function renderPokemonTypeIcons(types, sizeClass = "") {
   const uniqueTypes = [...new Set(safeTypes.map((type) => String(type).trim().toUpperCase()))];
   return uniqueTypes
     .map((type) => {
-      const icon = TYPE_ICONS[type] || TYPE_ICONS.COLORLESS;
+      const icon = (state.data?.cards || []).find((card) => {
+        const value = String(card.type || "").split(/[?#]/, 1)[0].split("/").pop() || "";
+        return value.replace(/\.[^.]+$/, "").toUpperCase() === type;
+      })?.type || "";
       return `<span class="icon-badge type-badge ${sizeClass}"><img src="${icon}" alt="${type}" /></span>`;
     })
     .join("");
@@ -597,7 +602,7 @@ export function renderPokedexCardItem(card) {
   const owned = state.owned.has(cardId);
   const wished = state.wishlist?.has(cardId) ?? false;
   const displayCode = formatCardCode(card);
-  const rarityIcon = RARITY_ICONS[card.rarity] || "https://storage.yandexcloud.net/poketracker/Images/Rarity/DIAMOND1.webp";
+  const rarityIcon = card.rarity || "";
   const safeId = cardId.replace(/[^a-z0-9_-]/gi, "");
   const gradientId = `heartGradient-${safeId}`;
   const heartFill = wished ? `url(#${gradientId})` : "none";

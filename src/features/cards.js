@@ -1,8 +1,6 @@
-﻿import {
+import {
     ENERGY_TYPES,
-    RARITY_ICONS,
     TRAINER_TYPES,
-    TYPE_ICONS,
 } from "../config/packs.js";
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
@@ -42,22 +40,10 @@ export function renderCardTypeBadge(card) {
   const raw = String(card.type || '').trim();
   const type = getTypeToken(raw) || 'UNKNOWN';
   if (raw.startsWith('http://') || raw.startsWith('https://')) return '<span class="icon-badge type-badge"><img src="' + raw + '" alt="' + type + '" /></span>';
-  if (ENERGY_TYPES.has(type)) {
-    const typeIcon = TYPE_ICONS[type] || TYPE_ICONS.COLORLESS;
-    return '<span class="icon-badge type-badge"><img src="' + typeIcon + '" alt="' + type + '" /></span>';
-  }
   return '<span class="type-text-badge">' + type + '</span>';
 }
 
 function getFallbackCardImage() { return ''; }
-
-function syncCardsSaveButton() {
-  const button = document.getElementById("cardsSaveBtn");
-  if (!button) return;
-  const isDirty = Boolean(state.ui.cardsDirty);
-  button.disabled = !isDirty;
-  button.classList.toggle("is-dirty", isDirty);
-}
 
 export function toggleOwned(cardId) {
   if (state.owned.has(cardId)) {
@@ -69,7 +55,7 @@ export function toggleOwned(cardId) {
     }
   }
   state.ui.cardsDirty = true;
-  syncCardsSaveButton();
+  window.dispatchEvent(new CustomEvent("cardsdatachanged"));
 }
 
 export function toggleShowcase(cardId) {
@@ -85,7 +71,7 @@ export function toggleWishlist(cardId) {
     state.wishlist.add(cardId);
   }
   state.ui.cardsDirty = true;
-  syncCardsSaveButton();
+  window.dispatchEvent(new CustomEvent("cardsdatachanged"));
 }
 
 export function renderCardGrid(cards, options = {}) {
@@ -111,7 +97,7 @@ export function renderCardGrid(cards, options = {}) {
           const heartFill = wished ? `url(#${gradientId})` : "none";
           const heartStroke = wished ? "rgba(255, 120, 160, 0.95)" : "rgba(255, 255, 255, 0.75)";
           const displayCode = formatCardCode(card);
-          const rarityIcon = String(card.rarity || "").startsWith("http") ? card.rarity : (RARITY_ICONS[card.rarity] || "https://storage.yandexcloud.net/poketracker/Images/Rarity/DIAMOND1.webp");
+          const rarityIcon = card.rarity || "";
           const fallbackImage = getFallbackCardImage(card.image);
           const fallbackAttr = fallbackImage ? ` data-fallback-src="${fallbackImage}"` : "";
           const wishlistHtml = showWishlist && !owned
@@ -151,7 +137,7 @@ export function renderCardGrid(cards, options = {}) {
                 <h3>${card.name}</h3>
                 <span>${displayCode}</span>
                 <div class="meta-icons">
-                  <span class="icon-badge rarity-badge"><img src="${rarityIcon}" alt="${card.rarity}" /></span>
+                  <span class="icon-badge rarity-badge"><img src="${rarityIcon}" alt="${getTypeToken(card.rarity)}" /></span>
                   ${renderCardTypeBadge(card)}
                 </div>
               </div>
@@ -278,4 +264,3 @@ export function attachCardEvents(render, options = {}) {
 
   attachCardImageFallbacks(document);
 }
-

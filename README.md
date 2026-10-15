@@ -21,3 +21,17 @@ The server reads `https://storage.yandexcloud.net/poketracker/data/cards.json` u
 3. Open the local URL printed by the launcher.
 
 The server needs Python 3. Pack metadata and subpack navigation are generated from `cards.json`; adding a pack or collection should not require editing JavaScript configuration.
+
+## MongoDB and accounts
+
+Install the Python dependency with `pip install -r requirements.txt`. The default local
+connection is `mongodb://127.0.0.1:27017`, which is suitable for a MongoDB instance
+managed through Compass. Configure `MONGODB_URI` and `MONGODB_DATABASE` as environment
+variables before deployment; never commit a MongoDB password.
+
+Users are stored in `users`, while each user's collection is stored in MongoDB
+`user_collections` with stable card IDs in `owned` and `wishlist` arrays. An empty
+`user_collections` document is created during registration, and changes are saved
+automatically through `POST /api/collection` after a card or wishlist change. The
+save button remains available for a manual save. The old shared `collection.json`
+and cloud data storage are not used for collection or wishlist data.

@@ -1,5 +1,6 @@
 export const state = {
   data: null,
+  user: null,
   owned: new Set(),
   wishlist: new Set(),
   ui: {
