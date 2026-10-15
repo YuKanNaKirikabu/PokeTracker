@@ -10,6 +10,8 @@ import { renderPlaceholder } from "./pages/placeholder.js";
 import { renderPokedex } from "./pages/pokedex.js";
 import { renderNintPokedexesHome, renderProjects } from "./pages/projects.js";
 import { renderSettings } from "./pages/settings.js";
+import { renderAuthRequired, renderProfile } from "./pages/profile.js";
+import { renderRegister } from "./pages/register.js";
 import { renderWishlist } from "./pages/wishlist.js";
 
 export function renderRoute() {
@@ -39,7 +41,8 @@ export function renderRoute() {
   if (hash === "#/wishlist") {
     setBrandMode("mobile");
     updateBrandLink();
-    renderWishlist();
+    if (state.user) renderWishlist();
+    else renderAuthRequired("wishlist");
     return;
   }
   if (hash === "#/showcase") {
@@ -51,12 +54,23 @@ export function renderRoute() {
   if (hash === "#/collection") {
     setBrandMode("mobile");
     updateBrandLink();
-    renderCollection();
+    if (state.user) renderCollection();
+    else renderAuthRequired("collection");
     return;
   }
   if (hash === "#/settings") {
     setBrandMode("home");
     renderSettings();
+    return;
+  }
+  if (hash === "#/profile") {
+    setBrandMode("home");
+    renderProfile();
+    return;
+  }
+  if (hash === "#/register") {
+    setBrandMode("home");
+    renderRegister();
     return;
   }
   if (hash.startsWith("#/pokedex")) {

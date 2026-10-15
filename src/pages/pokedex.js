@@ -7,13 +7,8 @@ import {
     getPokedexIconPath,
     getPokedexList,
     getPokedexRegion,
-    getPokedexSpriteFallback,
-    getPokemonArtwork,
     getPokemonDisplayName,
-    getPokemonTypes,
-    renderGameIcons,
     renderPokedexDetail,
-    renderPokemonTypeIcons,
 } from "../features/pokedex.js";
 
 export function renderPokedex() {
@@ -38,17 +33,10 @@ export function renderPokedex() {
     .map((entry) => {
       const displayName = getPokemonDisplayName(entry);
       const region = getPokedexRegion(entry.number);
-      const types = getPokemonTypes(entry.nameEn);
       const iconPath = getPokedexIconPath(entry);
-      const artwork = getPokemonArtwork(entry.nameEn);
-      const spriteFallback = getPokedexSpriteFallback(entry);
-      const fallbackSrc = artwork || spriteFallback || "";
-      const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
       const iconHtml = iconPath
-        ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-        : artwork
-          ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-          : `<span>${displayName.slice(0, 1)}</span>`;
+        ? `<img src="${iconPath}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
+        : `<span>${displayName.slice(0, 1)}</span>`;
       return `
         <button class="pokedex-item ${entry.number === selected.number ? "active" : ""}" data-dex="${entry.number}" type="button">
           <div class="pokedex-icon">
@@ -61,9 +49,7 @@ export function renderPokedex() {
             </div>
             <div class="pokedex-subline">
               <span class="pokedex-region">${region}</span>
-              <span class="pokedex-types">${renderPokemonTypeIcons(types, "icon-xs")}</span>
             </div>
-            ${renderGameIcons(entry.nameEn)}
           </div>
         </button>
       `;
@@ -76,7 +62,9 @@ export function renderPokedex() {
         <aside class="pokedex-list">
           ${listHtml}
         </aside>
-        ${renderPokedexDetail(selected)}
+        <div id="pokedexDetailMount" class="pokedex-detail">
+          <p class="pokedex-empty">${t("common.loading")}</p>
+        </div>
       </div>
     </section>
   `;
@@ -93,7 +81,12 @@ export function renderPokedex() {
     });
   }
   attachPokedexSearch(list);
-  attachPokedexEvents(selected.number);
+  setTimeout(() => {
+    const detailMount = document.getElementById("pokedexDetailMount");
+    if (!detailMount) return;
+    detailMount.outerHTML = renderPokedexDetail(selected);
+    attachPokedexEvents(selected.number);
+  }, 0);
 }
 
 function attachPokedexSearch(list) {

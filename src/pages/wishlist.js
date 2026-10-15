@@ -1,15 +1,6 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
-import { saveDataToFile } from "../core/storage.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
-
-function setCardsDirty(isDirty) {
-  state.ui.cardsDirty = isDirty;
-  const button = document.getElementById("cardsSaveBtn");
-  if (!button) return;
-  button.disabled = !isDirty;
-  button.classList.toggle("is-dirty", isDirty);
-}
 
 function getOrderedPacks() {
   return state.data?.packs || [];
@@ -77,7 +68,7 @@ function attachPackAccordionEvents(app) {
 
 export function renderWishlist() {
   const app = document.getElementById("app");
-  const cards = state.data?.cards.filter((card) => state.wishlist.has(formatCardId(card))) || [];
+  const cards = (state.data?.cards || []).filter((card) => state.wishlist.has(formatCardId(card)));
   const groupMode = state.filters.wishlistMode || "packs";
 
   let content = "";
@@ -97,9 +88,6 @@ export function renderWishlist() {
       </div>
       ${content || `<div class="placeholder">${t("wishlist.empty")}</div>`}
     </section>
-    <button class="game-pokedex-save-btn left" id="cardsSaveBtn" type="button" disabled>
-      ${t("gamePokedex.save")}
-    </button>
   `;
 
   document.querySelectorAll(".toggle").forEach((toggle) => {
@@ -117,10 +105,4 @@ export function renderWishlist() {
     attachCardEvents(renderWishlist);
   }
 
-  const saveButton = app.querySelector("#cardsSaveBtn");
-  saveButton?.addEventListener("click", async () => {
-    await saveDataToFile();
-    setCardsDirty(false);
-  });
-  setCardsDirty(Boolean(state.ui.cardsDirty));
 }

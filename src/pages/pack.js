@@ -1,31 +1,8 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
-import { saveDataToFile } from "../core/storage.js";
 import { getPack, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
-
-function renderCardsSaveButton() {
-  return `<button class="game-pokedex-save-btn left" id="cardsSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button>`;
-}
-
-function setCardsDirty(isDirty) {
-  state.ui.cardsDirty = isDirty;
-  const button = document.getElementById("cardsSaveBtn");
-  if (!button) return;
-  button.disabled = !isDirty;
-  button.classList.toggle("is-dirty", isDirty);
-}
-
-function attachCardsSaveButton() {
-  const button = document.getElementById("cardsSaveBtn");
-  if (!button) return;
-  button.addEventListener("click", async () => {
-    await saveDataToFile();
-    setCardsDirty(false);
-  });
-  setCardsDirty(Boolean(state.ui.cardsDirty));
-}
 
 function renderSubpackSelector(pack, activeSubpack) {
   const children = getSubpacks(pack);
@@ -86,10 +63,9 @@ export function renderPack(packTitle, subpackValue) {
       <section class="pack-page">
         ${renderFilters(renderAllPackGroup(), { showApplyButton: true })}
         <div><h1 class="section-title">${t("pack.allTitle")}</h1><p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p>${renderCardGrid(cards)}</div>
-      </section>${renderCardsSaveButton()}`;
+      </section>`;
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
-    attachCardsSaveButton();
     return;
   }
 
@@ -115,9 +91,8 @@ export function renderPack(packTitle, subpackValue) {
         <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
         ${renderCardGrid(cards)}
       </div>
-    </section>${renderCardsSaveButton()}`;
+    </section>`;
   attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });
-  attachCardsSaveButton();
 }

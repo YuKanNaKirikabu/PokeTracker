@@ -1,4 +1,6 @@
 ﻿import { t } from "./i18n.js";
+import { logout } from "./auth.js";
+import { state } from "./state.js";
 
 export function setActiveNav() {
   const route = location.hash || "#/";
@@ -103,3 +105,39 @@ export function setupSidePanel() {
   window.addEventListener("hashchange", close);
 }
 
+export function setupProfileMenu() {
+  const menu = document.getElementById("profileMenu");
+  const toggle = document.getElementById("profileToggle");
+  const dropdown = document.getElementById("profileDropdown");
+  if (!menu || !toggle || !dropdown) return;
+
+  const render = () => {
+    dropdown.innerHTML = state.user
+      ? `<a href="#/profile">${t("profile.profileLink")}</a><button class="profile-dropdown-logout" type="button" id="profileLogout"><span aria-hidden="true">↪</span>${t("profile.logout")}</button>`
+      : `<a href="#/profile">${t("profile.login")}</a><a href="#/register">${t("profile.register")}</a>`;
+  };
+  const close = () => {
+    dropdown.hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+  };
+
+  render();
+  toggle.addEventListener("click", () => {
+    dropdown.hidden = !dropdown.hidden;
+    toggle.setAttribute("aria-expanded", String(!dropdown.hidden));
+  });
+  dropdown.addEventListener("click", async (event) => {
+    const logoutButton = event.target.closest("#profileLogout");
+    if (!logoutButton) return;
+    await logout();
+    render();
+    close();
+    location.hash = "#/";
+  });
+  menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
+  window.addEventListener("authstatechange", render);
+  window.addEventListener("hashchange", close);
+  window.addEventListener("click", (event) => {
+    if (!menu.contains(event.target)) close();
+  });
+}

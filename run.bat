@@ -21,6 +21,8 @@ set "CONSOLE_LOG_MODE=same"
 set "FILE_LOG_KEEP_COUNT=0"
 set "REMOTE_DATA_BASE_URL=https://storage.yandexcloud.net/poketracker/data"
 set "REMOTE_WRITE=1"
+set "MONGODB_URI=mongodb://127.0.0.1:27017"
+set "MONGODB_DATABASE=poketracker"
 
 if exist "%CONFIG_FILE%" call "%CONFIG_FILE%"
 
@@ -60,14 +62,21 @@ if /I not "%STARTUP_SUMMARY_MODE%"=="off" (
 	call :print_run_banner
 )
 
-REM Check if Python is available (prefer python, fall back to py launcher)
+REM Check if Python is available (prefer the project's venv, then system Python)
 set "PYTHON_CMD="
-python -c "import sys; print(sys.version_info[0])" >nul 2>&1
-if %errorlevel% equ 0 (
-	set "PYTHON_CMD=python"
-) else (
-	py -3 -c "import sys; print(sys.version_info[0])" >nul 2>&1
-	if %errorlevel% equ 0 set "PYTHON_CMD=py -3"
+set "PROJECT_PYTHON=%SCRIPT_DIR%.venv\Scripts\python.exe"
+if exist "%PROJECT_PYTHON%" (
+	"%PROJECT_PYTHON%" -c "import sys; print(sys.version_info[0])" >nul 2>&1
+	if not errorlevel 1 set "PYTHON_CMD=%PROJECT_PYTHON%"
+)
+if "%PYTHON_CMD%"=="" (
+	python -c "import sys; print(sys.version_info[0])" >nul 2>&1
+	if not errorlevel 1 (
+		set "PYTHON_CMD=python"
+	) else (
+		py -3 -c "import sys; print(sys.version_info[0])" >nul 2>&1
+		if not errorlevel 1 set "PYTHON_CMD=py -3"
+	)
 )
 
 if not "%PYTHON_CMD%"=="" (
@@ -130,6 +139,8 @@ if not "%PYTHON_CMD%"=="" (
 	set "POKETRACKER_HOST=%HOST%"
 	set "POKETRACKER_DATA_BASE_URL=%REMOTE_DATA_BASE_URL%"
 	set "POKETRACKER_REMOTE_WRITE=%REMOTE_WRITE%"
+	set "MONGODB_URI=%MONGODB_URI%"
+	set "MONGODB_DATABASE=%MONGODB_DATABASE%"
 
 	if "%START_MINIMIZED%"=="1" (
 		powershell -NoLogo -NoProfile -Command "Add-Type -Name Win -Namespace Native -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern IntPtr GetConsoleWindow();[DllImport(\"user32.dll\")]public static extern bool ShowWindow(IntPtr hWnd,int nCmdShow);'; $h=[Native.Win]::GetConsoleWindow(); [Native.Win]::ShowWindow($h,2) ^| Out-Null" >nul 2>&1

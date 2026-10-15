@@ -1,18 +1,9 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
-import { saveDataToFile } from "../core/storage.js";
 import { attachCardImageFallbacks, formatCardId, renderCardGrid, toggleOwned } from "../features/cards.js";
 
 const collectionPendingRemoved = new Set();
 const collectionOpenPacks = new Set();
-
-function setCardsDirty(isDirty) {
-  state.ui.cardsDirty = isDirty;
-  const button = document.getElementById("cardsSaveBtn");
-  if (!button) return;
-  button.disabled = !isDirty;
-  button.classList.toggle("is-dirty", isDirty);
-}
 
 function getOrderedPacks() {
   return state.data?.packs || [];
@@ -98,7 +89,6 @@ function attachCollectionCardEvents(app) {
         ball.classList.remove("collected");
         cardEl?.classList.add("pending-remove");
       }
-      setCardsDirty(true);
     });
   });
 }
@@ -111,7 +101,7 @@ export function renderCollection() {
       visibleOwned.add(cardId);
     }
   });
-  const ownedCards = state.data.cards.filter((card) => visibleOwned.has(formatCardId(card)));
+  const ownedCards = (state.data?.cards || []).filter((card) => visibleOwned.has(formatCardId(card)));
   const groupMode = state.filters.collectionMode || "packs";
 
   let content = "";
@@ -131,9 +121,6 @@ export function renderCollection() {
       </div>
       ${content || `<div class="placeholder">${t("collection.empty")}</div>`}
     </section>
-    <button class="game-pokedex-save-btn left" id="cardsSaveBtn" type="button" disabled>
-      ${t("gamePokedex.save")}
-    </button>
   `;
 
   document.querySelectorAll(".toggle").forEach((toggle) => {
@@ -166,12 +153,4 @@ export function renderCollection() {
     });
   }
 
-  const saveButton = app.querySelector("#cardsSaveBtn");
-  saveButton?.addEventListener("click", async () => {
-    await saveDataToFile();
-    collectionPendingRemoved.clear();
-    setCardsDirty(false);
-    renderCollection();
-  });
-  setCardsDirty(Boolean(state.ui.cardsDirty));
 }

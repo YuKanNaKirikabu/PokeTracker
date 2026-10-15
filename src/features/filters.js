@@ -1,9 +1,5 @@
 import {
     CARD_TYPE_FILTERS,
-    RARITIES,
-    RARITY_ICONS,
-    TYPES,
-    TYPE_ICONS,
 } from "../config/packs.js";
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
@@ -22,13 +18,13 @@ function iconToken(value) {
 }
 function availableRarities() {
   const values = [...new Set((state.data?.cards || []).map((card) => card.rarity).filter(Boolean))];
-  return values.length ? values.sort((a, b) => { const ai = RARITIES.indexOf(iconToken(a)), bi = RARITIES.indexOf(iconToken(b)); return (ai < 0 ? 999 : ai) - (bi < 0 ? 999 : bi); }) : RARITIES;
+  return values.sort((a, b) => iconToken(a).localeCompare(iconToken(b)));
 }
 function availableTypes() {
   const values = [...new Set((state.data?.cards || []).filter((card) => getCardCategory(card) === 'POKEMON').map((card) => card.type).filter(Boolean))];
-  return values.length ? values : TYPES;
+  return values;
 }
-function iconUrl(value, fallbackMap) { return /^https?:\/\//i.test(String(value || '')) ? value : (fallbackMap[value] || ''); }
+function iconUrl(value) { return String(value || ''); }
 function availableCardTypeFilters() {
   const configured = CARD_TYPE_FILTERS.map((item) => ({ ...item, label: t(item.labelKey) }));
   const known = new Set(configured.map((item) => item.id));
@@ -193,7 +189,7 @@ export function renderFilters(extraGroups = "", options = {}) {
           ${availableRarities().map(
             (rarity) => `
               <button class="icon-pill ${state.filters.rarities.has(rarity) ? "active" : ""}" data-rarity="${rarity}">
-                <img src="${iconUrl(rarity, RARITY_ICONS)}" alt="${iconToken(rarity)}" />
+                <img src="${iconUrl(rarity)}" alt="${iconToken(rarity)}" />
               </button>
             `
           ).join(" ")}
@@ -205,7 +201,7 @@ export function renderFilters(extraGroups = "", options = {}) {
           ${availableTypes().map(
             (type) => `
               <button class="icon-pill ${state.filters.types.has(type) ? "active" : ""}" data-type="${type}">
-                <img src="${iconUrl(type, TYPE_ICONS)}" alt="${iconToken(type)}" />
+                <img src="${iconUrl(type)}" alt="${iconToken(type)}" />
               </button>
             `
           ).join(" ")}

@@ -56,7 +56,7 @@ export async function saveDataToFile() {
   };
 
   try {
-    const response = await fetch("/api/save", {
+    const response = await fetch("/api/collection", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -207,11 +207,16 @@ export async function saveSettingsToFile() {
 
 export async function loadDataFromFile() {
   try {
-    const response = await fetch("/api/load");
+    const response = await fetch("/api/collection");
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
 
+    if (response.status === 401) {
+      state.owned = new Set();
+      state.wishlist = new Set();
+      return { owned: 0, wishlist: 0, method: "unauthenticated" };
+    }
     const data = await response.json();
 
     state.owned = new Set(data.owned || []);
@@ -236,12 +241,8 @@ export async function loadBootstrapFromFile() {
     }
 
     const payload = await response.json();
-    const collection = payload.collection || {};
     const settings = payload.settings || {};
     const gamePokedex = payload.gamePokedex || {};
-
-    state.owned = new Set(collection.owned || []);
-    state.wishlist = new Set(collection.wishlist || []);
 
     if (settings.ui) {
       state.ui = { ...state.ui, ...pickPersistentUi(settings.ui) };
@@ -272,9 +273,8 @@ export async function loadBootstrapFromFile() {
     }
 
     return {
-      owned: collection.owned?.length || 0,
-      wishlist: collection.wishlist?.length || 0,
-      date: collection.exportDate,
+      owned: 0,
+      wishlist: 0,
       method: "server-bootstrap",
     };
   } catch (err) {
