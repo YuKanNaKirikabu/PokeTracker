@@ -1,5 +1,6 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
+import { setPokedexSearchVisible } from "../core/ui.js";
 import { getPack, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
@@ -49,6 +50,7 @@ function renderPackMedia(pack, activeSubpack) {
 
 export function renderPack(packTitle, subpackValue) {
   const app = document.getElementById("app");
+  setPokedexSearchVisible(true);
   state.filters.pack = packTitle;
 
   if (!state.data?.cards?.length) {
@@ -61,11 +63,12 @@ export function renderPack(packTitle, subpackValue) {
     const ownedCount = state.data.cards.filter((card) => state.owned.has(formatCardId(card))).length;
     app.innerHTML = `
       <section class="pack-page">
-        ${renderFilters(renderAllPackGroup(), { showApplyButton: true })}
+        ${renderFilters(renderAllPackGroup(), { showApplyButton: true, showSearch: false })}
         <div><h1 class="section-title">${t("pack.allTitle")}</h1><p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p>${renderCardGrid(cards)}</div>
       </section>`;
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
+    attachHeaderPackSearch(() => renderPack("ALL"));
     return;
   }
 
@@ -84,7 +87,7 @@ export function renderPack(packTitle, subpackValue) {
 
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters(selector)}
+      ${renderFilters(selector, { showSearch: false })}
       <div>
         <div class="pack-header">${renderPackMedia(pack, activeSubpack)}</div>
         <h1 class="section-title">${title}</h1>
@@ -95,4 +98,23 @@ export function renderPack(packTitle, subpackValue) {
   attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });
+  attachHeaderPackSearch(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
+}
+
+function attachHeaderPackSearch(render) {
+  const input = document.getElementById("pokedexSearchInput");
+  if (!input) return;
+  input.placeholder = t("filters.searchPlaceholder");
+  if (input._pokedexHandler) input.removeEventListener("input", input._pokedexHandler);
+  if (input._packHandler) input.removeEventListener("input", input._packHandler);
+  input.value = state.filters.query || "";
+  const handler = (event) => {
+    state.filters.query = event.target.value;
+    render();
+    const nextInput = document.getElementById("pokedexSearchInput");
+    nextInput?.focus();
+    if (nextInput) nextInput.setSelectionRange(nextInput.value.length, nextInput.value.length);
+  };
+  input.addEventListener("input", handler);
+  input._packHandler = handler;
 }

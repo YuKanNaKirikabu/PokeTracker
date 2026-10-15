@@ -108,7 +108,7 @@ export function applyFilters(cards) {
 }
 
 export function renderFilters(extraGroups = "", options = {}) {
-  const { showApplyButton = false } = options;
+  const { showApplyButton = false, showSearch = true } = options;
   const arrows = {
     asc: "▲",
     desc: "▼",
@@ -143,10 +143,12 @@ export function renderFilters(extraGroups = "", options = {}) {
           </button>
         </div>
       </div>
-      <div class="filter-group">
-        <h4>${t("filters.search")}</h4>
-        <input type="text" id="searchInput" placeholder="${t("filters.searchPlaceholder")}" value="${state.filters.query}" />
-      </div>
+      ${showSearch ? `
+        <div class="filter-group">
+          <h4>${t("filters.search")}</h4>
+          <input type="text" id="searchInput" placeholder="${t("filters.searchPlaceholder")}" value="${state.filters.query}" />
+        </div>
+      ` : ""}
       <div class="filter-group">
         <h4>${t("filters.sort")}</h4>
         <div class="toggle-group" id="sortGroup">

@@ -112,9 +112,10 @@ export function setupProfileMenu() {
   if (!menu || !toggle || !dropdown) return;
 
   const render = () => {
+    toggle.innerHTML = state.user ? '<span aria-hidden="true">✓</span>' : '<span aria-hidden="true">👤</span>';
     dropdown.innerHTML = state.user
       ? `<a href="#/profile">${t("profile.profileLink")}</a><button class="profile-dropdown-logout" type="button" id="profileLogout"><span aria-hidden="true">↪</span>${t("profile.logout")}</button>`
-      : `<a href="#/profile">${t("profile.login")}</a><a href="#/register">${t("profile.register")}</a>`;
+      : `<a href="#/register?mode=login">${t("profile.login")}</a><a href="#/register">${t("profile.register")}</a>`;
   };
   const close = () => {
     dropdown.hidden = true;

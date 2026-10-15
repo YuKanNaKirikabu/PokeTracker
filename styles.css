@@ -87,6 +87,7 @@ body {
   align-items: center;
   justify-content: flex-end;
   margin-left: auto;
+  margin-right: 0;
 }
 
 .pokedex-search input {
@@ -205,7 +206,7 @@ body.theme-light .menu-toggle img {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-left: auto;
+  margin-left: 0;
 }
 
 .profile-menu {
@@ -269,6 +270,102 @@ body.theme-light .menu-toggle img {
 .profile-dropdown .profile-dropdown-logout:hover {
   background: rgba(245, 114, 114, 0.16);
   color: var(--danger);
+}
+
+.profile-dropdown .profile-dropdown-logout span {
+  margin-right: 6px;
+}
+
+.register-page .site-header {
+  display: none;
+}
+
+.register-page .content {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-shell {
+  width: min(100% - 32px, 460px);
+  margin: 0 auto;
+}
+
+.register-card {
+  padding: 36px;
+  border: 1px solid rgba(124, 131, 255, 0.2);
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: 0 24px 70px rgba(5, 8, 20, 0.35);
+  text-align: center;
+}
+
+.register-card .section-title {
+  margin-top: 0;
+}
+
+.register-card form,
+.register-card .settings-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.register-card .settings-input {
+  width: 100%;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field .settings-input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.password-toggle:hover {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.auth-switch {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
 }
 
 .profile-links {
@@ -672,6 +769,7 @@ body.theme-light .menu-toggle img {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 24px;
+  align-items: start;
 }
 
 .pack-header {
@@ -693,9 +791,13 @@ body.theme-light .menu-toggle img {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: fit-content;
+  height: min(calc(100vh - 132px), 920px);
+  max-height: calc(100vh - 132px);
+  overflow-y: auto;
+  overflow-x: hidden;
   position: sticky;
   top: 100px;
+  scrollbar-width: thin;
 }
 
 .filters input,
@@ -1206,7 +1308,7 @@ body.theme-light .menu-toggle img {
   grid-template-columns: minmax(260px, 320px) 1fr;
   gap: 24px;
   align-items: stretch;
-  height: 100%;
+  height: calc(100vh - 164px);
   min-height: 0;
   flex: 1 1 auto;
 }
@@ -1215,7 +1317,7 @@ body.theme-light .menu-toggle img {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: 100%;
+  height: calc(100vh - 164px);
   min-height: 0;
   overflow: hidden;
 }
@@ -1227,7 +1329,8 @@ body.theme-light .menu-toggle img {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: calc(100vh - 240px);
+  height: 100%;
+  max-height: none;
   overflow-y: auto;
   overflow-x: hidden;
   position: sticky;
@@ -1246,7 +1349,7 @@ body.theme-light .menu-toggle img {
   grid-template-columns: 56px 1fr;
   gap: 12px;
   align-items: center;
-  padding: 10px;
+  padding: 7px 10px;
   border-radius: 14px;
   background: transparent;
   border: 1px solid transparent;
@@ -1274,8 +1377,8 @@ body.theme-light .menu-toggle img {
 }
 
 .pokedex-icon {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   border-radius: 14px;
   background: rgba(124, 131, 255, 0.12);
   display: grid;
@@ -1508,6 +1611,7 @@ body.theme-light .game-icon {
 
   .pokedex-list {
     position: static;
+    height: 320px;
     max-height: 320px;
   }
 
@@ -1524,6 +1628,9 @@ body.theme-light .game-icon {
   .filters {
     position: relative;
     top: 0;
+    height: auto;
+    max-height: none;
+    overflow: visible;
   }
 }
 

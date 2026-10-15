@@ -15,6 +15,7 @@ import { renderRegister } from "./pages/register.js";
 import { renderWishlist } from "./pages/wishlist.js";
 
 export function renderRoute() {
+  document.body.classList.remove("register-page");
   applyTranslations();
   setActiveNav();
   setPageTitle("");
@@ -65,16 +66,20 @@ export function renderRoute() {
   }
   if (hash === "#/profile") {
     setBrandMode("home");
+    if (!state.user) {
+      location.hash = "#/register?mode=login";
+      return;
+    }
     renderProfile();
     return;
   }
-  if (hash === "#/register") {
+  if (hash.startsWith("#/register")) {
     setBrandMode("home");
     renderRegister();
     return;
   }
   if (hash.startsWith("#/pokedex")) {
-    setBrandMode("mobile");
+    setBrandMode("home");
     const [, queryString] = hash.split("?");
     const params = new URLSearchParams(queryString || "");
     const rawNo = params.get("no");

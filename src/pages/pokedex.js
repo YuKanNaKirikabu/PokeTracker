@@ -14,7 +14,7 @@ import {
 export function renderPokedex() {
   const app = document.getElementById("app");
   setBrandSubtitle(t("pokedex.title"));
-  setPageTitle(t("pokedex.title"));
+  setPageTitle("");
   setPokedexSearchVisible(true);
   const list = getPokedexList();
   if (!list.length) {
@@ -92,6 +92,7 @@ export function renderPokedex() {
 function attachPokedexSearch(list) {
   const input = document.getElementById("pokedexSearchInput");
   if (!input) return;
+  input.placeholder = t("header.searchPlaceholder");
   if (input._pokedexHandler) {
     input.removeEventListener("input", input._pokedexHandler);
   }

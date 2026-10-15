@@ -75,8 +75,8 @@ export function renderProfile() {
           <input class="settings-input" name="password" type="password" minlength="8" placeholder="${t("profile.password")}" required />
           <div class="settings-actions">
             <button class="settings-btn primary" type="submit">${t("profile.login")}</button>
-            <a class="settings-btn secondary" href="#/register">${t("profile.register")}</a>
           </div>
+          <p class="auth-switch">${t("profile.noAccount")} <a href="#/register">${t("profile.register")}</a></p>
           <p class="settings-desc" id="authError" role="alert"></p>
         </form>
       </div>
