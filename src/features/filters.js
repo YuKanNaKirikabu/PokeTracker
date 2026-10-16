@@ -114,33 +114,20 @@ export function renderFilters(extraGroups = "", options = {}) {
     desc: "▼",
   };
   const activeArrow = arrows[state.filters.sortDir[state.filters.sort]];
+  const isSectionOpen = (id) => state.ui.filterSectionsOpen?.has(id);
   return `
     <div class="filters">
       ${extraGroups}
-      <div class="filter-group">
-        <h4>${t("filters.scale")}</h4>
-        <div class="scale-group" id="scaleGroup">
-          <button class="scale-btn ${state.filters.scale === "lg" ? "active" : ""}" data-scale="lg">
-            <span class="scale-preview scale-lg">
-              <span></span>
-              <span></span>
-            </span>
-          </button>
-          <button class="scale-btn ${state.filters.scale === "md" ? "active" : ""}" data-scale="md">
-            <span class="scale-preview scale-md">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </button>
-          <button class="scale-btn ${state.filters.scale === "sm" ? "active" : ""}" data-scale="sm">
-            <span class="scale-preview scale-sm">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </button>
+      <div class="filter-group filter-scale-group">
+        <button class="filter-toggle" data-filter-target="scaleWrap" type="button" aria-expanded="${isSectionOpen("scaleWrap")}">
+          <span>${t("filters.scale")}</span><span class="filter-toggle-icon">${isSectionOpen("scaleWrap") ? "▲" : "▼"}</span>
+        </button>
+        <div class="filter-collapsible ${isSectionOpen("scaleWrap") ? "is-open" : ""}" id="scaleWrap">
+          <div class="scale-group" id="scaleGroup">
+            <button class="scale-btn ${state.filters.scale === "lg" ? "active" : ""}" data-scale="lg">LG</button>
+            <button class="scale-btn ${state.filters.scale === "md" ? "active" : ""}" data-scale="md">MD</button>
+            <button class="scale-btn ${state.filters.scale === "sm" ? "active" : ""}" data-scale="sm">SM</button>
+          </div>
         </div>
       </div>
       ${showSearch ? `
@@ -150,71 +137,76 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       ` : ""}
       <div class="filter-group">
-        <h4>${t("filters.sort")}</h4>
-        <div class="toggle-group" id="sortGroup">
-          <button class="toggle-btn ${state.filters.sort === "number" ? "active" : ""}" data-sort="number">
-            <span class="sort-label">${t("filters.sortNumber")}</span>
-            <span class="sort-arrow">${state.filters.sort === "number" ? activeArrow : ""}</span>
-          </button>
-          <button class="toggle-btn ${state.filters.sort === "name" ? "active" : ""}" data-sort="name">
-            <span class="sort-label">${t("filters.sortName")}</span>
-            <span class="sort-arrow">${state.filters.sort === "name" ? activeArrow : ""}</span>
-          </button>
-          <button class="toggle-btn ${state.filters.sort === "rarity" ? "active" : ""}" data-sort="rarity">
-            <span class="sort-label">${t("filters.sortRarity")}</span>
-            <span class="sort-arrow">${state.filters.sort === "rarity" ? activeArrow : ""}</span>
-          </button>
+        <button class="filter-toggle" data-filter-target="sortWrap" type="button" aria-expanded="${isSectionOpen("sortWrap")}">
+          <span>${t("filters.sort")}</span><span class="filter-toggle-icon">${isSectionOpen("sortWrap") ? "▲" : "▼"}</span>
+        </button>
+        <div class="filter-collapsible ${isSectionOpen("sortWrap") ? "is-open" : ""}" id="sortWrap">
+          <div class="toggle-group" id="sortGroup">
+            <button class="toggle-btn ${state.filters.sort === "number" ? "active" : ""}" data-sort="number">${t("filters.sortNumber")}</button>
+            <button class="toggle-btn ${state.filters.sort === "name" ? "active" : ""}" data-sort="name">${t("filters.sortName")}</button>
+            <button class="toggle-btn ${state.filters.sort === "rarity" ? "active" : ""}" data-sort="rarity">${t("filters.sortRarity")}</button>
+          </div>
         </div>
       </div>
       <div class="filter-group">
-        <h4>${t("filters.owned")}</h4>
-        <div class="toggle-group" id="ownedGroup">
-          <button class="toggle-btn ${state.filters.owned === "all" ? "active" : ""}" data-owned="all">${t("filters.ownedAll")}</button>
-          <button class="toggle-btn ${state.filters.owned === "owned" ? "active" : ""}" data-owned="owned">${t("filters.ownedHave")}</button>
-          <button class="toggle-btn ${state.filters.owned === "missing" ? "active" : ""}" data-owned="missing">${t("filters.ownedMissing")}</button>
-          <button class="toggle-btn ${state.filters.owned === "wishlist" ? "active" : ""}" data-owned="wishlist">${t("filters.ownedWishlist")}</button>
+        <button class="filter-toggle" data-filter-target="ownedWrap" type="button" aria-expanded="${isSectionOpen("ownedWrap")}">
+          <span>${t("filters.owned")}</span><span class="filter-toggle-icon">${isSectionOpen("ownedWrap") ? "▲" : "▼"}</span>
+        </button>
+        <div class="filter-collapsible ${isSectionOpen("ownedWrap") ? "is-open" : ""}" id="ownedWrap">
+          <div class="toggle-group" id="ownedGroup">
+            <button class="toggle-btn ${state.filters.owned === "all" ? "active" : ""}" data-owned="all">${t("filters.ownedAll")}</button>
+            <button class="toggle-btn ${state.filters.owned === "owned" ? "active" : ""}" data-owned="owned">${t("filters.ownedHave")}</button>
+            <button class="toggle-btn ${state.filters.owned === "missing" ? "active" : ""}" data-owned="missing">${t("filters.ownedMissing")}</button>
+            <button class="toggle-btn ${state.filters.owned === "wishlist" ? "active" : ""}" data-owned="wishlist">${t("filters.ownedWishlist")}</button>
+          </div>
         </div>
       </div>
       <div class="filter-group">
-        <h4>${t("filters.cardType")}</h4>
-        <div class="toggle-group" id="cardTypeGroup">
-          ${availableCardTypeFilters().map(
-            (item) => `
-              <button class="toggle-btn ${state.filters.cardType === item.id ? "active" : ""}" data-card-type="${item.id}">${item.label || t(item.labelKey)}</button>
-            `
-          ).join("")}
+        <button class="filter-toggle" data-filter-target="cardTypeWrap" type="button" aria-expanded="${isSectionOpen("cardTypeWrap")}">
+          <span>${t("filters.cardType")}</span><span class="filter-toggle-icon">${isSectionOpen("cardTypeWrap") ? "▲" : "▼"}</span>
+        </button>
+        <div class="filter-collapsible ${isSectionOpen("cardTypeWrap") ? "is-open" : ""}" id="cardTypeWrap">
+          <div class="toggle-group" id="cardTypeGroup">
+            ${availableCardTypeFilters().map((item) => `<button class="toggle-btn ${state.filters.cardType === item.id ? "active" : ""}" data-card-type="${item.id}">${item.label || t(item.labelKey)}</button>`).join("")}
+          </div>
         </div>
       </div>
       <div class="filter-group">
-        <h4>${t("filters.rarity")}</h4>
+        <button class="filter-toggle" data-filter-target="rarityPillsWrap" type="button" aria-expanded="${isSectionOpen("rarityPillsWrap")}">
+          <span>${t("filters.rarity")}</span><span class="filter-toggle-icon">${isSectionOpen("rarityPillsWrap") ? "▲" : "▼"}</span>
+        </button>
+        <div class="filter-collapsible ${isSectionOpen("rarityPillsWrap") ? "is-open" : ""}" id="rarityPillsWrap">
         <div class="filter-pills" id="rarityPills">
           ${availableRarities().map(
             (rarity) => `
-              <button class="icon-pill ${state.filters.rarities.has(rarity) ? "active" : ""}" data-rarity="${rarity}">
+              <button class="icon-pill ${state.filters.rarities?.has(rarity) ? "active" : ""}" data-rarity="${rarity}" type="button">
                 <img src="${iconUrl(rarity)}" alt="${iconToken(rarity)}" />
               </button>
             `
           ).join(" ")}
         </div>
+        </div>
       </div>
       <div class="filter-group">
-        <h4>${t("filters.type")}</h4>
+        <button class="filter-toggle" data-filter-target="typePillsWrap" type="button" aria-expanded="${isSectionOpen("typePillsWrap")}">
+          <span>${t("filters.type")}</span><span class="filter-toggle-icon">${isSectionOpen("typePillsWrap") ? "▲" : "▼"}</span>
+        </button>
+        <div class="filter-collapsible ${isSectionOpen("typePillsWrap") ? "is-open" : ""}" id="typePillsWrap">
         <div class="filter-pills" id="typePills">
           ${availableTypes().map(
             (type) => `
-              <button class="icon-pill ${state.filters.types.has(type) ? "active" : ""}" data-type="${type}">
+              <button class="icon-pill ${state.filters.types?.has(type) ? "active" : ""}" data-type="${type}" type="button">
                 <img src="${iconUrl(type)}" alt="${iconToken(type)}" />
               </button>
             `
           ).join(" ")}
         </div>
-      </div>
-      ${showApplyButton ? `
-        <div class="filter-actions">
-          <button class="toggle-btn filter-reset" id="filtersReset" type="button">${t("common.reset")}</button>
-          <button class="toggle-btn filter-apply" id="filtersApply" type="button">${t("common.apply")}</button>
         </div>
-      ` : ""}
+      </div>
+      <div class="filter-actions">
+        ${showApplyButton ? `<button class="toggle-btn filter-apply" id="filtersApply" type="button">${t("common.apply")}</button>` : ""}
+        <button class="toggle-btn filter-reset" id="filtersReset" type="button">${t("common.reset")}</button>
+      </div>
     </div>
   `;
 }
@@ -299,6 +291,19 @@ export function attachFilterEvents(render, options = {}) {
   const packWrap = document.getElementById("packFilterWrap");
   const applyButton = document.getElementById("filtersApply");
   const resetButton = document.getElementById("filtersReset");
+  document.querySelectorAll(".filter-toggle[data-filter-target]").forEach((toggle) => {
+    const target = document.getElementById(toggle.dataset.filterTarget);
+    if (!target) return;
+    toggle.addEventListener("click", () => {
+      const open = target.classList.toggle("is-open");
+      if (!state.ui.filterSectionsOpen) state.ui.filterSectionsOpen = new Set();
+      if (open) state.ui.filterSectionsOpen.add(toggle.dataset.filterTarget);
+      else state.ui.filterSectionsOpen.delete(toggle.dataset.filterTarget);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      const icon = toggle.querySelector(".filter-toggle-icon");
+      if (icon) icon.textContent = open ? "▲" : "▼";
+    });
+  });
 
   let lastAppliedSignature = getFilterSignature();
   const setPending = (isPending) => {
@@ -348,9 +353,7 @@ export function attachFilterEvents(render, options = {}) {
       if (!btn) return;
       state.filters.scale = btn.dataset.scale;
       if (deferApply) {
-        scaleGroup.querySelectorAll(".scale-btn").forEach((item) => {
-          item.classList.toggle("active", item === btn);
-        });
+        scaleGroup.querySelectorAll(".scale-btn").forEach((item) => item.classList.toggle("active", item === btn));
         updatePending();
       } else {
         render();
@@ -381,9 +384,7 @@ export function attachFilterEvents(render, options = {}) {
       if (!btn) return;
       state.filters.owned = btn.dataset.owned;
       if (deferApply) {
-        ownedGroup.querySelectorAll(".toggle-btn").forEach((item) => {
-          item.classList.toggle("active", item === btn);
-        });
+        ownedGroup.querySelectorAll(".toggle-btn").forEach((item) => item.classList.toggle("active", item === btn));
         updatePending();
       } else {
         render();
@@ -396,9 +397,7 @@ export function attachFilterEvents(render, options = {}) {
       if (!btn) return;
       state.filters.cardType = btn.dataset.cardType || "all";
       if (deferApply) {
-        cardTypeGroup.querySelectorAll(".toggle-btn").forEach((item) => {
-          item.classList.toggle("active", item === btn);
-        });
+        cardTypeGroup.querySelectorAll(".toggle-btn").forEach((item) => item.classList.toggle("active", item === btn));
         updatePending();
       } else {
         render();
@@ -410,6 +409,8 @@ export function attachFilterEvents(render, options = {}) {
       const pill = event.target.closest(".icon-pill");
       if (!pill) return;
       const rarity = pill.dataset.rarity;
+      if (!rarity) return;
+      if (!state.filters.rarities) state.filters.rarities = new Set();
       if (state.filters.rarities.has(rarity)) {
         state.filters.rarities.delete(rarity);
         pill.classList.remove("active");
@@ -429,6 +430,8 @@ export function attachFilterEvents(render, options = {}) {
       const pill = event.target.closest(".icon-pill");
       if (!pill) return;
       const type = pill.dataset.type;
+      if (!type) return;
+      if (!state.filters.types) state.filters.types = new Set();
       if (state.filters.types.has(type)) {
         state.filters.types.delete(type);
         pill.classList.remove("active");

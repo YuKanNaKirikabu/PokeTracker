@@ -158,6 +158,13 @@ function attachPokedexEvents(selectedNumber) {
   const strip = document.getElementById("pokedexCardStrip");
   const prev = document.getElementById("pokedexScrollPrev");
   const next = document.getElementById("pokedexScrollNext");
+  if (strip) {
+    strip.addEventListener("wheel", (event) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      strip.scrollLeft += event.deltaY;
+    }, { passive: false });
+  }
   if (strip && prev && next) {
     prev.addEventListener("click", () => {
       const maxScroll = strip.scrollWidth - strip.clientWidth;

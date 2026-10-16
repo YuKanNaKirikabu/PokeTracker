@@ -16,6 +16,12 @@ import { renderWishlist } from "./pages/wishlist.js";
 
 export function renderRoute() {
   document.body.classList.remove("register-page");
+  document.body.classList.remove("home-route");
+  const mobileFiltersToggle = document.getElementById("mobileFiltersToggle");
+  if (mobileFiltersToggle) {
+    mobileFiltersToggle.style.display = "none";
+    mobileFiltersToggle.setAttribute("aria-expanded", "false");
+  }
   applyTranslations();
   setActiveNav();
   setPageTitle("");

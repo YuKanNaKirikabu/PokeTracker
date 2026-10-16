@@ -1,4 +1,3 @@
-import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
 import { getMobilePackTiles, setupPacksArc } from "../features/packs-ui.js";
 
@@ -7,9 +6,7 @@ export function renderMobileHome() {
   const mode = state.ui.packsHomeMode || "grid";
   const isArc = mode === "arc";
   app.innerHTML = `
-    <section>
-      <h1 class="section-title">${t("mobileHome.title")}</h1>
-      <p class="section-subtitle">${t("mobileHome.subtitle")}${isArc ? ` ${t("mobileHome.arcNote")}` : ""}</p>
+    <section class="mobile-packs-page">
       ${isArc ? '<div class="packs-arc" id="packsArc"></div>' : '<div class="packs-gallery" id="packsGrid"></div>'}
     </section>
   `;

@@ -14,6 +14,7 @@ export const state = {
     cardsDirty: false,
     settingsDirty: false,
     packFiltersOpen: false,
+    filterSectionsOpen: new Set(),
   },
   filters: {
     query: "",

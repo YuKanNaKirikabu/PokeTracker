@@ -4,10 +4,10 @@ import { mountCompilerWidget } from "../widgets/compiler-widget/compiler-widget.
 
 export function renderHome() {
   const app = document.getElementById("app");
+  document.body.classList.add("home-route");
   app.innerHTML = `
-    <section>
+    <section class="home-page">
       <h1 class="section-title">${t("home.title")}</h1>
-      <p class="section-subtitle">${t("home.subtitle")}</p>
       <div class="choice-grid">
         <a class="choice-card" href="#/mobile">
           <div class="choice-logo">
@@ -49,4 +49,3 @@ export function renderHome() {
     });
   }
 }
-

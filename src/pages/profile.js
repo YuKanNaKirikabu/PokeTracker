@@ -12,7 +12,7 @@ function escapeHtml(value) {
 function renderPreviewCards(cardIds) {
   const cards = (state.data?.cards || [])
     .filter((card) => cardIds.has(`${card.pack}-${card.number}`))
-    .slice(0, 5);
+    .slice(0, 6);
   if (!cards.length) return `<p class="profile-empty">${t("profile.noCards")}</p>`;
   return `
     <div class="profile-card-preview">
@@ -30,7 +30,7 @@ export function renderProfile() {
   const app = document.getElementById("app");
   if (state.user) {
     app.innerHTML = `
-      <section class="settings-container">
+      <section class="settings-container profile-page">
         <div class="settings-section">
           <div class="profile-heading">
             <div>
@@ -67,7 +67,7 @@ export function renderProfile() {
   }
 
   app.innerHTML = `
-    <section class="settings-container">
+    <section class="settings-container profile-page">
       <div class="settings-section">
         <h1 class="section-title">${t("profile.title")}</h1>
         <form id="authForm">

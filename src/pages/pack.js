@@ -10,7 +10,7 @@ function renderSubpackSelector(pack, activeSubpack) {
   if (!children.length) return "";
   const activeId = activeSubpack?.id || "all";
   return `
-    <div class="filter-group">
+    <div class="filter-group filter-subpack-group">
       <h4>${pack.display || pack.id}</h4>
       <div class="toggle-group" id="subpackGroup">
         <button class="toggle-btn ${activeId === "all" ? "active" : ""}" data-subpack="all" type="button">${t("common.all")}</button>
@@ -69,6 +69,7 @@ export function renderPack(packTitle, subpackValue) {
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
     attachHeaderPackSearch(() => renderPack("ALL"));
+    attachMobileFilterToggle();
     return;
   }
 
@@ -89,16 +90,32 @@ export function renderPack(packTitle, subpackValue) {
     <section class="pack-page">
       ${renderFilters(selector, { showSearch: false })}
       <div>
-        <div class="pack-header">${renderPackMedia(pack, activeSubpack)}</div>
-        <h1 class="section-title">${title}</h1>
-        <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
+        <div class="pack-header">
+          ${renderPackMedia(pack, activeSubpack)}
+          <div class="pack-header-info">
+            <h1 class="section-title">${title}</h1>
+            <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
+          </div>
+        </div>
         ${renderCardGrid(cards)}
       </div>
     </section>`;
   attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
+  attachMobileFilterToggle();
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });
   attachHeaderPackSearch(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
+}
+
+function attachMobileFilterToggle() {
+  const button = document.getElementById("mobileFiltersToggle");
+  const filters = document.querySelector(".pack-page .filters");
+  if (!button || !filters) return;
+  button.style.display = "";
+  button.addEventListener("click", () => {
+    const open = filters.classList.toggle("mobile-open");
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+  });
 }
 
 function attachHeaderPackSearch(render) {

@@ -67,6 +67,7 @@ export const I18N = {
       arcNote: "Режим в разработке.",
     },
     filters: {
+      title: "Фильтры",
       scale: "Масштаб карт",
       search: "Поиск",
       searchPlaceholder: "Название или 001",
