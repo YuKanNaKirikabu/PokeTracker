@@ -155,7 +155,6 @@ async function renderPokedexWorld(entry, regionNames) {
   const regions = document.getElementById("pokedexRegions");
   const gamesRoot = document.getElementById("pokedexGames");
   if (!regions || !gamesRoot) return;
-  const baseRegion = getPokedexRegion(entry.number).split(" / ")[0];
   try {
     await loadGameDexCatalog();
     const catalog = (await import("../config/pokedex.js")).GAME_POKEDEXES;
@@ -167,15 +166,15 @@ async function renderPokedexWorld(entry, regionNames) {
       const available = data.byName.has(nameKey) || data.list.some(p => normalizedName(p.nameEn || p.name || p) === nameKey);
       return {...game,index,available};
     }))).sort((a,b) => Number(b.available)-Number(a.available) || a.index-b.index);
-    const regionOrder = ["Канто","Джото","Хоэнн","Синно","Юнова","Калос","Алола","Галар","Палдея"];
-    const availableRegions = new Set([baseRegion]);
+    const regionOrder = [{ru:"Канто",en:"kanto"},{ru:"Джото",en:"johto"},{ru:"Хоэнн",en:"hoenn"},{ru:"Синно",en:"sinnoh"},{ru:"Юнова",en:"unova"},{ru:"Калос",en:"kalos"},{ru:"Алола",en:"alola"},{ru:"Галар",en:"galar"},{ru:"Палдея",en:"paldea"}];
+    const availableRegions = new Set();
     for (const game of games) {
       for (const dex of (game.dexes || [])) {
         const exists = (dex.entries || []).some(p => normalizedName(p.nameEn || p.name || p) === nameKey);
         if (!exists) continue;
         const title = String(dex.title || "").toLowerCase();
-        const found = regionOrder.find(name => title.includes(name.toLowerCase()));
-        if (found) availableRegions.add(found);
+        const found = regionOrder.find(region => title.includes(region.ru.toLowerCase()) || title.includes(region.en));
+        if (found) availableRegions.add(found.ru);
       }
     }
     regions.querySelectorAll(".pokedex-region-chip").forEach(chip => {
