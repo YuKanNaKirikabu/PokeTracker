@@ -89,6 +89,7 @@ export function renderPokedex() {
     mount.innerHTML = renderPokedexDetail(selected);
     attachPokedexEvents(selected.number);
     attachDetailTabs(selected);
+    loadPokedexFlavorText(selected);
     renderPokedexWorld(selected, regionNames);
   }, 0);
 }
@@ -151,6 +152,19 @@ async function loadEvolutionChain(entry, panel) {
   panel.innerHTML = `<h3 class="pokedex-tab-heading">Эволюционная цепочка</h3><div class="pokedex-evolution-chain">${relevant.map((item,i)=>`<div class="pokedex-evolution-node ${item.id===entry.number?"current":""}"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png" alt="" loading="lazy"><span>#${String(item.id).padStart(4,"0")}</span><strong>${item.name.replace(/-/g," ")}</strong></div>${i<relevant.length-1?'<span class="pokedex-evolution-arrow" aria-hidden="true">→</span>':""}`).join("")}</div><p class="pokedex-data-note">Цепочка показывает предыдущие и последующие формы, включая текущую.</p>`;
 }
 
+async function loadPokedexFlavorText(entry) {
+  const target = document.querySelector(".pokedex-overview-description p");
+  if (!target) return;
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${entry.number}`);
+    if (!response.ok) return;
+    const species = await response.json();
+    const lang = document.documentElement.lang === "ru" ? "ru" : "en";
+    const flavor = (species.flavor_text_entries || []).find(item => item.language?.name === lang)
+      || (species.flavor_text_entries || []).find(item => item.language?.name === "en");
+    if (flavor && target.isConnected) target.textContent = flavor.flavor_text.replace(/[\n\f\r]+/g," ").replace(/\s+/g," ").trim();
+  } catch {}
+}
 async function renderPokedexWorld(entry, regionNames) {
   const regions = document.getElementById("pokedexRegions");
   const gamesRoot = document.getElementById("pokedexGames");
