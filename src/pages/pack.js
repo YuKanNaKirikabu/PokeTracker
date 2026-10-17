@@ -144,12 +144,23 @@ function attachCollectionSave() {
   const button = document.getElementById("collectionSaveBtn");
   if (!button) return;
   const refresh = () => {
-    button.disabled = !state.user || !state.ui.cardsDirty;
-    button.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty));
+    const current = document.getElementById("collectionSaveBtn");
+    if (!current) return;
+    current.disabled = !state.user || !state.ui.cardsDirty;
+    current.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty));
   };
+  if (!window.__collectionSaveRefreshBound) {
+    window.addEventListener("cardsdatachanged", () => {
+      const current = document.getElementById("collectionSaveBtn");
+      if (current) { current.disabled = !state.user || !state.ui.cardsDirty; current.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty)); }
+    });
+    window.addEventListener("cardsdatasaved", () => {
+      const current = document.getElementById("collectionSaveBtn");
+      if (current) { current.disabled = !state.user || !state.ui.cardsDirty; current.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty)); }
+    });
+    window.__collectionSaveRefreshBound = true;
+  }
   refresh();
-  window.addEventListener("cardsdatachanged", refresh);
-  window.addEventListener("cardsdatasaved", refresh);
   button.addEventListener("click", async () => {
     if (!state.user) { location.hash = "#/register?mode=login"; return; }
     if (!state.ui.cardsDirty) return;
