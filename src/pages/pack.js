@@ -124,9 +124,10 @@ function attachHeaderPackSearch(render) {
   input.placeholder = t("filters.searchPlaceholder");
   if (input._pokedexHandler) input.removeEventListener("input", input._pokedexHandler);
   if (input._packHandler) input.removeEventListener("input", input._packHandler);
-  input.value = state.filters.query || "";
+  input.value = state.ui.packSearch || "";
   const handler = (event) => {
-    state.filters.query = event.target.value;
+    state.ui.packSearch = event.target.value;
+    state.filters.query = state.ui.packSearch;
     render();
     const nextInput = document.getElementById("pokedexSearchInput");
     nextInput?.focus();

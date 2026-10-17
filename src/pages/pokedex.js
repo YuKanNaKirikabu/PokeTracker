@@ -93,6 +93,7 @@ function attachPokedexSearch(list) {
   const input = document.getElementById("pokedexSearchInput");
   if (!input) return;
   input.placeholder = t("header.searchPlaceholder");
+  input.value = state.ui.pokedexSearch || "";
   if (input._pokedexHandler) {
     input.removeEventListener("input", input._pokedexHandler);
   }
@@ -100,6 +101,7 @@ function attachPokedexSearch(list) {
     input.removeEventListener("input", input._gamePokedexHandler);
   }
   const handler = () => {
+    state.ui.pokedexSearch = input.value;
     const listEl = document.querySelector(".pokedex-list");
     if (!listEl) return;
     const raw = input.value.trim().toLowerCase();

@@ -94,7 +94,8 @@ def cards(limit:int=0,offset:int=0):
   _cards_cache=remote_read("cards.json",{"packs":[],"cards":[]}); _cards_cache_expires=time.time()+300
  data=_cards_cache
  if not isinstance(data,dict) or not isinstance(data.get("cards"),list) or not isinstance(data.get("packs"),list): raise HTTPException(502,"cards.json must contain packs[] and cards[]")
- limit=max(1,min(limit or len(data["cards"]) or 1,500)); offset=max(0,offset)
+ offset=max(0,offset)
+ limit=max(1,min(limit or max(len(data["cards"]),1),2000))
  return JSONResponse({**data,"cards":data["cards"][offset:offset+limit],"offset":offset,"limit":limit,"total":len(data["cards"]),"hasMore":offset+limit<len(data["cards"])},headers={"Cache-Control":"no-store"})
 
 @app.get("/api/game-dex")

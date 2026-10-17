@@ -125,7 +125,22 @@ export async function renderNintPokedexesHome() {
       } catch (error) {
         console.warn("Could not save favorite game Pokédexes:", error);
       }
-      renderNintPokedexesHome();
+
+      const isFavorite = nextFavorites.includes(gameId);
+      button.classList.toggle("is-favorite", isFavorite);
+      button.setAttribute("aria-pressed", String(isFavorite));
+      const label = isFavorite ? "Remove from favorites" : "Add to favorites";
+      button.setAttribute("aria-label", label);
+      button.title = label;
+
+      const grid = app.querySelector(".game-pokedex-choice-grid");
+      if (grid) {
+        const cards = new Map([...grid.querySelectorAll("[data-favorite-game]")].map((item) => [item.dataset.favoriteGame, item.closest(".game-pokedex-choice-card")]));
+        for (const game of sortGamePokedexes(nextFavorites)) {
+          const card = cards.get(game.id);
+          if (card) grid.append(card);
+        }
+      }
     });
   });
 }

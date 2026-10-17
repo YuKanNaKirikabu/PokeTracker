@@ -124,6 +124,18 @@ export async function renderGamePokedex(gameId) {
   setBrandSubtitle(config.title);
   setPageTitle(config.title);
   setPokedexSearchVisible(true);
+  const sharedSearchInput = document.getElementById("pokedexSearchInput");
+  if (sharedSearchInput) {
+    sharedSearchInput.value = state.ui.gamePokedexSearch || "";
+    sharedSearchInput.placeholder = t("header.searchPlaceholder");
+    if (sharedSearchInput._gamePokedexHandler) sharedSearchInput.removeEventListener("input", sharedSearchInput._gamePokedexHandler);
+    const gameSearchHandler = () => {
+      state.ui.gamePokedexSearch = sharedSearchInput.value;
+      renderGamePokedex(gameId);
+    };
+    sharedSearchInput.addEventListener("input", gameSearchHandler);
+    sharedSearchInput._gamePokedexHandler = gameSearchHandler;
+  }
   if (!list.length) {
     app.innerHTML = `
       <section class="placeholder">

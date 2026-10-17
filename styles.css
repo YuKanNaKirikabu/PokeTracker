@@ -1442,13 +1442,18 @@ body.home-route .content {
   overflow-x: hidden;
   position: sticky;
   top: 90px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--panel-strong) transparent;
 }
 
 .pokedex-list::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 8px;
+  height: 8px;
+}
+
+.pokedex-list::-webkit-scrollbar-thumb {
+  background: var(--panel-strong);
+  border-radius: 8px;
 }
 
 .pokedex-item {
