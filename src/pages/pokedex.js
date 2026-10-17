@@ -59,8 +59,14 @@ export function renderPokedex() {
   app.innerHTML = `
     <section class="pokedex-page">
       <div class="pokedex-layout">
-        <aside class="pokedex-list">
-          ${listHtml}
+        <aside class="pokedex-sidebar">
+          <div class="pokedex-list-search">
+            <label for="pokedexListSearch">${t("header.searchPlaceholder")}</label>
+            <input id="pokedexListSearch" type="search" autocomplete="off" placeholder="${t("header.searchPlaceholder")}" aria-label="${t("header.searchAria")}" />
+          </div>
+          <div class="pokedex-list">
+            ${listHtml}
+          </div>
         </aside>
         <div id="pokedexDetailMount" class="pokedex-detail">
           <p class="pokedex-empty">${t("common.loading")}</p>
