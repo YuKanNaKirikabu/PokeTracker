@@ -1,66 +1,187 @@
 from __future__ import annotations
-import json, os, sqlite3
+import hashlib, hmac, json, os, secrets, threading, time
 from pathlib import Path
 from typing import Any
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote
+from urllib.request import Request, urlopen
+from fastapi import FastAPI, HTTPException, Request as FastRequest
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
 ROOT=Path(__file__).resolve().parent.parent
-STATIC=Path(__file__).resolve().parent/"static"
-DB_PATH=Path(os.getenv("POKETRACKER_DB",str(Path(__file__).resolve().parent/"poketracker.sqlite3")))
+REMOTE_BASE=os.getenv("POKETRACKER_DATA_BASE_URL","https://storage.yandexcloud.net/poketracker/data").strip().rstrip("/")
+MONGODB_URI=os.getenv("MONGODB_URI","mongodb://127.0.0.1:27017").strip()
+MONGODB_DATABASE=os.getenv("MONGODB_DATABASE","poketracker").strip() or "poketracker"
+SAFE_MODE=os.getenv("POKETRACKER_SAFE_MODE","0").lower() in {"1","true","yes","on"}
+REMOTE_WRITE=os.getenv("POKETRACKER_REMOTE_WRITE","0").lower() in {"1","true","yes","on"}
+SESSION_COOKIE="poketracker_session"; SESSION_TTL=60*60*24*30
+_sessions={}; _session_lock=threading.Lock(); _cards_cache=None; _cards_cache_expires=0.0
+_mongo_client=None; _mongo_db=None
+try:
+ from pymongo import MongoClient
+ from bson import ObjectId
+except ImportError:
+ MongoClient=None; ObjectId=None
 app=FastAPI(title="PokeTracker API",version="2.0.0")
-app.mount("/static",StaticFiles(directory=STATIC),name="static")
-def db():
- c=sqlite3.connect(DB_PATH); c.row_factory=sqlite3.Row
- c.execute("CREATE TABLE IF NOT EXISTS favorites (item_key TEXT PRIMARY KEY,item_type TEXT NOT NULL,item_name TEXT NOT NULL,image_url TEXT NOT NULL DEFAULT '')"); c.commit(); return c
-def load_cards()->list[dict[str,Any]]:
- for p in (ROOT/"data"/"cards.json",ROOT/"cards.json",ROOT/"server"/"data"/"cards.json"):
-  if p.is_file():
-   try:
-    d=json.loads(p.read_text(encoding="utf-8-sig"))
-    if isinstance(d,list): return [x for x in d if isinstance(x,dict)]
-    if isinstance(d,dict):
-     for k in ("cards","data","items"):
-      if isinstance(d.get(k),list): return [x for x in d[k] if isinstance(x,dict)]
-   except (OSError,json.JSONDecodeError): pass
- return []
-def val(row,*keys,default=""):
- for k in keys:
-  v=row.get(k)
-  if v is not None and not isinstance(v,(dict,list)): return str(v)
- return default
-@app.get("/")
-def index(): return FileResponse(STATIC/"index.html")
+
+def mongo():
+ global _mongo_client,_mongo_db
+ if MongoClient is None: raise HTTPException(503,"MongoDB dependency missing. Run run.bat to install requirements.")
+ if _mongo_db is None:
+  _mongo_client=MongoClient(MONGODB_URI,serverSelectionTimeoutMS=4000)
+  _mongo_client.admin.command("ping"); _mongo_db=_mongo_client[MONGODB_DATABASE]
+  _mongo_db.users.create_index("username",unique=True); _mongo_db.user_collections.create_index("user_id",unique=True)
+ return _mongo_db
+
+def hash_password(password):
+ salt=secrets.token_bytes(16); digest=hashlib.pbkdf2_hmac("sha256",password.encode(),salt,240000)
+ return "pbkdf2_sha256$240000$"+salt.hex()+"$"+digest.hex()
+
+def verify_password(password,encoded):
+ try:
+  algorithm,rounds,salt_hex,digest_hex=encoded.split("$")
+  if algorithm!="pbkdf2_sha256": return False
+  digest=hashlib.pbkdf2_hmac("sha256",password.encode(),bytes.fromhex(salt_hex),int(rounds))
+  return hmac.compare_digest(digest.hex(),digest_hex)
+ except (ValueError,TypeError): return False
+
+def session_for(request):
+ token=request.cookies.get(SESSION_COOKIE)
+ if not token: return None
+ with _session_lock:
+  session=_sessions.get(token)
+  if not session or session["expires"]<time.time(): _sessions.pop(token,None); return None
+  session["expires"]=time.time()+SESSION_TTL
+  return session
+
+def require_session(request):
+ session=session_for(request)
+ if not session: raise HTTPException(401,"Authentication required")
+ return session
+
+def remote_read(name,fallback):
+ try:
+  req=Request(REMOTE_BASE+"/"+quote(name)+"?_ts="+str(int(time.time())),headers={"Cache-Control":"no-cache"})
+  with urlopen(req,timeout=15) as response: payload=json.loads(response.read().decode("utf-8-sig"))
+  if name=="cards.json" and isinstance(payload,dict) and isinstance(payload.get("packs"),list) and isinstance(payload.get("cards"),list): return payload
+  if name=="settings.json" and isinstance(payload,dict) and isinstance(payload.get("ui"),dict): return payload
+  if name=="game-pokedex.json" and isinstance(payload,dict) and isinstance(payload.get("pokedexes"),dict): return payload
+  return payload if isinstance(payload,dict) else fallback
+ except Exception: return fallback
+
+def remote_write(name,payload):
+ if SAFE_MODE: raise HTTPException(403,"SAFE_MODE is enabled: writes are disabled")
+ if not REMOTE_BASE: raise HTTPException(503,"Remote data URL is not configured")
+ if not REMOTE_WRITE: raise HTTPException(403,"Remote writes are disabled in run.config.bat")
+ req=Request(REMOTE_BASE+"/"+quote(name),data=json.dumps(payload,ensure_ascii=False,indent=2).encode("utf-8"),method="PUT",headers={"Content-Type":"application/json"})
+ try:
+  with urlopen(req,timeout=20): return
+ except HTTPError as exc: raise HTTPException(exc.code,"Remote write failed: HTTP "+str(exc.code)) from exc
+ except URLError as exc: raise HTTPException(502,"Remote write failed: "+str(exc)) from exc
+
+def default_settings(): return {"version":"1.0","exportDate":None,"ui":{"packsHomeMode":"grid","language":"ru","theme":"dark"}}
+def default_game_dex(): return {"version":"1.0","exportDate":None,"pokedexes":{}}
+
 @app.get("/api/health")
-def health(): return {"ok":True,"framework":"FastAPI","cards_loaded":len(load_cards())}
+def health(): return {"ok":True,"framework":"FastAPI","mongodb_dependency":MongoClient is not None}
+
 @app.get("/api/cards")
-def cards(q:str="",pack:str="",limit:int=5000):
- out=[]
- for row in load_cards():
-  name=val(row,"name","card_name","title","en_name","name_en") or "Без названия"
-  pack_name=val(row,"pack","pack_name","set","expansion","set_name") or "Без пакета"
-  if q and q.casefold() not in json.dumps(row,ensure_ascii=False).casefold(): continue
-  if pack and pack.casefold() not in pack_name.casefold(): continue
-  out.append({"id":val(row,"id","card_id","code",default=name),"name":name,"pack":pack_name,"type":val(row,"type","category","supertype","rarity"),"image":val(row,"image","image_url","img","url")})
-  if len(out)>=max(1,min(limit,10000)): break
- return {"items":out,"total":len(out)}
-class FavoriteInput(BaseModel):
- key:str
- type:str="card"
- name:str
- image:str=""
-@app.get("/api/favorites")
-def favorites():
- with db() as c: rows=c.execute("SELECT item_key,item_type,item_name,image_url FROM favorites ORDER BY item_name COLLATE NOCASE").fetchall()
- return {"items":[dict(r) for r in rows]}
-@app.put("/api/favorites")
-def add_favorite(item:FavoriteInput):
- with db() as c: c.execute("INSERT INTO favorites VALUES(?,?,?,?) ON CONFLICT(item_key) DO UPDATE SET item_type=excluded.item_type,item_name=excluded.item_name,image_url=excluded.image_url",(item.key,item.type,item.name,item.image))
- return {"ok":True,"key":item.key}
-@app.delete("/api/favorites/{key:path}")
-def remove_favorite(key:str):
- with db() as c: c.execute("DELETE FROM favorites WHERE item_key=?",(key,))
- return {"ok":True}
-@app.on_event("startup")
-def startup(): db().close()
+def cards(limit:int=0,offset:int=0):
+ global _cards_cache,_cards_cache_expires
+ if _cards_cache is None or _cards_cache_expires<=time.time():
+  _cards_cache=remote_read("cards.json",{"packs":[],"cards":[]}); _cards_cache_expires=time.time()+300
+ data=_cards_cache
+ if not isinstance(data,dict) or not isinstance(data.get("cards"),list) or not isinstance(data.get("packs"),list): raise HTTPException(502,"cards.json must contain packs[] and cards[]")
+ limit=max(1,min(limit or len(data["cards"]) or 1,500)); offset=max(0,offset)
+ return JSONResponse({**data,"cards":data["cards"][offset:offset+limit],"offset":offset,"limit":limit,"total":len(data["cards"]),"hasMore":offset+limit<len(data["cards"])},headers={"Cache-Control":"no-store"})
+
+@app.get("/api/game-dex")
+def game_dex():
+ payload=remote_read("GameDex.json",{})
+ if not isinstance(payload,dict) or not isinstance(payload.get("games"),list): raise HTTPException(502,"GameDex.json must contain games[]")
+ return JSONResponse(payload,headers={"Cache-Control":"no-store"})
+
+@app.get("/api/bootstrap")
+def bootstrap(): return {"settings":remote_read("settings.json",default_settings()),"gamePokedex":remote_read("game-pokedex.json",default_game_dex())}
+@app.get("/api/load-settings")
+def load_settings(): return remote_read("settings.json",default_settings())
+@app.post("/api/save-settings")
+def save_settings(payload:dict[str,Any]): remote_write("settings.json",payload); return {"success":True}
+@app.get("/api/load-game-pokedex")
+def load_game_pokedex(): return remote_read("game-pokedex.json",default_game_dex())
+@app.post("/api/save-game-pokedex")
+def save_game_pokedex(payload:dict[str,Any]): remote_write("game-pokedex.json",payload); return {"success":True}
+
+class Credentials(BaseModel):
+ username:str=Field(min_length=3,max_length=32)
+ password:str=Field(min_length=8,max_length=256)
+
+@app.get("/api/auth/me")
+def auth_me(request:FastRequest):
+ session=session_for(request); return {"authenticated":bool(session),"username":session["username"] if session else None}
+
+def login_response(user_id,username):
+ token=secrets.token_urlsafe(32)
+ with _session_lock: _sessions[token]={"user_id":user_id,"username":username,"expires":time.time()+SESSION_TTL}
+ response=JSONResponse({"success":True,"username":username})
+ response.set_cookie(SESSION_COOKIE,token,max_age=SESSION_TTL,httponly=True,samesite="lax",path="/")
+ return response
+
+@app.post("/api/auth/register")
+def register(credentials:Credentials):
+ username=credentials.username.strip()
+ if len(username)<3 or len(username)>32: raise HTTPException(400,"Username must be 3-32 characters.")
+ try:
+  db=mongo(); result=db.users.insert_one({"username":username,"password_hash":hash_password(credentials.password),"created_at":time.time(),"updated_at":time.time()})
+  db.user_collections.update_one({"user_id":result.inserted_id},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
+  return login_response(str(result.inserted_id),username)
+ except Exception as exc:
+  if "duplicate" in str(exc).lower(): raise HTTPException(409,"Username already exists.") from exc
+  if isinstance(exc,HTTPException): raise
+  raise HTTPException(400,str(exc)) from exc
+
+@app.post("/api/auth/login")
+def login(credentials:Credentials):
+ try:
+  db=mongo(); user=db.users.find_one({"username":credentials.username.strip()})
+  if not user or not verify_password(credentials.password,user.get("password_hash","")): raise HTTPException(401,"Invalid username or password.")
+  db.user_collections.update_one({"user_id":user["_id"]},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
+  return login_response(str(user["_id"]),user["username"])
+ except HTTPException: raise
+ except Exception as exc: raise HTTPException(400,str(exc)) from exc
+
+@app.post("/api/auth/logout")
+def logout(request:FastRequest):
+ token=request.cookies.get(SESSION_COOKIE)
+ if token:
+  with _session_lock: _sessions.pop(token,None)
+ response=JSONResponse({"success":True}); response.delete_cookie(SESSION_COOKIE,path="/"); return response
+
+@app.get("/api/collection")
+def get_collection(request:FastRequest):
+ session=require_session(request)
+ try:
+  doc=mongo().user_collections.find_one({"user_id":ObjectId(session["user_id"])}) or {}
+  return {"owned":doc.get("owned",[]),"wishlist":doc.get("wishlist",[]),"updatedAt":doc.get("updated_at")}
+ except Exception as exc: raise HTTPException(500,str(exc)) from exc
+
+class CollectionPayload(BaseModel):
+ owned:list[str]
+ wishlist:list[str]
+
+@app.post("/api/collection")
+def save_collection(payload:CollectionPayload,request:FastRequest):
+ session=require_session(request)
+ try:
+  now=time.time(); mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"owned":sorted(set(payload.owned)),"wishlist":sorted(set(payload.wishlist)),"updated_at":now}},upsert=True)
+  return {"success":True,"owned_count":len(payload.owned),"wishlist_count":len(payload.wishlist)}
+ except Exception as exc: raise HTTPException(400,str(exc)) from exc
+
+@app.get("/api/ping")
+def ping():
+ try: mongo().command("ping"); return {"ok":True,"mongodb":"connected"}
+ except Exception as exc: return JSONResponse({"ok":False,"mongodb":str(exc)},status_code=503)
+
+app.mount("/",StaticFiles(directory=ROOT,html=True),name="frontend")

@@ -1,17 +1,19 @@
-# PokeTracker FastAPI rewrite
+# PokeTracker — FastAPI migration
 
-This branch introduces an isolated FastAPI application while preserving the current application and data files for comparison and rollback.
+The FastAPI application is now the HTTP server and API layer. The existing frontend modules, styling, pages, translations, pack catalog logic and game Pokédex UI are served from the repository root rather than replaced by a toy frontend.
 
-## Launch on Windows
+## Run on Windows
+Run `run.bat`. It loads `run.config.bat`, checks the Python dependencies and installs `requirements.txt` when needed. The app opens at the configured port (default 1025).
 
-Run run.bat. It checks whether FastAPI and Uvicorn can be imported, installs requirements.txt if not, and starts the app at http://127.0.0.1:8000.
+## API
+- `GET /api/cards?limit=150&offset=0` — paginated cards and full pack metadata.
+- `GET /api/bootstrap`, `GET /api/load-settings`, `POST /api/save-settings`
+- `GET /api/load-game-pokedex`, `POST /api/save-game-pokedex`
+- `GET /api/game-dex`
+- `GET /api/auth/me`, `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`
+- `GET /api/collection`, `POST /api/collection`
 
-API health: http://127.0.0.1:8000/api/health
+Card metadata and shared settings/game-Pokédex JSON continue to use the configured Yandex Storage data URL. User accounts and collections continue to use MongoDB. Set MongoDB credentials only through environment/configuration outside version control.
 
-## Data
-
-The first iteration looks for data/cards.json, cards.json, or server/data/cards.json in the repository root. Supported JSON shapes are an array or an object containing cards, data, or items. Favorites persist in a local SQLite database; set POKETRACKER_DB to change its path.
-
-## Status
-
-This is an initial isolated rewrite branch, not yet a feature-complete replacement of main. The legacy frontend and backend are retained until the existing data sources and feature parity are verified. The new UI has separate search state, persistent favorites, normal document scrolling, and no full-page reload when toggling favorites.
+## Important
+This branch is a migration baseline, not a claim that all flows have been integration-tested. Validate login/registration, MongoDB access, cloud writes, pack/subpack navigation, both Pokédexes, collection, wishlist and settings before replacing the stable branch.
