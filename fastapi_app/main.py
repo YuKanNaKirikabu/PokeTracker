@@ -3,7 +3,7 @@ import hashlib, hmac, json, os, secrets, threading, time
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 from fastapi import FastAPI, HTTPException, Request as FastRequest
 from fastapi.responses import JSONResponse
@@ -75,11 +75,27 @@ def remote_write(name,payload):
  if SAFE_MODE: raise HTTPException(403,"SAFE_MODE is enabled: writes are disabled")
  if not REMOTE_BASE: raise HTTPException(503,"Remote data URL is not configured")
  if not REMOTE_WRITE: raise HTTPException(403,"Remote writes are disabled in run.config.bat")
- req=Request(REMOTE_BASE+"/"+quote(name),data=json.dumps(payload,ensure_ascii=False,indent=2).encode("utf-8"),method="PUT",headers={"Content-Type":"application/json"})
+ parsed=urlparse(REMOTE_BASE)
+ path_parts=[part for part in parsed.path.split("/") if part]
+ if not parsed.scheme or not parsed.netloc or len(path_parts)<1:
+  raise HTTPException(503,"Remote data URL must include the bucket and data prefix")
+ bucket=path_parts[0]
+ key="/".join(path_parts[1:]+[name])
  try:
-  with urlopen(req,timeout=20): return
- except HTTPError as exc: raise HTTPException(exc.code,"Remote write failed: HTTP "+str(exc.code)) from exc
- except URLError as exc: raise HTTPException(502,"Remote write failed: "+str(exc)) from exc
+  import boto3
+  client=boto3.client(
+   "s3",
+   endpoint_url=f"{parsed.scheme}://{parsed.netloc}",
+   region_name=os.getenv("AWS_DEFAULT_REGION","ru-central1"),
+  )
+  client.put_object(
+   Bucket=bucket,
+   Key=key,
+   Body=json.dumps(payload,ensure_ascii=False,indent=2).encode("utf-8"),
+   ContentType="application/json; charset=utf-8",
+  )
+ except Exception as exc:
+  raise HTTPException(502,"Yandex Object Storage write failed. Check AWS CLI credentials and bucket permissions: "+str(exc)) from exc
 
 def default_settings(): return {"version":"1.0","exportDate":None,"ui":{"packsHomeMode":"grid","language":"ru","theme":"dark"}}
 def default_game_dex(): return {"version":"1.0","exportDate":None,"pokedexes":{}}

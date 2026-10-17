@@ -23,7 +23,7 @@ if not defined PY (
  exit /b 1
 )
 
-%PY% -c "import fastapi, uvicorn, pymongo" >nul 2>nul
+%PY% -c "import fastapi, uvicorn, pymongo, boto3" >nul 2>nul
 if errorlevel 1 (
  echo Dependencies missing or broken. Installing requirements.txt...
  %PY% -m pip install -r requirements.txt
