@@ -659,65 +659,39 @@ export function renderPokedexDetail(entry) {
   const types = getPokemonTypes(entry.nameEn);
   const iconPath = getPokedexIconPath(entry);
   const artwork = getPokemonArtwork(entry.nameEn);
-  const spriteFallback = getPokedexSpriteFallback(entry);
-  const fallbackSrc = artwork || spriteFallback || "";
+  const fallbackSrc = artwork || getPokedexSpriteFallback(entry) || "";
   const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
   const iconHtml = iconPath
     ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-    : artwork
-      ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-      : `<span>${displayName.slice(0, 1)}</span>`;
+    : artwork ? `<img src="${artwork}" alt="${displayName}" loading="lazy" decoding="async" />` : `<span>${displayName.slice(0,1)}</span>`;
   const desc = getPokedexDescription(entry);
   const gender = resolvePokedexGender(desc);
-  const showGender = !!(desc.male || desc.female);
-  const descriptionText =
-    gender === "male" ? desc.male : gender === "female" ? desc.female : desc.common;
+  const descriptionText = gender === "male" ? desc.male : gender === "female" ? desc.female : desc.common;
+  const cards = getPokemonCardMatches(entry.nameEn);
+  const statsPanel = `<div class="pokedex-data-grid"><div class="pokedex-data-cell"><span>Национальный номер</span><strong>#${formatDexNumber(entry.number)}</strong></div><div class="pokedex-data-cell"><span>Регион</span><strong>${region}</strong></div><div class="pokedex-data-cell"><span>Тип</span><strong>${types.join(" / ")}</strong></div><div class="pokedex-data-cell"><span>Карты TCG Pocket</span><strong>${cards.length}</strong></div></div><p class="pokedex-data-note">Рост, вес и базовые характеристики будут показаны здесь после загрузки проверенных данных Pokédex.</p>`;
   return `
     <div class="pokedex-detail">
       <div class="pokedex-detail-header">
-        <div class="pokedex-icon pokedex-icon--large">
-          ${iconHtml}
-        </div>
+        <div class="pokedex-icon pokedex-icon--large">${iconHtml}</div>
         <div class="pokedex-detail-meta">
-          <div class="pokedex-title">
-            <span class="pokedex-number">${formatDexNumber(entry.number)}</span>
-            <span class="pokedex-name">${displayName}</span>
-          </div>
-          <div class="pokedex-subline">
-            <span class="pokedex-region">${region}</span>
-            <span class="pokedex-types">${renderPokemonTypeIcons(types, "icon-sm")}</span>
-          </div>
-          ${renderGameIcons(entry.nameEn)}
+          <div class="pokedex-title"><span class="pokedex-number">NATIONAL DEX · #${formatDexNumber(entry.number)}</span><span class="pokedex-name">${displayName}</span></div>
+          <div class="pokedex-subline"><span class="pokedex-region">${region}</span><span class="pokedex-types">${renderPokemonTypeIcons(types, "icon-sm")}</span></div>
+          <div class="pokedex-detail-kicker">POKÉMON DATABASE</div>
         </div>
       </div>
-      <div class="pokedex-divider"></div>
-      <div class="pokedex-description">
-        <div class="pokedex-description-header">
-          <h3>${t("pokedex.descriptionTitle")}</h3>
-          ${
-            showGender
-              ? `
-                <div class="pokedex-gender-toggle">
-                  <button class="gender-btn ${gender === "male" ? "active" : ""}" data-gender="male" type="button">♂</button>
-                  <button class="gender-btn ${gender === "female" ? "active" : ""}" data-gender="female" type="button">♀</button>
-                </div>
-              `
-              : ""
-          }
-        </div>
-        <p>${descriptionText}</p>
-      </div>
-      <div class="pokedex-divider"></div>
-      <div class="pokedex-cards-block">
-        <div class="pokedex-cards-header">
-          <h3>${t("pokedex.cardsFromPacks")}</h3>
-          <div class="pokedex-scroll-controls">
-            <button class="scroll-btn" id="pokedexScrollPrev" type="button" aria-label="${t("common.back")}">‹</button>
-            <button class="scroll-btn" id="pokedexScrollNext" type="button" aria-label="${t("common.next")}">›</button>
-          </div>
-        </div>
-        ${renderPokedexCards(getPokemonCardMatches(entry.nameEn))}
-      </div>
+      <nav class="pokedex-detail-tabs" role="tablist" aria-label="Информация о покемоне">
+        <button type="button" class="active" data-dex-tab="cards" role="tab" aria-selected="true">Карты TCG Pocket</button>
+        <button type="button" data-dex-tab="stats" role="tab" aria-selected="false">Характеристики</button>
+        <button type="button" data-dex-tab="moves" role="tab" aria-selected="false">Приёмы</button>
+        <button type="button" data-dex-tab="evolution" role="tab" aria-selected="false">Эволюции</button>
+      </nav>
+      <section class="pokedex-tab-panel" data-dex-panel="cards">
+        <div class="pokedex-cards-header"><h3>Карты TCG Pocket <span class="pokedex-tab-count">${cards.length}</span></h3><div class="pokedex-scroll-controls"><button class="scroll-btn" id="pokedexScrollPrev" type="button" aria-label="Предыдущие карты">‹</button><button class="scroll-btn" id="pokedexScrollNext" type="button" aria-label="Следующие карты">›</button></div></div>
+        ${renderPokedexCards(cards)}
+      </section>
+      <section class="pokedex-tab-panel" data-dex-panel="stats" hidden><h3 class="pokedex-tab-heading">Характеристики</h3>${statsPanel}</section>
+      <section class="pokedex-tab-panel" data-dex-panel="moves" hidden><h3 class="pokedex-tab-heading">Известные приёмы</h3><p class="pokedex-data-note">Достоверный список приёмов для этого покемона ещё не подключён к локальным данным проекта.</p></section>
+      <section class="pokedex-tab-panel" data-dex-panel="evolution" hidden><h3 class="pokedex-tab-heading">Эволюционная цепочка</h3><p class="pokedex-data-note">Эволюции и предыдущие формы требуют отдельного источника данных. Здесь не будут подставляться предположительные связи.</p></section>
     </div>
   `;
 }
