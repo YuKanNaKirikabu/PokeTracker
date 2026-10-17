@@ -134,7 +134,10 @@ function attachPokedexSearch(list) {
     const target = listEl.querySelector(`.pokedex-item[data-dex="${match.number}"]`);
     if (target) {
       target.classList.add("match");
-      target.scrollIntoView({ block: "center", behavior: "smooth" });
+      const listRect = listEl.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const targetTop = targetRect.top - listRect.top + listEl.scrollTop;
+      listEl.scrollTo({ top: Math.max(0, targetTop - (listEl.clientHeight - target.offsetHeight) / 2), behavior: "smooth" });
     }
   };
   input.addEventListener("input", handler);
