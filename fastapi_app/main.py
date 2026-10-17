@@ -139,8 +139,10 @@ def bootstrap(request:FastRequest):
  session=session_for(request)
  if not session: return {"settings":default_settings(),"gamePokedex":default_game_dex()}
  try:
-  doc=mongo().user_preferences.find_one({"user_id":ObjectId(session["user_id"])}) or {}
-  return {"settings":doc.get("settings",default_settings()),"gamePokedex":doc.get("game_pokedex",default_game_dex())}
+  user_id=ObjectId(session["user_id"])
+  preferences=mongo().user_preferences.find_one({"user_id":user_id}) or {}
+  collection=mongo().user_collections.find_one({"user_id":user_id}) or {}
+  return {"settings":preferences.get("settings",default_settings()),"gamePokedex":collection.get("game_pokedex",default_game_dex())}
  except Exception as exc: raise HTTPException(503,"Could not load user data from MongoDB.") from exc
 
 @app.get("/api/load-settings")
@@ -159,17 +161,40 @@ def save_settings(payload:dict[str,Any],request:FastRequest):
 
 @app.get("/api/load-game-pokedex")
 def load_game_pokedex(request:FastRequest):
- doc=get_user_preferences(request)
- return doc.get("game_pokedex",default_game_dex())
+ session=require_session(request)
+ try:
+  doc=mongo().user_collections.find_one({"user_id":ObjectId(session["user_id"])}) or {}
+  return doc.get("game_pokedex",default_game_dex())
+ except Exception as exc: raise HTTPException(503,"Could not load game Pokédex from MongoDB.") from exc
 
 @app.post("/api/save-game-pokedex")
 def save_game_pokedex(payload:dict[str,Any],request:FastRequest):
  session=require_session(request)
  if not isinstance(payload.get("pokedexes"),dict): raise HTTPException(400,"Game Pokédex payload must contain pokedexes object.")
  try:
-  mongo().user_preferences.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_pokedex":payload,"updated_at":time.time()}},upsert=True)
+  mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_pokedex":payload,"updated_at":time.time()}},upsert=True)
   return {"success":True}
  except Exception as exc: raise HTTPException(503,"Could not save game Pokédex to MongoDB.") from exc
+
+@app.get("/api/game-favorites")
+def load_game_favorites(request:FastRequest):
+ session=require_session(request)
+ try:
+  doc=mongo().user_collections.find_one({"user_id":ObjectId(session["user_id"])}) or {}
+  return {"favorites":doc.get("game_favorites",[])}
+ except Exception as exc: raise HTTPException(503,"Could not load game favorites from MongoDB.") from exc
+
+@app.post("/api/game-favorites")
+def save_game_favorites(payload:dict[str,Any],request:FastRequest):
+ session=require_session(request)
+ favorites=payload.get("favorites")
+ if not isinstance(favorites,list) or any(not isinstance(item,str) for item in favorites):
+  raise HTTPException(400,"favorites must be an array of game IDs.")
+ try:
+  unique=list(dict.fromkeys(favorites))
+  mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_favorites":unique,"updated_at":time.time()}},upsert=True)
+  return {"success":True,"favorites":unique}
+ except Exception as exc: raise HTTPException(503,"Could not save game favorites to MongoDB.") from exc
 
 class Credentials(BaseModel):
  username:str=Field(min_length=3,max_length=32)

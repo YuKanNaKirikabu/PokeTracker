@@ -36,7 +36,7 @@ def authenticate(client, monkeypatch):
         "expires": time.time() + 3600,
     }
     client.cookies.set(api.SESSION_COOKIE, "test-session")
-    db = SimpleNamespace(user_preferences=FakePreferences())
+    db = SimpleNamespace(user_preferences=FakePreferences(), user_collections=FakePreferences())
     monkeypatch.setattr(api, "mongo", lambda: db)
     return db
 
@@ -98,9 +98,27 @@ def test_settings_and_game_dex_are_saved_per_authenticated_user(client, monkeypa
 
     assert client.get("/api/load-settings").json() == settings
     assert client.get("/api/load-game-pokedex").json() == game_dex
-    saved = next(iter(db.user_preferences.docs.values()))
-    assert saved["settings"] == settings
-    assert saved["game_pokedex"] == game_dex
+    saved_settings = next(iter(db.user_preferences.docs.values()))
+    saved_collection = next(iter(db.user_collections.docs.values()))
+    assert saved_settings["settings"] == settings
+    assert "game_pokedex" not in saved_settings
+    assert saved_collection["game_pokedex"] == game_dex
+
+
+def test_game_favorites_are_account_owned_and_require_login(client, monkeypatch):
+    db = authenticate(client, monkeypatch)
+    assert client.get("/api/game-favorites").json() == {"favorites": []}
+    favorites = ["legends-arceus", "sword-shield"]
+    response = client.post("/api/game-favorites", json={"favorites": favorites})
+    assert response.status_code == 200
+    assert response.json()["favorites"] == favorites
+    assert client.get("/api/game-favorites").json() == {"favorites": favorites}
+    saved = next(iter(db.user_collections.docs.values()))
+    assert saved["game_favorites"] == favorites
+
+def test_game_favorites_require_login(client):
+    assert client.get("/api/game-favorites").status_code == 401
+    assert client.post("/api/game-favorites", json={"favorites": []}).status_code == 401
 
 
 def test_user_data_writes_require_login(client):

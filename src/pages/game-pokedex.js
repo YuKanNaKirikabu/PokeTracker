@@ -155,13 +155,6 @@ export async function renderGamePokedex(gameId) {
   const foundCount = list.filter((entry) => foundKeys.has(normalizePokemonName(entry.nameEn))).length;
   const rangeStart = start + 1;
   const rangeEnd = Math.min(start + pageSize, list.length);
-  const searchInput = document.getElementById("pokedexSearchInput");
-  const searchRaw = searchInput ? searchInput.value.trim().toLowerCase() : "";
-  const matchIndex = getGamePokedexMatchIndex(searchRaw, list);
-  const matchKey = matchIndex >= start && matchIndex < start + pageSize
-    ? normalizePokemonName(list[matchIndex].nameEn)
-    : null;
-
   const cardsHtml = pageItems.map((entry) => {
     const key = normalizePokemonName(entry.nameEn);
     const baseEntry = getPokedexEntryByName(entry.nameEn) || entry;
@@ -177,7 +170,7 @@ export async function renderGamePokedex(gameId) {
         ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
       : `<span>${displayName.slice(0, 1)}</span>`;
     const isSelected = marks.blue.has(key);
-    const isMatch = matchKey && key === matchKey;
+    const isMatch = false;
     return `
       <div class="game-pokedex-item ${isSelected ? "active" : ""} ${isMatch ? "match" : ""}" data-game-entry="${key}">
         <div class="game-pokedex-icon">
@@ -315,13 +308,6 @@ export async function renderGamePokedex(gameId) {
   });
 
   attachGamePokedexSearch(gameId, list, pageSize);
-
-  const matchEl = app.querySelector(".game-pokedex-item.match");
-  if (matchEl) {
-    requestAnimationFrame(() => {
-      matchEl.scrollIntoView({ block: "center", behavior: "smooth" });
-    });
-  }
 
   app.querySelectorAll("[data-page]").forEach((button) => {
     button.addEventListener("click", () => {

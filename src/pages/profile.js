@@ -61,6 +61,12 @@ export function renderProfile() {
     `;
     app.querySelector("#logoutButton").addEventListener("click", async () => {
       await logout();
+      const { applyTheme, normalizeUiSettings } = await import("../core/theme.js");
+      const { applyTranslations } = await import("../core/i18n.js");
+      normalizeUiSettings();
+      applyTheme();
+      applyTranslations();
+      window.dispatchEvent(new Event("authstatechange"));
       location.hash = "#/";
     });
     return;
