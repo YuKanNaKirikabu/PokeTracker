@@ -15,7 +15,7 @@ export async function authenticate(endpoint, username, password) {
   });
   const data = await response.json();
   if (!response.ok || !data.success) {
-    throw new Error(data.error || "Authentication failed.");
+    throw new Error(data.error || data.detail || "Authentication failed.");
   }
   state.user = { username: data.username };
   return state.user;

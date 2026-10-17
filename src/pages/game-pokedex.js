@@ -124,18 +124,6 @@ export async function renderGamePokedex(gameId) {
   setBrandSubtitle(config.title);
   setPageTitle(config.title);
   setPokedexSearchVisible(true);
-  const sharedSearchInput = document.getElementById("pokedexSearchInput");
-  if (sharedSearchInput) {
-    sharedSearchInput.value = state.ui.gamePokedexSearch || "";
-    sharedSearchInput.placeholder = t("header.searchPlaceholder");
-    if (sharedSearchInput._gamePokedexHandler) sharedSearchInput.removeEventListener("input", sharedSearchInput._gamePokedexHandler);
-    const gameSearchHandler = () => {
-      state.ui.gamePokedexSearch = sharedSearchInput.value;
-      renderGamePokedex(gameId);
-    };
-    sharedSearchInput.addEventListener("input", gameSearchHandler);
-    sharedSearchInput._gamePokedexHandler = gameSearchHandler;
-  }
   if (!list.length) {
     app.innerHTML = `
       <section class="placeholder">
@@ -360,6 +348,8 @@ export async function renderGamePokedex(gameId) {
 function attachGamePokedexSearch(gameId, list, pageSize) {
   const input = document.getElementById("pokedexSearchInput");
   if (!input) return;
+  input.value = state.ui.gamePokedexSearch || "";
+  input.placeholder = t("header.searchPlaceholder");
   if (input._pokedexHandler) {
     input.removeEventListener("input", input._pokedexHandler);
   }
@@ -367,6 +357,7 @@ function attachGamePokedexSearch(gameId, list, pageSize) {
     input.removeEventListener("input", input._gamePokedexHandler);
   }
   const handler = () => {
+    state.ui.gamePokedexSearch = input.value;
     const raw = input.value.trim().toLowerCase();
     document.querySelectorAll(".game-pokedex-item.match").forEach((item) => {
       item.classList.remove("match");
