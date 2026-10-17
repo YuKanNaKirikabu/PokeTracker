@@ -99,6 +99,11 @@ function attachPokedexSearch(list) {
   }
   if (input._gamePokedexHandler) {
     input.removeEventListener("input", input._gamePokedexHandler);
+    input._gamePokedexHandler = null;
+  }
+  if (input._packHandler) {
+    input.removeEventListener("input", input._packHandler);
+    input._packHandler = null;
   }
   const handler = () => {
     state.ui.pokedexSearch = input.value;

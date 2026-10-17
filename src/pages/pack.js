@@ -88,7 +88,7 @@ export function renderPack(packTitle, subpackValue) {
 
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters(selector, { showSearch: false })}
+      ${renderFilters(selector, { showApplyButton: true, showSearch: false })}
       <div>
         <div class="pack-header">
           ${renderPackMedia(pack, activeSubpack)}
@@ -100,7 +100,7 @@ export function renderPack(packTitle, subpackValue) {
         ${renderCardGrid(cards)}
       </div>
     </section>`;
-  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
+  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { deferApply: true });
   attachMobileFilterToggle();
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });

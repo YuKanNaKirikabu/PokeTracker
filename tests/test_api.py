@@ -1,14 +1,44 @@
+import time
+from types import SimpleNamespace
+
 import pytest
 from fastapi.testclient import TestClient
 
 from fastapi_app import main as api
 
 
+class FakePreferences:
+    def __init__(self):
+        self.docs = {}
+
+    def find_one(self, query):
+        return self.docs.get(str(query["user_id"]))
+
+    def update_one(self, query, update, upsert=False):
+        key = str(query["user_id"])
+        doc = self.docs.setdefault(key, {"user_id": query["user_id"]})
+        doc.update(update.get("$set", {}))
+
+
 @pytest.fixture()
 def client(monkeypatch):
     monkeypatch.setattr(api, "_cards_cache", None)
     monkeypatch.setattr(api, "_cards_cache_expires", 0)
+    api._sessions.clear()
     return TestClient(api.app)
+
+
+def authenticate(client, monkeypatch):
+    user_id = api.ObjectId("507f1f77bcf86cd799439011")
+    api._sessions["test-session"] = {
+        "user_id": str(user_id),
+        "username": "tester",
+        "expires": time.time() + 3600,
+    }
+    client.cookies.set(api.SESSION_COOKIE, "test-session")
+    db = SimpleNamespace(user_preferences=FakePreferences())
+    monkeypatch.setattr(api, "mongo", lambda: db)
+    return db
 
 
 def test_health_reports_fastapi(client):
@@ -19,10 +49,7 @@ def test_health_reports_fastapi(client):
 
 
 def test_cards_pagination_keeps_pack_metadata(client, monkeypatch):
-    payload = {
-        "packs": [{"id": "A1", "display": "Example"}],
-        "cards": [{"id": str(i)} for i in range(5)],
-    }
+    payload = {"packs": [{"id": "A1", "display": "Example"}], "cards": [{"id": str(i)} for i in range(5)]}
     monkeypatch.setattr(api, "remote_read", lambda name, fallback: payload)
     response = client.get("/api/cards?limit=2&offset=2")
     assert response.status_code == 200
@@ -41,41 +68,43 @@ def test_cards_default_limit_does_not_drop_records(client, monkeypatch):
     assert body["hasMore"] is False
 
 
-def test_bootstrap_returns_settings_and_game_pokedex(client, monkeypatch):
-    def fake_read(name, fallback):
-        if name == "settings.json":
-            return {"version": "1.0", "ui": {"language": "ru"}}
-        if name == "game-pokedex.json":
-            return {"version": "1.0", "pokedexes": {"sword-shield": {}}}
-        return fallback
-
-    monkeypatch.setattr(api, "remote_read", fake_read)
-    body = client.get("/api/bootstrap").json()
-    assert body["settings"]["ui"]["language"] == "ru"
-    assert "sword-shield" in body["gamePokedex"]["pokedexes"]
-
-
-def test_save_settings_calls_storage_writer(client, monkeypatch):
-    writes = []
-    monkeypatch.setattr(api, "SAFE_MODE", False)
-    monkeypatch.setattr(api, "REMOTE_WRITE", True)
-    monkeypatch.setattr(api, "remote_write", lambda name, payload: writes.append((name, payload)))
-    payload = {"version": "1.0", "ui": {"theme": "dark"}}
-    response = client.post("/api/save-settings", json=payload)
+def test_anonymous_bootstrap_does_not_read_shared_cloud_settings(client, monkeypatch):
+    def unexpected_cloud_read(*args, **kwargs):
+        raise AssertionError("Account settings must not be read from shared cloud JSON")
+    monkeypatch.setattr(api, "remote_read", unexpected_cloud_read)
+    response = client.get("/api/bootstrap")
     assert response.status_code == 200
-    assert response.json() == {"success": True}
-    assert writes == [("settings.json", payload)]
+    assert response.json()["settings"]["ui"]["language"] == "ru"
+    assert response.json()["gamePokedex"]["pokedexes"] == {}
 
 
-def test_safe_mode_blocks_remote_writes(client, monkeypatch):
-    monkeypatch.setattr(api, "SAFE_MODE", True)
-    response = client.post("/api/save-game-pokedex", json={"pokedexes": {}})
-    assert response.status_code == 403
+def test_settings_and_game_dex_are_saved_per_authenticated_user(client, monkeypatch):
+    db = authenticate(client, monkeypatch)
+    settings = {"version": "1.0", "ui": {"language": "ru", "theme": "dark"}}
+    game_dex = {"version": "1.0", "pokedexes": {"sword-shield": {"versions": {}}}}
+
+    response = client.post("/api/save-settings", json=settings)
+    assert response.status_code == 200 and response.json()["success"] is True
+    response = client.post("/api/save-game-pokedex", json=game_dex)
+    assert response.status_code == 200 and response.json()["success"] is True
+
+    assert client.get("/api/load-settings").json() == settings
+    assert client.get("/api/load-game-pokedex").json() == game_dex
+    saved = next(iter(db.user_preferences.docs.values()))
+    assert saved["settings"] == settings
+    assert saved["game_pokedex"] == game_dex
+
+
+def test_user_data_writes_require_login(client):
+    settings = client.post("/api/save-settings", json={"ui": {}})
+    game_dex = client.post("/api/save-game-pokedex", json={"pokedexes": {}})
+    assert settings.status_code == 401
+    assert game_dex.status_code == 401
 
 
 def test_collection_requires_login(client):
-    response = client.get("/api/collection")
-    assert response.status_code == 401
+    assert client.get("/api/collection").status_code == 401
+    assert client.post("/api/collection", json={"owned": [], "wishlist": []}).status_code == 401
 
 
 def test_auth_me_is_anonymous_without_cookie(client):

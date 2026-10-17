@@ -133,6 +133,7 @@ export async function saveGamePokedexToFile() {
     return await response.json();
   } catch (err) {
     console.error(`Game pokedex save error: ${err.message}`);
+    throw err;
   }
 }
 
@@ -202,6 +203,7 @@ export async function saveSettingsToFile() {
     return result;
   } catch (err) {
     console.error(`Settings save error: ${err.message}`);
+    throw err;
   }
 }
 

@@ -18,7 +18,7 @@ SAFE_MODE=os.getenv("POKETRACKER_SAFE_MODE","0").lower() in {"1","true","yes","o
 REMOTE_WRITE=os.getenv("POKETRACKER_REMOTE_WRITE","0").lower() in {"1","true","yes","on"}
 SESSION_COOKIE="poketracker_session"; SESSION_TTL=60*60*24*30
 _sessions={}; _session_lock=threading.Lock(); _cards_cache=None; _cards_cache_expires=0.0
-_mongo_client=None; _mongo_db=None
+_mongo_client=None; _mongo_db=None; _mongo_lock=threading.Lock()
 try:
  from pymongo import MongoClient
  from bson import ObjectId
@@ -29,10 +29,15 @@ app=FastAPI(title="PokeTracker API",version="2.0.0")
 def mongo():
  global _mongo_client,_mongo_db
  if MongoClient is None: raise HTTPException(503,"MongoDB dependency missing. Run run.bat to install requirements.")
- if _mongo_db is None:
-  _mongo_client=MongoClient(MONGODB_URI,serverSelectionTimeoutMS=4000)
-  _mongo_client.admin.command("ping"); _mongo_db=_mongo_client[MONGODB_DATABASE]
-  _mongo_db.users.create_index("username",unique=True); _mongo_db.user_collections.create_index("user_id",unique=True)
+ with _mongo_lock:
+  if _mongo_db is None:
+   client=MongoClient(MONGODB_URI,serverSelectionTimeoutMS=4000)
+   client.admin.command("ping")
+   db=client[MONGODB_DATABASE]
+   db.users.create_index("username",unique=True)
+   db.user_collections.create_index("user_id",unique=True)
+   db.user_preferences.create_index("user_id",unique=True)
+   _mongo_client=client; _mongo_db=db
  return _mongo_db
 
 def hash_password(password):
@@ -120,16 +125,49 @@ def game_dex():
  if not isinstance(payload,dict) or not isinstance(payload.get("games"),list): raise HTTPException(502,"GameDex.json must contain games[]")
  return JSONResponse(payload,headers={"Cache-Control":"no-store"})
 
+def get_user_preferences(request:FastRequest):
+ session=require_session(request)
+ try:
+  return mongo().user_preferences.find_one({"user_id":ObjectId(session["user_id"])}) or {}
+ except HTTPException: raise
+ except Exception as exc: raise HTTPException(503,"Could not load user data from MongoDB.") from exc
+
 @app.get("/api/bootstrap")
-def bootstrap(): return {"settings":remote_read("settings.json",default_settings()),"gamePokedex":remote_read("game-pokedex.json",default_game_dex())}
+def bootstrap(request:FastRequest):
+ session=session_for(request)
+ if not session: return {"settings":default_settings(),"gamePokedex":default_game_dex()}
+ try:
+  doc=mongo().user_preferences.find_one({"user_id":ObjectId(session["user_id"])}) or {}
+  return {"settings":doc.get("settings",default_settings()),"gamePokedex":doc.get("game_pokedex",default_game_dex())}
+ except Exception as exc: raise HTTPException(503,"Could not load user data from MongoDB.") from exc
+
 @app.get("/api/load-settings")
-def load_settings(): return remote_read("settings.json",default_settings())
+def load_settings(request:FastRequest):
+ doc=get_user_preferences(request)
+ return doc.get("settings",default_settings())
+
 @app.post("/api/save-settings")
-def save_settings(payload:dict[str,Any]): remote_write("settings.json",payload); return {"success":True}
+def save_settings(payload:dict[str,Any],request:FastRequest):
+ session=require_session(request)
+ if not isinstance(payload.get("ui"),dict): raise HTTPException(400,"Settings payload must contain ui object.")
+ try:
+  mongo().user_preferences.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"settings":payload,"updated_at":time.time()}},upsert=True)
+  return {"success":True}
+ except Exception as exc: raise HTTPException(503,"Could not save settings to MongoDB.") from exc
+
 @app.get("/api/load-game-pokedex")
-def load_game_pokedex(): return remote_read("game-pokedex.json",default_game_dex())
+def load_game_pokedex(request:FastRequest):
+ doc=get_user_preferences(request)
+ return doc.get("game_pokedex",default_game_dex())
+
 @app.post("/api/save-game-pokedex")
-def save_game_pokedex(payload:dict[str,Any]): remote_write("game-pokedex.json",payload); return {"success":True}
+def save_game_pokedex(payload:dict[str,Any],request:FastRequest):
+ session=require_session(request)
+ if not isinstance(payload.get("pokedexes"),dict): raise HTTPException(400,"Game Pokédex payload must contain pokedexes object.")
+ try:
+  mongo().user_preferences.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_pokedex":payload,"updated_at":time.time()}},upsert=True)
+  return {"success":True}
+ except Exception as exc: raise HTTPException(503,"Could not save game Pokédex to MongoDB.") from exc
 
 class Credentials(BaseModel):
  username:str=Field(min_length=3,max_length=32)
@@ -157,7 +195,8 @@ def register(credentials:Credentials):
  except Exception as exc:
   if "duplicate" in str(exc).lower(): raise HTTPException(409,"Username already exists.") from exc
   if isinstance(exc,HTTPException): raise
-  raise HTTPException(400,str(exc)) from exc
+  if "duplicate" in str(exc).lower(): raise HTTPException(409,"Username already exists.") from exc
+  raise HTTPException(503,"Could not register account. Check MongoDB connection.") from exc
 
 @app.post("/api/auth/login")
 def login(credentials:Credentials):
@@ -167,7 +206,7 @@ def login(credentials:Credentials):
   db.user_collections.update_one({"user_id":user["_id"]},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
   return login_response(str(user["_id"]),user["username"])
  except HTTPException: raise
- except Exception as exc: raise HTTPException(400,str(exc)) from exc
+ except Exception as exc: raise HTTPException(503,"Could not sign in. Check MongoDB connection.") from exc
 
 @app.post("/api/auth/logout")
 def logout(request:FastRequest):
@@ -182,7 +221,7 @@ def get_collection(request:FastRequest):
  try:
   doc=mongo().user_collections.find_one({"user_id":ObjectId(session["user_id"])}) or {}
   return {"owned":doc.get("owned",[]),"wishlist":doc.get("wishlist",[]),"updatedAt":doc.get("updated_at")}
- except Exception as exc: raise HTTPException(500,str(exc)) from exc
+ except Exception as exc: raise HTTPException(503,"Could not load collection from MongoDB.") from exc
 
 class CollectionPayload(BaseModel):
  owned:list[str]
@@ -194,7 +233,7 @@ def save_collection(payload:CollectionPayload,request:FastRequest):
  try:
   now=time.time(); mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"owned":sorted(set(payload.owned)),"wishlist":sorted(set(payload.wishlist)),"updated_at":now}},upsert=True)
   return {"success":True,"owned_count":len(payload.owned),"wishlist_count":len(payload.wishlist)}
- except Exception as exc: raise HTTPException(400,str(exc)) from exc
+ except Exception as exc: raise HTTPException(503,"Could not save collection to MongoDB.") from exc
 
 @app.get("/api/ping")
 def ping():
