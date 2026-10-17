@@ -72,6 +72,8 @@ async function init() {
     renderRoute();
     let saveTimer = null;
     window.addEventListener("cardsdatachanged", () => {
+      // Pack views use an explicit Save button to batch changes into one POST.
+      if (location.hash.startsWith("#/pack/") || location.hash === "#/all") return;
       if (saveTimer) clearTimeout(saveTimer);
       saveTimer = setTimeout(async () => {
         try {

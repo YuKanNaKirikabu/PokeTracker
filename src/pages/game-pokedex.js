@@ -28,7 +28,7 @@ function setGamePokedexDirty(isDirty) {
   state.ui.gamePokedexDirty = isDirty;
   const button = document.getElementById("gamePokedexSaveBtn");
   if (!button) return;
-  button.disabled = !isDirty;
+  button.disabled = !isDirty || !state.user;
   button.classList.toggle("is-dirty", isDirty);
 }
 
@@ -253,8 +253,16 @@ export async function renderGamePokedex(gameId) {
   const foundCountEl = app.querySelector("#gamePokedexFound");
   const saveButton = app.querySelector("#gamePokedexSaveBtn");
   saveButton?.addEventListener("click", async () => {
-    await saveGamePokedexToFile();
-    setGamePokedexDirty(false);
+    if (!state.user) {
+      location.hash = "#/register?mode=login";
+      return;
+    }
+    try {
+      await saveGamePokedexToFile();
+      setGamePokedexDirty(false);
+    } catch (error) {
+      window.alert(`Не удалось сохранить игровой покедекс: ${error.message}`);
+    }
   });
 
   const unsavedModal = app.querySelector("#gamePokedexUnsavedModal");

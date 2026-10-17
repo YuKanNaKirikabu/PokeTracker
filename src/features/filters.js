@@ -18,7 +18,17 @@ function iconToken(value) {
 }
 function availableRarities() {
   const values = [...new Set((state.data?.cards || []).map((card) => card.rarity).filter(Boolean))];
-  return values.sort((a, b) => iconToken(a).localeCompare(iconToken(b)));
+  const rank = (value) => {
+    const token = iconToken(value);
+    if (token === "CROWN") return Number.MAX_SAFE_INTEGER;
+    const match = token.match(/^(DIAMOND|STAR|SHINY)\s*(\d+)$/);
+    if (match) {
+      const group = { DIAMOND: 1, STAR: 2, SHINY: 3 }[match[1]];
+      return group * 100 + Number(match[2]);
+    }
+    return 10000 + token.charCodeAt(0);
+  };
+  return values.sort((a, b) => rank(a) - rank(b) || iconToken(a).localeCompare(iconToken(b)));
 }
 function availableTypes() {
   const values = [...new Set((state.data?.cards || []).filter((card) => getCardCategory(card) === 'POKEMON').map((card) => card.type).filter(Boolean))];

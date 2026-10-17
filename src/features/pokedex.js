@@ -170,27 +170,10 @@ function isValidMasterPokedexList(list) {
 }
 
 export async function loadPokedexNamesFromFile() {
-  if (POKEDEX_NAMES_LOADING) return POKEDEX_NAMES_LOADING;
-
-  POKEDEX_NAMES_LOADING = (async () => {
-    try {
-      const response = await fetch("Lists/1025.txt");
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const raw = await response.text();
-      const list = parsePokedexText(raw, 4);
-      if (isValidMasterPokedexList(list)) {
-        rebuildPokedexLookup(list);
-      } else {
-        console.warn("Pokedex names list rejected: invalid or shifted mapping");
-      }
-    } catch (err) {
-      console.warn("Pokedex names load failed:", err.message);
-    }
-  })();
-
-  return POKEDEX_NAMES_LOADING;
+  // The complete 1,025-entry master Pokédex is bundled in src/config/pokedex.js.
+  // Do not request the removed local Lists/1025.txt file.
+  getPokedexList();
 }
-
 export function getPokedexList() {
   if (!POKEDEX_CACHE) {
     rebuildPokedexLookup(parsePokedexRaw());

@@ -1,5 +1,6 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
+import { saveDataToFile } from "../core/storage.js";
 import { setPokedexSearchVisible } from "../core/ui.js";
 import { getPack, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
@@ -64,9 +65,10 @@ export function renderPack(packTitle, subpackValue) {
     app.innerHTML = `
       <section class="pack-page">
         ${renderFilters(renderAllPackGroup(), { showApplyButton: true, showSearch: false })}
-        <div><h1 class="section-title">${t("pack.allTitle")}</h1><p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p>${renderCardGrid(cards)}</div>
+        <div><div class="pack-header-info"><h1 class="section-title">${t("pack.allTitle")}</h1><p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p><button class="game-pokedex-save-btn left" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button></div>${renderCardGrid(cards)}</div>
       </section>`;
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
+    attachCollectionSave();
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
     attachHeaderPackSearch(() => renderPack("ALL"));
     attachMobileFilterToggle();
@@ -88,19 +90,20 @@ export function renderPack(packTitle, subpackValue) {
 
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters(selector, { showSearch: false })}
+      ${renderFilters(selector, { showApplyButton: true, showSearch: false })}
       <div>
         <div class="pack-header">
           ${renderPackMedia(pack, activeSubpack)}
           <div class="pack-header-info">
             <h1 class="section-title">${title}</h1>
-            <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p>
+            <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p><button class="game-pokedex-save-btn left" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button>
           </div>
         </div>
         ${renderCardGrid(cards)}
       </div>
     </section>`;
-  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
+  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { deferApply: true });
+  attachCollectionSave();
   attachMobileFilterToggle();
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });
@@ -135,4 +138,41 @@ function attachHeaderPackSearch(render) {
   };
   input.addEventListener("input", handler);
   input._packHandler = handler;
+}
+
+function attachCollectionSave() {
+  const button = document.getElementById("collectionSaveBtn");
+  if (!button) return;
+  const refresh = () => {
+    const current = document.getElementById("collectionSaveBtn");
+    if (!current) return;
+    current.disabled = !state.user || !state.ui.cardsDirty;
+    current.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty));
+  };
+  if (!window.__collectionSaveRefreshBound) {
+    window.addEventListener("cardsdatachanged", () => {
+      const current = document.getElementById("collectionSaveBtn");
+      if (current) { current.disabled = !state.user || !state.ui.cardsDirty; current.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty)); }
+    });
+    window.addEventListener("cardsdatasaved", () => {
+      const current = document.getElementById("collectionSaveBtn");
+      if (current) { current.disabled = !state.user || !state.ui.cardsDirty; current.classList.toggle("is-dirty", Boolean(state.ui.cardsDirty)); }
+    });
+    window.__collectionSaveRefreshBound = true;
+  }
+  refresh();
+  button.addEventListener("click", async () => {
+    if (!state.user) { location.hash = "#/register?mode=login"; return; }
+    if (!state.ui.cardsDirty) return;
+    button.disabled = true;
+    try {
+      await saveDataToFile();
+      state.ui.cardsDirty = false;
+      window.dispatchEvent(new CustomEvent("cardsdatasaved"));
+    } catch (error) {
+      button.disabled = false;
+      window.alert("Не удалось сохранить коллекцию: " + error.message);
+    }
+    refresh();
+  });
 }

@@ -46,6 +46,10 @@ export function renderCardTypeBadge(card) {
 function getFallbackCardImage() { return ''; }
 
 export function toggleOwned(cardId) {
+  if (!state.user) {
+    location.hash = "#/register?mode=login";
+    return;
+  }
   if (state.owned.has(cardId)) {
     state.owned.delete(cardId);
   } else {
@@ -65,6 +69,10 @@ export function toggleShowcase(cardId) {
 }
 
 export function toggleWishlist(cardId) {
+  if (!state.user) {
+    location.hash = "#/register?mode=login";
+    return;
+  }
   if (state.wishlist.has(cardId)) {
     state.wishlist.delete(cardId);
   } else {

@@ -9,7 +9,7 @@ function setSettingsDirty(isDirty) {
   state.ui.settingsDirty = isDirty;
   const button = document.getElementById("settingsSaveBtn");
   if (!button) return;
-  button.disabled = !isDirty;
+  button.disabled = !isDirty || !state.user;
   button.classList.toggle("is-dirty", isDirty);
 }
 
@@ -103,8 +103,16 @@ export function renderSettings() {
 
   const saveButton = app.querySelector("#settingsSaveBtn");
   saveButton?.addEventListener("click", async () => {
-    await saveSettingsToFile();
-    setSettingsDirty(false);
+    if (!state.user) {
+      location.hash = "#/register?mode=login";
+      return;
+    }
+    try {
+      await saveSettingsToFile();
+      setSettingsDirty(false);
+    } catch (error) {
+      window.alert(`Не удалось сохранить настройки: ${error.message}`);
+    }
   });
 
   setSettingsDirty(Boolean(state.ui.settingsDirty));
