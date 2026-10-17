@@ -46,7 +46,15 @@ export function renderRegister() {
     const data = new FormData(form);
     try {
       await authenticate(isLogin ? "login" : "register", data.get("username"), data.get("password"));
-      await import("../core/storage.js").then(({ loadDataFromFile }) => loadDataFromFile());
+      await import("../core/storage.js").then(async ({ loadBootstrapFromFile, loadDataFromFile }) => {
+        await loadBootstrapFromFile();
+        await loadDataFromFile();
+      });
+      const { normalizeUiSettings, applyTheme } = await import("../core/theme.js");
+      const { applyTranslations } = await import("../core/i18n.js");
+      normalizeUiSettings();
+      applyTheme();
+      applyTranslations();
       window.dispatchEvent(new Event("authstatechange"));
       location.hash = "#/";
     } catch (registerError) {

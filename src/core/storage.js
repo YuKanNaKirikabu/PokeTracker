@@ -1,4 +1,4 @@
-import { state } from "./state.js";
+import { DEFAULT_LANGUAGE, DEFAULT_THEME, state } from "./state.js";
 
 const TRANSIENT_UI_KEYS = new Set([
   "gamePokedex",
@@ -236,6 +236,14 @@ export async function loadDataFromFile() {
 }
 
 export async function loadBootstrapFromFile() {
+  // Replace, rather than merge, account-owned values so one account cannot inherit another account's state.
+  state.ui.packsHomeMode = "grid";
+  state.ui.language = DEFAULT_LANGUAGE;
+  state.ui.theme = DEFAULT_THEME;
+  state.ui.gamePokedex = {};
+  state.ui.gamePokedexPage = {};
+  state.ui.gamePokedexVersion = {};
+  state.ui.gamePokedexDirty = false;
   try {
     const response = await fetch("/api/bootstrap");
     if (!response.ok) {
