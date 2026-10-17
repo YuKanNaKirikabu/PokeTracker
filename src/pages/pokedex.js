@@ -148,6 +148,12 @@ async function loadEvolutionChain(entry, panel) {
   walk(chainData.chain);
   const known = chain.filter(item=>item.id>0);
   const index = known.findIndex(item=>item.id===entry.number);
+  if (known.length <= 1) {
+    const tab = document.querySelector('[data-dex-tab="evolution"]');
+    if (tab) tab.hidden = true;
+    panel.hidden = true;
+    return;
+  }
   const relevant = index<0 ? known : known;
   panel.innerHTML = `<h3 class="pokedex-tab-heading">Эволюционная цепочка</h3><div class="pokedex-evolution-chain">${relevant.map((item,i)=>`<div class="pokedex-evolution-node ${item.id===entry.number?"current":""}"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png" alt="" loading="lazy"><span>#${String(item.id).padStart(4,"0")}</span><strong>${item.name.replace(/-/g," ")}</strong></div>${i<relevant.length-1?'<span class="pokedex-evolution-arrow" aria-hidden="true">→</span>':""}`).join("")}</div><p class="pokedex-data-note">Цепочка показывает предыдущие и последующие формы, включая текущую.</p>`;
 }
