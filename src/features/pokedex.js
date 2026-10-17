@@ -679,6 +679,7 @@ export function renderPokedexDetail(entry) {
           <div class="pokedex-detail-kicker">POKÉMON DATABASE</div>
         </div>
       </div>
+      <section class="pokedex-overview-description"><div class="pokedex-description-heading"><span class="pokedex-section-mark"></span><h3>Описание</h3></div><p>${descriptionText || t("pokedex.descriptionFallback")}</p></section>
       <nav class="pokedex-detail-tabs" role="tablist" aria-label="Информация о покемоне">
         <button type="button" class="active" data-dex-tab="cards" role="tab" aria-selected="true">Карты TCG Pocket</button>
         <button type="button" data-dex-tab="stats" role="tab" aria-selected="false">Характеристики</button>
