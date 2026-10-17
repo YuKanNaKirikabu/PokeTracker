@@ -15,7 +15,7 @@ export function renderPokedex() {
   const app = document.getElementById("app");
   setBrandSubtitle(t("pokedex.title"));
   setPageTitle("");
-  setPokedexSearchVisible(false);
+  setPokedexSearchVisible(true);
   const list = getPokedexList();
   if (!list.length) {
     app.innerHTML = `
@@ -59,14 +59,8 @@ export function renderPokedex() {
   app.innerHTML = `
     <section class="pokedex-page">
       <div class="pokedex-layout">
-        <aside class="pokedex-sidebar">
-          <div class="pokedex-list-search">
-            <label for="pokedexListSearch">${t("header.searchPlaceholder")}</label>
-            <input id="pokedexListSearch" type="search" autocomplete="off" placeholder="${t("header.searchPlaceholder")}" aria-label="${t("header.searchAria")}" />
-          </div>
-          <div class="pokedex-list">
-            ${listHtml}
-          </div>
+        <aside class="pokedex-list">
+          ${listHtml}
         </aside>
         <div id="pokedexDetailMount" class="pokedex-detail">
           <p class="pokedex-empty">${t("common.loading")}</p>
@@ -96,7 +90,7 @@ export function renderPokedex() {
 }
 
 function attachPokedexSearch(list) {
-  const input = document.getElementById("pokedexListSearch");
+  const input = document.getElementById("pokedexSearchInput");
   if (!input) return;
   input.placeholder = t("header.searchPlaceholder");
   input.value = state.ui.pokedexSearch || "";
@@ -134,10 +128,7 @@ function attachPokedexSearch(list) {
     const target = listEl.querySelector(`.pokedex-item[data-dex="${match.number}"]`);
     if (target) {
       target.classList.add("match");
-      const listRect = listEl.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      const targetTop = targetRect.top - listRect.top + listEl.scrollTop;
-      listEl.scrollTo({ top: Math.max(0, targetTop - (listEl.clientHeight - target.offsetHeight) / 2), behavior: "smooth" });
+      target.scrollIntoView({ block: "center", behavior: "smooth" });
     }
   };
   input.addEventListener("input", handler);
