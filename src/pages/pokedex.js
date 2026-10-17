@@ -63,7 +63,6 @@ export function renderPokedex() {
   </section>`;
   const listEl = app.querySelector(".pokedex-list");
   if (listEl && Number.isFinite(state.ui.pokedexListScroll)) requestAnimationFrame(() => { listEl.scrollTop = state.ui.pokedexListScroll; });
-  attachPokedexSearch(list);
   const search = document.getElementById("pokedexListSearch");
   search.value = state.ui.pokedexSearch || "";
   search.addEventListener("input", () => {
@@ -106,23 +105,39 @@ async function renderPokedexWorld(entry, regionNames) {
   const regions = document.getElementById("pokedexRegions");
   const gamesRoot = document.getElementById("pokedexGames");
   if (!regions || !gamesRoot) return;
-  const region = getPokedexRegion(entry.number);
-  const canonicalRegion = region.includes("Галар") ? "Галар" : region.split(" / ")[0];
-  regions.querySelectorAll(".pokedex-region-chip").forEach(chip => {
-    const active = chip.dataset.region === canonicalRegion;
-    chip.classList.toggle("available",active);
-    chip.classList.toggle("unavailable",!active);
-  });
+  const baseRegion = getPokedexRegion(entry.number).split(" / ")[0];
   try {
     await loadGameDexCatalog();
-    const games = (await Promise.all((await import("../config/pokedex.js")).GAME_POKEDEXES.map(async (game,index) => {
+    const catalog = (await import("../config/pokedex.js")).GAME_POKEDEXES;
+    const normalizedName = value => String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const nameKey = normalizedName(entry.nameEn);
+    const games = (await Promise.all(catalog.map(async (game,index) => {
       await ensureGamePokedexLoaded(game.id);
       const data = getGamePokedexData(game.id);
-      return {...game,index,available:data.byName.has(entry.nameEn.toLowerCase().replace(/[^a-z0-9]/g,"")) || data.list.some(p=>String(p.nameEn||p.name||p).toLowerCase().replace(/[^a-z0-9]/g,"")===entry.nameEn.toLowerCase().replace(/[^a-z0-9]/g,""))};
-    }))).sort((a,b)=>Number(b.available)-Number(a.available)||a.index-b.index);
+      const available = data.byName.has(nameKey) || data.list.some(p => normalizedName(p.nameEn || p.name || p) === nameKey);
+      return {...game,index,available};
+    }))).sort((a,b) => Number(b.available)-Number(a.available) || a.index-b.index);
+    const regionOrder = ["Канто","Джото","Хоэнн","Синно","Юнова","Калос","Алола","Галар","Палдея"];
+    const availableRegions = new Set([baseRegion]);
+    for (const game of games) {
+      for (const dex of (game.dexes || [])) {
+        const exists = (dex.entries || []).some(p => normalizedName(p.nameEn || p.name || p) === nameKey);
+        if (!exists) continue;
+        const title = String(dex.title || "").toLowerCase();
+        const found = regionOrder.find(name => title.includes(name.toLowerCase()));
+        if (found) availableRegions.add(found);
+      }
+    }
+    regions.querySelectorAll(".pokedex-region-chip").forEach(chip => {
+      const available = availableRegions.has(chip.dataset.region);
+      chip.classList.toggle("available",available);
+      chip.classList.toggle("unavailable",!available);
+      chip.style.order = (available ? 0 : 1) * 100 + Number(chip.dataset.order || 0);
+    });
     if (!document.getElementById("pokedexGames")) return;
     gamesRoot.innerHTML = games.map(game => `<div class="pokedex-game-chip ${game.available?"available":"unavailable"}" title="${game.title}"><span class="game-chip-icons">${(game.icons||[]).slice(0,2).map(icon=>`<img src="${icon.src}" alt="" loading="lazy">`).join("")}</span><span class="game-chip-name">${game.title}</span></div>`).join("");
-    const count=document.getElementById("pokedexGamesCount"); if(count) count.textContent=`${games.filter(g=>g.available).length} игр доступно`;
+    const count = document.getElementById("pokedexGamesCount");
+    if (count) count.textContent = `${games.filter(game=>game.available).length} из ${games.length} игр`;
   } catch {
     gamesRoot.innerHTML = `<p class="pokedex-loading">Каталог игр временно недоступен.</p>`;
   }

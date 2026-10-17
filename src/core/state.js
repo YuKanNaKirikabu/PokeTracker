@@ -7,6 +7,7 @@ export const state = {
     packsHomeMode: "grid",
     language: "ru",
     theme: "dark",
+    accentColor: "#ed2340",
     gamePokedex: {},
     gamePokedexPage: {},
     gamePokedexVersion: {},

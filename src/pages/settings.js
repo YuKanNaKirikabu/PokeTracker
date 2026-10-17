@@ -23,6 +23,8 @@ export function renderSettings() {
   const themeDarkClass = theme === "dark" ? "primary" : "secondary";
   const themeLightClass = theme === "light" ? "primary" : "secondary";
   const language = getCurrentLanguage();
+  const accentColor = state.ui.accentColor || "#ed2340";
+  const accentOptions = [{value:"#ed2340",label:"Pokéball"},{value:"#4f8cff",label:"Синий"},{value:"#8b5cf6",label:"Фиолетовый"},{value:"#16a085",label:"Бирюзовый"},{value:"#f59e0b",label:"Янтарный"},{value:"#ec4899",label:"Розовый"}];
   app.innerHTML = `
     <div class="settings-container">
       <div class="settings-section">
@@ -32,6 +34,12 @@ export function renderSettings() {
           <button class="settings-btn ${themeLightClass}" type="button" data-theme="light">${t("settings.themeLight")}</button>
         </div>
         <p class="settings-desc">${t("settings.themeDesc")}</p>
+      </div>
+
+      <div class="settings-section settings-accent-section">
+        <h2>Акцентный цвет</h2>
+        <div class="accent-options">${accentOptions.map(option => `<button type="button" class="accent-option ${option.value === accentColor ? "active" : ""}" data-accent-color="${option.value}" aria-label="${option.label}" title="${option.label}" style="--swatch:${option.value}"><span></span><small>${option.label}</small></button>`).join("")}</div>
+        <p class="settings-desc">Цвет интерфейса и выделения. Красный используется по умолчанию.</p>
       </div>
 
       <div class="settings-section">
@@ -90,6 +98,15 @@ export function renderSettings() {
     });
   });
 
+  app.querySelectorAll("[data-accent-color]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.ui.accentColor = button.dataset.accentColor;
+      applyTheme();
+      setSettingsDirty(true);
+      renderSettings();
+    });
+  });
+
   app.querySelectorAll("[data-language]").forEach((button) => {
     button.addEventListener("click", () => {
       const nextLanguage = button.getAttribute("data-language");
@@ -129,6 +146,7 @@ export function renderSettings() {
       packsHomeMode: "grid",
       language: DEFAULT_LANGUAGE,
       theme: DEFAULT_THEME,
+      accentColor: "#ed2340",
       gamePokedex: {},
       gamePokedexPage: {},
     };
