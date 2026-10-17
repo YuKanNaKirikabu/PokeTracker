@@ -195,7 +195,6 @@ def register(credentials:Credentials):
   db.user_collections.update_one({"user_id":result.inserted_id},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
   return login_response(str(result.inserted_id),username)
  except Exception as exc:
-  if "duplicate" in str(exc).lower(): raise HTTPException(409,"Username already exists.") from exc
   if isinstance(exc,HTTPException): raise
   if "duplicate" in str(exc).lower(): raise HTTPException(409,"Username already exists.") from exc
   raise HTTPException(503,"Could not register account. Check MongoDB connection.") from exc
