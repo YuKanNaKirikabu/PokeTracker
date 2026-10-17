@@ -68,6 +68,14 @@ def test_cards_default_limit_does_not_drop_records(client, monkeypatch):
     assert body["hasMore"] is False
 
 
+def test_game_dex_accepts_array_catalog_format(client, monkeypatch):
+    catalog = [{"id": "sword-shield", "title": "Sword & Shield"}]
+    monkeypatch.setattr(api, "remote_read", lambda name, fallback: catalog)
+    response = client.get("/api/game-dex")
+    assert response.status_code == 200
+    assert response.json() == catalog
+
+
 def test_anonymous_bootstrap_does_not_read_shared_cloud_settings(client, monkeypatch):
     def unexpected_cloud_read(*args, **kwargs):
         raise AssertionError("Account settings must not be read from shared cloud JSON")
