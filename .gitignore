@@ -1,2 +1,10 @@
 /.env
 /add_pack.py
+
+# Python bytecode and runtime caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
