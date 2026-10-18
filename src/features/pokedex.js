@@ -557,11 +557,8 @@ export function getPokedexIconPath(entry) {
   return `https://storage.yandexcloud.net/poketracker/Images/Pokedex/0001-1025 Original/${entry.numberStr}_${encodeURIComponent(safeName)}.webp`;
 }
 
-export function getPokedexSpriteFallback(entry) {
-  if (!entry?.number) return null;
-  const number = Number(entry.number);
-  if (!Number.isFinite(number) || number < 1) return null;
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.webp`;
+export function getPokedexSpriteFallback() {
+  return null;
 }
 
 export function renderPokemonTypeIcons(types, sizeClass = "") {
@@ -636,11 +633,7 @@ export function renderPokedexCards(cards) {
 }
 
 export function getPokedexDescription(entry) {
-  const desc = POKEDEX_DESCRIPTIONS[entry.number];
-  if (!desc) {
-    return { common: t("pokedex.descriptionFallback") };
-  }
-  return desc;
+  return { common: t("pokedex.descriptionFallback") };
 }
 
 export function resolvePokedexGender(desc) {
@@ -658,8 +651,8 @@ export function renderPokedexDetail(entry) {
   const region = getPokedexRegion(entry.number);
   const types = getPokemonTypes(entry.nameEn);
   const iconPath = getPokedexIconPath(entry);
-  const artwork = getPokemonArtwork(entry.nameEn);
-  const fallbackSrc = artwork || getPokedexSpriteFallback(entry) || "";
+  const artwork = null;
+  const fallbackSrc = "";
   const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
   const iconHtml = iconPath
     ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
