@@ -3083,3 +3083,141 @@ body.route-pokedex {
   .pokedex-center > #pokedexDetailMount { height: auto; overflow: visible; }
   .pokedex-card-strip { grid-auto-columns: minmax(130px, 34%); min-height: 240px; }
 }
+
+
+/* Settings: style accent swatches as real controls, matching the application theme. */
+.accent-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+}
+.accent-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--text);
+  background: var(--panel-light);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+.accent-option:hover {
+  border-color: var(--accent);
+  background: var(--panel);
+  transform: translateY(-1px);
+}
+.accent-option.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.accent-option > span {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--swatch);
+  border: 2px solid rgba(255,255,255,.28);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.14);
+}
+.accent-option small { font-size: 12px; font-weight: 650; color: inherit; }
+.accent-option:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Collection: compact pack banners and denser card layout with responsive sizing. */
+.pack-accordion-header {
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 18px);
+  min-height: 76px;
+  padding: 8px 14px;
+}
+.pack-accordion-logo-wrap {
+  width: clamp(72px, 11vw, 136px);
+  height: clamp(42px, 6vw, 72px);
+  flex: 0 0 clamp(72px, 11vw, 136px);
+  align-self: center;
+  overflow: hidden;
+}
+.pack-accordion-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.pack-accordion-title {
+  font-size: clamp(15px, 1.5vw, 22px);
+  line-height: 1.2;
+}
+.pack-group-content-inner { padding: 10px 12px 14px; }
+.pack-group-content .cards-grid,
+.content:has(.collection-toolbar) .cards-grid {
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 10px;
+}
+.content:has(.collection-toolbar) .card-item,
+.pack-group-content .card-item {
+  min-width: 0;
+  max-width: 190px;
+  width: 100%;
+  justify-self: center;
+}
+.collection-save-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0 18px;
+}
+.collection-save-btn { margin: 0; }
+.collection-save-status { color: var(--muted); font-size: 12px; }
+.collection-save-btn:disabled { opacity: .55; cursor: not-allowed; }
+
+/* Pokédex: move search into the left list header and reclaim vertical space. */
+.pokedex-page { gap: 10px; }
+.pokedex-toolbar { min-height: 0; padding: 0; }
+.pokedex-toolbar .eyebrow,
+.pokedex-toolbar .dex-count { display: none !important; }
+.pokedex-toolbar .section-title { margin: 0; }
+.pokedex-sidebar-head {
+  display: block;
+  min-height: 0;
+  padding: 10px;
+}
+.pokedex-sidebar-head .pokedex-inline-search {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+}
+.pokedex-sidebar-head .pokedex-inline-search input { font-size: 11px; }
+.pokedex-sidebar-head .pokedex-inline-search > span { font-size: 18px; }
+.pokedex-sidebar-head > span { display: none !important; }
+
+@media (max-width: 900px) {
+  .pack-accordion-header { min-height: 68px; }
+  .pack-accordion-logo-wrap {
+    width: clamp(64px, 16vw, 100px);
+    height: 48px;
+    flex-basis: clamp(64px, 16vw, 100px);
+  }
+  .pack-accordion-title { font-size: clamp(14px, 2.5vw, 18px); }
+  .pack-group-content .cards-grid,
+  .content:has(.collection-toolbar) .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 8px;
+  }
+}
+@media (max-width: 520px) {
+  .accent-options { gap: 7px; }
+  .accent-option { padding: 7px 9px; }
+  .pack-accordion-header { gap: 8px; padding: 7px 9px; }
+  .pack-accordion-logo-wrap { width: 58px; height: 42px; flex-basis: 58px; }
+  .pack-accordion-title { font-size: 13px; }
+  .pack-group-content .cards-grid,
+  .content:has(.collection-toolbar) .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+}
