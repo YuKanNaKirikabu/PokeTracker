@@ -616,9 +616,11 @@ export function renderPokedexCardItem(card) {
     : "";
   return `
     <div class="card-item card-item--compact pokedex-card" data-pack="${card.pack}" data-card-id="${cardId}">
-      <div class="pokeball ${owned ? "collected" : ""}" data-card-id="${cardId}"></div>
-      ${wishlistHtml}
-      <img src="${card.image}" alt="${card.name}" loading="lazy" decoding="async"${fallbackAttr} />
+      <div class="pokedex-card-media">
+        <div class="pokeball ${owned ? "collected" : ""}" data-card-id="${cardId}"></div>
+        ${wishlistHtml}
+        <img src="${card.image}" alt="${card.name}" loading="lazy" decoding="async"${fallbackAttr} />
+      </div>
       <div class="card-meta">
         <h3>${card.name}</h3>
         <span>${displayCode}</span>
