@@ -5,6 +5,7 @@ import { attachCardImageFallbacks, formatCardId, renderCardGrid, toggleOwned } f
 
 const collectionPendingRemoved = new Set();
 const collectionOpenPacks = new Set();
+let collectionSaveRefreshHandler = null;
 
 function getOrderedPacks() {
   return state.data?.packs || [];
@@ -157,8 +158,13 @@ export function renderCollection() {
       saveButton.textContent = "Повторить сохранение";
     }
   });
-  window.addEventListener("cardsdatachanged", refreshSaveButton);
-  window.addEventListener("cardsdatasaved", refreshSaveButton);
+  if (collectionSaveRefreshHandler) {
+    window.removeEventListener("cardsdatachanged", collectionSaveRefreshHandler);
+    window.removeEventListener("cardsdatasaved", collectionSaveRefreshHandler);
+  }
+  collectionSaveRefreshHandler = refreshSaveButton;
+  window.addEventListener("cardsdatachanged", collectionSaveRefreshHandler);
+  window.addEventListener("cardsdatasaved", collectionSaveRefreshHandler);
 
   document.querySelectorAll(".toggle").forEach((toggle) => {
     toggle.addEventListener("click", () => {
