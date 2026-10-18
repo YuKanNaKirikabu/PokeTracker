@@ -2966,3 +2966,120 @@ body { height: 100%; min-height: 0; overflow: hidden; background: var(--bg); col
   .pokedex-games-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .pokedex-data-grid { grid-template-columns: 1fr; }
 }
+
+
+/* Pokédex layout corrections: compact list, visible tabs and original cool accent palette. */
+body.route-pokedex {
+  --accent: #7c83ff;
+  --accent-strong: #9aa1ff;
+  --accent-soft: rgba(124, 131, 255, .16);
+}
+.pokedex-page { min-height: 0; height: calc(100dvh - 94px); gap: 12px; }
+.pokedex-toolbar { min-height: 58px; }
+.pokedex-toolbar .section-title { display: flex; align-items: center; gap: 10px; }
+.pokedex-toolbar .dex-count { display: none; }
+.pokedex-sidebar-head { min-height: 46px; }
+.pokedex-sidebar-head span:last-child { display: none; }
+.pokedex-item {
+  grid-template-columns: 38px minmax(0,1fr) 12px;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 9px;
+  row-gap: 2px;
+  min-height: 54px;
+}
+.pokedex-item .pokedex-icon { grid-column: 1; grid-row: 1 / span 2; }
+.pokedex-item .pokedex-info { display: contents; }
+.pokedex-item .pokedex-title { grid-column: 2; grid-row: 1; min-width: 0; }
+.pokedex-item .pokedex-list-types {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  min-height: 13px;
+  margin: 0;
+}
+.pokedex-item .pokedex-list-types .type-badge {
+  display: inline-flex;
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  margin: 0;
+  padding: 0;
+}
+.pokedex-item .pokedex-list-types .type-badge img { display: block; width: 13px; height: 13px; }
+.pokedex-item .pokedex-item-chevron { grid-column: 3; grid-row: 1 / span 2; }
+.pokedex-center { position: relative; }
+.pokedex-center > #pokedexDetailMount { display: flex; flex-direction: column; min-height: 0; height: 100%; overflow: hidden; }
+.pokedex-center .pokedex-detail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  padding: 16px 18px 0;
+}
+.pokedex-detail-header { flex: 0 0 auto; gap: 16px; }
+.pokedex-icon--large { width: 88px; height: 88px; flex: 0 0 88px; }
+.pokedex-icon--large img { width: 100%; height: 100%; object-fit: contain; }
+.pokedex-overview-description { flex: 0 0 auto; margin-top: 14px; }
+.pokedex-overview-description p { margin-bottom: 12px; }
+.pokedex-detail-tabs {
+  position: static;
+  flex: 0 0 auto;
+  min-height: 48px;
+  margin: 0 -18px;
+  padding: 6px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.pokedex-detail-tabs::-webkit-scrollbar { display: none; }
+.pokedex-tab-panel { min-height: 0; overflow: auto; padding: 12px 0 16px; }
+.pokedex-tab-panel[hidden] { display: none !important; }
+.pokedex-tab-panel[data-dex-panel="cards"] { display: flex; flex-direction: column; flex: 1 1 auto; }
+.pokedex-cards-header { flex: 0 0 auto; }
+.pokedex-card-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(130px, 24%);
+  grid-template-rows: 1fr;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: start;
+  padding: 4px 2px 12px;
+  scroll-snap-type: x proximity;
+}
+.pokedex-card-strip .pokedex-card { min-width: 0; width: 100%; scroll-snap-align: start; }
+.pokedex-card-strip .pokedex-card > img { width: 100%; height: auto; max-height: 260px; object-fit: contain; }
+.pokedex-card-strip .card-meta h3 { font-size: 11px; }
+.pokedex-world { min-height: 0; }
+.pokedex-world-panel { flex: 0 0 auto; }
+.pokedex-region-chip.available, .pokedex-game-chip.available {
+  border-color: rgba(124,131,255,.32);
+  background: var(--accent-soft);
+}
+.pokedex-description-heading { display: none; }
+.pokedex-overview-description p {
+  min-height: 44px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pokedex-overview-description p:empty::before { content: "Описание пока не добавлено в данные проекта."; color: var(--muted); }
+@media (max-width: 1250px) {
+  .pokedex-page { height: auto; }
+  .pokedex-workspace { grid-template-columns: minmax(205px,.72fr) minmax(320px,1.35fr); }
+  .pokedex-world { grid-column: 1 / -1; }
+}
+@media (max-width: 850px) {
+  .pokedex-page { height: auto; }
+  .pokedex-item { min-height: 54px; }
+  .pokedex-center .pokedex-detail { min-height: 620px; height: auto; overflow: visible; }
+  .pokedex-center > #pokedexDetailMount { height: auto; overflow: visible; }
+  .pokedex-card-strip { grid-auto-columns: minmax(130px, 34%); min-height: 240px; }
+}
