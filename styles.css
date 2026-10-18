@@ -16,6 +16,16 @@
   --overlay: rgba(7, 10, 19, 0.55);
 }
 
+.profile-card-preview-item small {
+  display: block;
+  overflow: hidden;
+  margin-top: 3px;
+  color: var(--muted);
+  font: 10px "IBM Plex Mono", monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 body.theme-light {
   color-scheme: light;
   --bg: #e9edf5;
@@ -292,6 +302,7 @@ body.theme-light .menu-toggle img {
 }
 
 .profile-toggle {
+  position: relative;
   width: 46px;
   height: 46px;
   border-radius: 14px;
@@ -300,6 +311,39 @@ body.theme-light .menu-toggle img {
   color: var(--text);
   font-size: 21px;
   cursor: pointer;
+}
+
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: auto;
+  border: 1px solid rgba(154, 161, 255, 0.55);
+  border-radius: 9px;
+  background: linear-gradient(145deg, var(--accent), #4b51ba);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.profile-avatar--guest {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text);
+  font-size: 21px;
+}
+
+.profile-status-dot {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid var(--panel);
+  border-radius: 50%;
+  background: #55d98b;
 }
 
 .profile-toggle:hover {
@@ -484,14 +528,17 @@ body.theme-light .menu-toggle img {
 }
 
 .profile-data-section {
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(124, 131, 255, 0.12);
+  min-width: 0;
+  margin-top: 0;
+  padding: 18px;
+  border: 1px solid var(--header-border);
+  border-radius: 16px;
+  background: var(--panel);
 }
 
 .profile-data-heading h2 {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .profile-all-link {
@@ -506,7 +553,7 @@ body.theme-light .menu-toggle img {
 
 .profile-card-preview {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   margin-top: 14px;
 }
@@ -623,10 +670,89 @@ body.theme-light .menu-toggle img {
 }
 
 .profile-page {
+  width: min(100%, 1120px);
   height: 100%;
+  margin: 0 auto;
+  padding: clamp(4px, 1vw, 14px) 0 24px;
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
+}
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 34px);
+  border: 1px solid rgba(124, 131, 255, .2);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 90% 15%, rgba(124, 131, 255, .2), transparent 34%),
+    linear-gradient(135deg, var(--panel-light), var(--panel));
+  box-shadow: var(--surface-shadow);
+}
+
+.profile-hero-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 clamp(58px, 8vw, 82px);
+  width: clamp(58px, 8vw, 82px);
+  height: clamp(58px, 8vw, 82px);
+  border: 2px solid rgba(154, 161, 255, .55);
+  border-radius: 24px;
+  background: linear-gradient(145deg, var(--accent), #4249a2);
+  color: #fff;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800;
+  box-shadow: 0 12px 26px rgba(68, 75, 180, .28);
+}
+
+.profile-hero-copy { min-width: 0; }
+.profile-eyebrow,
+.profile-section-kicker {
+  display: block;
+  color: var(--accent-strong);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.profile-hero-copy h1 { margin: 4px 0 4px; font-size: clamp(24px, 4vw, 38px); }
+.profile-hero-copy p { margin: 0; color: var(--muted); font-size: 13px; }
+.profile-hero .profile-logout { margin-left: auto; flex: 0 0 auto; }
+
+.profile-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.profile-stat-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--header-border);
+  border-radius: 16px;
+  background: var(--panel);
+  color: inherit;
+  text-decoration: none;
+}
+.profile-stat-card:hover { border-color: rgba(124, 131, 255, .45); transform: translateY(-1px); }
+.profile-stat-card--accent { background: linear-gradient(135deg, var(--accent-soft), var(--panel)); }
+.profile-stat-icon { grid-row: span 3; font-size: 25px; color: var(--accent-strong); }
+.profile-stat-label { color: var(--muted); font-size: 11px; }
+.profile-stat-card strong { font-size: 25px; line-height: 1.1; }
+.profile-stat-card small { color: var(--muted); font-size: 10px; }
+
+.profile-content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
 }
 
 body.home-route .content {
@@ -650,6 +776,7 @@ body.home-route .content {
   scrollbar-width: thin;
   align-content: start;
   grid-auto-rows: max-content;
+  padding-bottom: 18px;
 }
 
 .choice-grid {
@@ -818,7 +945,10 @@ body.home-route .content {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform-origin: center center;
+  transform: perspective(900px) rotateX(var(--pack-tilt-x, 0deg)) rotateY(var(--pack-tilt-y, 0deg)) scale(1);
+  transition: transform 0.18s ease-out, box-shadow 0.2s ease;
+  will-change: transform;
 }
 
 .pack-tile img {
@@ -834,7 +964,7 @@ body.home-route .content {
 }
 
 .pack-tile:hover {
-  transform: translateY(-4px);
+  transform: perspective(900px) rotateX(var(--pack-tilt-x, 0deg)) rotateY(var(--pack-tilt-y, 0deg)) scale(1.025);
   box-shadow: 0 12px 30px rgba(124, 131, 255, 0.18);
 }
 
@@ -2302,7 +2432,23 @@ body.theme-light .game-icon {
   }
 
   .mobile-packs-page .packs-gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+  .profile-hero {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .profile-hero .profile-logout {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  .profile-stat-grid,
+  .profile-content-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-data-section {
+    padding: 14px;
     gap: 10px;
   }
 
@@ -2777,6 +2923,11 @@ body { height: 100%; min-height: 0; overflow: hidden; background: var(--bg); col
 #app.content:has(.pack-page) {
   flex: 1 1 0;
   height: 0;
+}
+#app.content:has(.mobile-packs-page) {
+  flex: 1 1 0;
+  height: 0;
+  min-height: 0;
   min-height: 0;
 }
 .pokedex-page, .collection-page, .wishlist-page, .profile-page, .settings-page, .projects-page, .home-page, .mobile-packs-page { min-height: 100%; }
@@ -3521,6 +3672,21 @@ body.route-pokedex {
   width: 100%;
   height: 34px;
   min-height: 34px;
+}
+
+.filter-collection-save {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
+.filter-collection-save.is-dirty {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.collection-save-status {
+  color: var(--muted);
+  font-size: 0.72rem;
+  min-height: 1em;
   box-sizing: border-box;
   margin: 0;
 }

@@ -112,7 +112,12 @@ export function setupProfileMenu() {
   if (!menu || !toggle || !dropdown) return;
 
   const render = () => {
-    toggle.innerHTML = state.user ? '<span aria-hidden="true">✓</span>' : '<span aria-hidden="true">👤</span>';
+    const username = state.user?.username || "";
+    const initial = username ? username.slice(0, 1).toUpperCase() : "👤";
+    toggle.innerHTML = state.user
+      ? `<span class="profile-avatar" aria-hidden="true">${initial}</span><span class="profile-status-dot" aria-hidden="true"></span>`
+      : '<span class="profile-avatar profile-avatar--guest" aria-hidden="true">👤</span>';
+    toggle.setAttribute("aria-label", state.user ? `${t("profile.profileLink")}: ${username}` : t("header.profileMenu"));
     dropdown.innerHTML = state.user
       ? `<a href="#/profile">${t("profile.profileLink")}</a><button class="profile-dropdown-logout" type="button" id="profileLogout"><span aria-hidden="true">↪</span>${t("profile.logout")}</button>`
       : `<a href="#/register?mode=login">${t("profile.login")}</a><a href="#/register">${t("profile.register")}</a>`;

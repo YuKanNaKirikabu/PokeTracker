@@ -20,6 +20,7 @@ function renderPreviewCards(cardIds) {
         <div class="profile-card-preview-item">
           <img src="${escapeHtml(card.image)}" alt="${escapeHtml(card.name)}" loading="lazy" decoding="async" />
           <span>${escapeHtml(card.name)}</span>
+            <small>${escapeHtml(card.pack)} · #${escapeHtml(card.number)}</small>
         </div>
       `).join("")}
     </div>
@@ -29,33 +30,58 @@ function renderPreviewCards(cardIds) {
 export function renderProfile() {
   const app = document.getElementById("app");
   if (state.user) {
+    const ownedCount = state.owned.size;
+    const wishlistCount = state.wishlist.size;
+    const totalCards = state.data?.cards?.length || 0;
+    const completion = totalCards ? Math.round((ownedCount / totalCards) * 100) : 0;
     app.innerHTML = `
-      <section class="settings-container profile-page">
-        <div class="settings-section">
-          <div class="profile-heading">
-            <div>
-              <h1 class="section-title">${t("profile.title")}</h1>
-              <p class="settings-desc">${t("profile.loggedInAs")}: <strong>${escapeHtml(state.user.username)}</strong></p>
-            </div>
-            <button class="profile-logout" id="logoutButton" type="button">
-              <span aria-hidden="true">↪</span>
-              ${t("profile.logout")}
-            </button>
+      <section class="profile-page">
+        <div class="profile-hero">
+          <div class="profile-hero-avatar" aria-hidden="true">${escapeHtml(state.user.username.slice(0, 1).toUpperCase())}</div>
+          <div class="profile-hero-copy">
+            <span class="profile-eyebrow">${t("profile.title")}</span>
+            <h1>${escapeHtml(state.user.username)}</h1>
+            <p>${t("profile.loggedInAs")}</p>
           </div>
-          <div class="profile-data-section">
+          <button class="profile-logout" id="logoutButton" type="button">
+            <span aria-hidden="true">↪</span>${t("profile.logout")}
+          </button>
+        </div>
+        <div class="profile-stat-grid">
+          <a class="profile-stat-card profile-stat-card--accent" href="#/collection">
+            <span class="profile-stat-icon" aria-hidden="true">▣</span>
+            <span class="profile-stat-label">${t("profile.collectionLink")}</span>
+            <strong>${ownedCount}</strong>
+            <small>${completion}% ${t("profile.complete") || "собрано"}</small>
+          </a>
+          <a class="profile-stat-card" href="#/wishlist">
+            <span class="profile-stat-icon" aria-hidden="true">♡</span>
+            <span class="profile-stat-label">${t("profile.wishlistLink")}</span>
+            <strong>${wishlistCount}</strong>
+            <small>${t("profile.savedCards") || "сохранённых карт"}</small>
+          </a>
+          <div class="profile-stat-card">
+            <span class="profile-stat-icon" aria-hidden="true">◈</span>
+            <span class="profile-stat-label">${t("profile.catalog") || "Каталог"}</span>
+            <strong>${totalCards}</strong>
+            <small>${t("profile.cardsAvailable") || "карт доступно"}</small>
+          </div>
+        </div>
+        <div class="profile-content-grid">
+          <section class="profile-data-section">
             <div class="profile-data-heading">
-              <h2>${t("profile.collectionLink")}</h2>
+              <div><span class="profile-section-kicker">${t("profile.collectionLink")}</span><h2>${t("profile.recentCollection") || "Последние добавленные"}</h2></div>
               <a class="profile-all-link" href="#/collection">${t("profile.viewAll")}</a>
             </div>
             ${renderPreviewCards(state.owned)}
-          </div>
-          <div class="profile-data-section">
+          </section>
+          <section class="profile-data-section">
             <div class="profile-data-heading">
-              <h2>${t("profile.wishlistLink")}</h2>
+              <div><span class="profile-section-kicker">${t("profile.wishlistLink")}</span><h2>${t("profile.wishlistPreview") || "Хочу получить"}</h2></div>
               <a class="profile-all-link" href="#/wishlist">${t("profile.viewAll")}</a>
             </div>
             ${renderPreviewCards(state.wishlist)}
-          </div>
+          </section>
         </div>
       </section>
     `;

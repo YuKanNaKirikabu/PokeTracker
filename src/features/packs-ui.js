@@ -18,7 +18,7 @@ export function renderPacksDropdown() {
 }
 
 export function getMobilePackTiles() {
-  return getPackTiles().map((tile) => ({
+  return [...getPackTiles()].reverse().map((tile) => ({
     href: tile.href,
     artwork: tile.artwork,
     label: tile.label,
@@ -127,11 +127,25 @@ export function setupPacksArc(container, tiles) {
       const rotateZ = (90 - angle) * 0.15;
       const zIndex = Math.round(1000 + Math.sin(radians) * 100);
       const isVisible = angle >= visibleMin && angle <= visibleMax;
+      const isHovered = i === hoveredIndex;
+      let hoverRotateX = 0;
+      let hoverRotateY = 0;
+      let hoverRotateZ = 0;
+      let hoverScale = 1;
+      if (isHovered) {
+        const rect = items[i].getBoundingClientRect();
+        const pointerRatioX = Math.max(-1, Math.min(1, (stateArc.pointerX - (rect.left + rect.width / 2)) / (rect.width / 2)));
+        const pointerRatioY = Math.max(-1, Math.min(1, (stateArc.pointerY - (rect.top + rect.height / 2)) / (rect.height / 2)));
+        hoverRotateX = pointerRatioY * -2.5;
+        hoverRotateY = pointerRatioX * 3;
+        hoverRotateZ = pointerRatioX * 1.2;
+        hoverScale = 1.025;
+      }
 
-      items[i].style.transform = `translate(-50%, -50%) translate3d(${x}px, ${-y}px, 0) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
+      items[i].style.transform = `translate(-50%, -50%) translate3d(${x}px, ${-y}px, 0) rotateX(${hoverRotateX}deg) rotateY(${rotateY + hoverRotateY}deg) rotateZ(${rotateZ + hoverRotateZ}deg) scale(${scale * hoverScale})`;
       items[i].style.zIndex = zIndex;
       items[i].style.opacity = isVisible ? 1 : 0;
-      if (i === hoveredIndex) {
+      if (isHovered) {
         items[i].classList.add("is-hover");
       } else {
         items[i].classList.remove("is-hover");
@@ -175,4 +189,3 @@ export function setupPacksArc(container, tiles) {
     if (stateArc.raf) cancelAnimationFrame(stateArc.raf);
   };
 }
-
