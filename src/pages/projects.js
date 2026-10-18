@@ -2,14 +2,17 @@ import { GAME_POKEDEXES } from "../config/pokedex.js";
 import { t } from "../core/i18n.js";
 import { setBrandSubtitle, setPageTitle } from "../core/ui.js";
 import { loadGameDexCatalog } from "../features/pokedex.js";
+import { state } from "../core/state.js";
 
-const FAVORITE_GAME_POKEDEXES_KEY = "poketracker:favorite-game-pokedexes";
-
-function getFavoriteGamePokedexes() {
+async function getFavoriteGamePokedexes() {
+  if (!state.user) return [];
   try {
-    const saved = JSON.parse(localStorage.getItem(FAVORITE_GAME_POKEDEXES_KEY) || "[]");
-    return Array.isArray(saved) ? saved.filter((id) => GAME_POKEDEXES.some((game) => game.id === id)) : [];
-  } catch {
+    const response = await fetch("/api/game-favorites");
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    return Array.isArray(payload.favorites) ? payload.favorites.filter((id) => GAME_POKEDEXES.some((game) => game.id === id)) : [];
+  } catch (error) {
+    console.error("Could not load account game favorites:", error);
     return [];
   }
 }
@@ -62,7 +65,7 @@ export async function renderNintPokedexesHome() {
     app.innerHTML = `<section class="placeholder"><h1 class="section-title">${t("projects.pokedexesTitle")}</h1><p>Не удалось загрузить GameDex.json.</p><p>${String(error.message || error)}</p></section>`;
     return;
   }
-  const favorites = getFavoriteGamePokedexes();
+  const favorites = await getFavoriteGamePokedexes();
   const sortedGames = sortGamePokedexes(favorites);
 
   app.innerHTML = `
@@ -109,23 +112,48 @@ export async function renderNintPokedexesHome() {
   `;
 
   app.querySelectorAll("[data-favorite-game]").forEach((button) => {
-    button.addEventListener("click", (event) => {
+    button.addEventListener("click", async (event) => {
       event.preventDefault();
       event.stopPropagation();
       const gameId = button.dataset.favoriteGame;
-      const nextFavorites = getFavoriteGamePokedexes();
+      if (!state.user) { location.hash = "#/register?mode=login"; return; }
+      const nextFavorites = await getFavoriteGamePokedexes();
       const currentIndex = nextFavorites.indexOf(gameId);
       if (currentIndex !== -1) {
         nextFavorites.splice(currentIndex, 1);
       } else {
         nextFavorites.unshift(gameId);
       }
+      button.disabled = true;
       try {
-        localStorage.setItem(FAVORITE_GAME_POKEDEXES_KEY, JSON.stringify(nextFavorites));
+        const response = await fetch("/api/game-favorites", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ favorites: nextFavorites }),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
       } catch (error) {
-        console.warn("Could not save favorite game Pokédexes:", error);
+        console.error("Could not save account game favorites:", error);
+        return;
+      } finally {
+        button.disabled = false;
       }
-      renderNintPokedexesHome();
+
+      const isFavorite = nextFavorites.includes(gameId);
+      button.classList.toggle("is-favorite", isFavorite);
+      button.setAttribute("aria-pressed", String(isFavorite));
+      const label = isFavorite ? "Remove from favorites" : "Add to favorites";
+      button.setAttribute("aria-label", label);
+      button.title = label;
+
+      const grid = app.querySelector(".game-pokedex-choice-grid");
+      if (grid) {
+        const cards = new Map([...grid.querySelectorAll("[data-favorite-game]")].map((item) => [item.dataset.favoriteGame, item.closest(".game-pokedex-choice-card")]));
+        for (const game of sortGamePokedexes(nextFavorites)) {
+          const card = cards.get(game.id);
+          if (card) grid.append(card);
+        }
+      }
     });
   });
 }

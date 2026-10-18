@@ -15,6 +15,16 @@ import { renderRegister } from "./pages/register.js";
 import { renderWishlist } from "./pages/wishlist.js";
 
 export function renderRoute() {
+  const packHeaderContext = document.getElementById("packHeaderContext");
+  if (packHeaderContext) {
+    packHeaderContext.hidden = true;
+    packHeaderContext.replaceChildren();
+  }
+  const packScaleControl = document.getElementById("packScaleControl");
+  if (packScaleControl) {
+    packScaleControl.hidden = true;
+    packScaleControl.replaceChildren();
+  }
   document.body.classList.remove("register-page");
   document.body.classList.remove("home-route");
   const mobileFiltersToggle = document.getElementById("mobileFiltersToggle");

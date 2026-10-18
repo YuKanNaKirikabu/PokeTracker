@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PokeTracker</title>
     <link rel="icon" type="image/webp" href="https://storage.yandexcloud.net/poketracker/Images/Icons/Icon.webp">
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20261018-14" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,6 +32,7 @@
           </div>
         </a>
         <div class="page-title" id="pageTitle" aria-live="polite"></div>
+        <div class="pack-header-context" id="packHeaderContext" hidden></div>
         <div class="pokedex-search" id="pokedexSearchWrap">
           <input
             type="text"
@@ -42,6 +43,7 @@
             data-i18n-aria="header.searchAria"
           />
         </div>
+        <div class="pack-scale-control" id="packScaleControl" hidden></div>
         <div class="header-actions">
           <button class="mobile-filters-toggle" id="mobileFiltersToggle" type="button" aria-expanded="false" aria-label="Открыть фильтры">☷</button>
           <div class="profile-menu" id="profileMenu">
@@ -79,12 +81,8 @@
       </aside>
 
       <main class="content" id="app"></main>
-
-      <footer class="site-footer">
-        <span data-i18n="app.footer">Сделано для PokeTracker</span>
-      </footer>
     </div>
 
-    <script type="module" src="src/main.js"></script>
+    <script type="module" src="src/main.js?v=20261018-5"></script>
   </body>
 </html>

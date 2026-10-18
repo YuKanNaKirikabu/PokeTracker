@@ -21,6 +21,17 @@ export function renderMobileHome() {
       tile.className = "pack-tile";
       tile.href = tileData.href;
       tile.innerHTML = `<img src="${tileData.artwork}" alt="${tileData.label}" loading="lazy" decoding="async" />`;
+      tile.addEventListener("pointermove", (event) => {
+        const rect = tile.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        tile.style.setProperty("--pack-tilt-x", `${(y * -20).toFixed(2)}deg`);
+        tile.style.setProperty("--pack-tilt-y", `${(x * 20).toFixed(2)}deg`);
+      });
+      tile.addEventListener("pointerleave", () => {
+        tile.style.removeProperty("--pack-tilt-x");
+        tile.style.removeProperty("--pack-tilt-y");
+      });
       grid.appendChild(tile);
     });
     return;

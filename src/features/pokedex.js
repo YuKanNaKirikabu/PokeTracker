@@ -14,11 +14,16 @@ let POKEDEX_LOOKUP = null;
 const POKEDEX_TYPE_CACHE = new Map();
 const GAME_POKEDEX_CACHE = new Map();
 const POKEDEX_CARD_CACHE = new Map();
+let POKEDEX_CARD_CACHE_SIZE = -1;
 const GAME_POKEDEX_LOADING = new Map();
 let GAME_DEX_POKEMON_INDEX = null;
 let GAME_DEX_LOAD_PROMISE = null;
 let GAME_DEX_LOAD_ERROR = null;
 let POKEDEX_NAMES_LOADING = null;
+
+window.addEventListener("cardsdataready", () => {
+  POKEDEX_CARD_CACHE.clear();
+});
 
 const POKEDEX_VALIDATION_ANCHORS = [
   { number: 1, nameEn: "Bulbasaur" },
@@ -170,27 +175,10 @@ function isValidMasterPokedexList(list) {
 }
 
 export async function loadPokedexNamesFromFile() {
-  if (POKEDEX_NAMES_LOADING) return POKEDEX_NAMES_LOADING;
-
-  POKEDEX_NAMES_LOADING = (async () => {
-    try {
-      const response = await fetch("Lists/1025.txt");
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const raw = await response.text();
-      const list = parsePokedexText(raw, 4);
-      if (isValidMasterPokedexList(list)) {
-        rebuildPokedexLookup(list);
-      } else {
-        console.warn("Pokedex names list rejected: invalid or shifted mapping");
-      }
-    } catch (err) {
-      console.warn("Pokedex names load failed:", err.message);
-    }
-  })();
-
-  return POKEDEX_NAMES_LOADING;
+  // The complete 1,025-entry master Pokédex is bundled in src/config/pokedex.js.
+  // Do not request the removed local Lists/1025.txt file.
+  getPokedexList();
 }
-
 export function getPokedexList() {
   if (!POKEDEX_CACHE) {
     rebuildPokedexLookup(parsePokedexRaw());
@@ -448,6 +436,10 @@ export function getPokedexRegion(number) {
 
 export function getPokemonCardMatches(nameEn) {
   if (!state.data?.cards?.length) return [];
+  if (POKEDEX_CARD_CACHE_SIZE !== state.data.cards.length) {
+    POKEDEX_CARD_CACHE.clear();
+    POKEDEX_CARD_CACHE_SIZE = state.data.cards.length;
+  }
   const key = normalizePokemonName(nameEn);
   if (POKEDEX_CARD_CACHE.has(key)) return POKEDEX_CARD_CACHE.get(key);
   const baseTokens = tokenizePokemonName(nameEn);
@@ -517,18 +509,16 @@ function extractPokedexCardType(typeRaw) {
   const normalized = normalizePokedexType(value);
   if (!normalized || POKEDEX_NON_POKEMON_CARD_TYPES.has(normalized)) return null;
 
-  const cloudTypes = new Set((state.data?.cards || []).map((card) => {
-    const fileName = String(card.type || "").split(/[?#]/, 1)[0].split("/").pop() || "";
-    return fileName.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim().toUpperCase();
-  }));
-  if (!cloudTypes.has(normalized)) return null;
-
   return normalized;
 }
 
 export function getPokemonTypes(nameEn) {
   const key = normalizePokemonName(nameEn);
-  if (POKEDEX_TYPE_CACHE.has(key)) return POKEDEX_TYPE_CACHE.get(key);
+  const cards = state.data?.cards || [];
+  const cached = POKEDEX_TYPE_CACHE.get(key);
+  if (cached && (cached.length !== 1 || cached[0] !== "COLORLESS" || !cards.length)) {
+    return cached;
+  }
 
   const types = new Set();
 
@@ -552,7 +542,10 @@ export function getPokemonTypes(nameEn) {
   }
 
   // Colorless is only the fallback when no valid type can be determined.
-  if (!list.length) list = ["COLORLESS"];
+  if (!list.length) {
+    list = ["COLORLESS"];
+    if (!cards.length) return list;
+  }
 
   POKEDEX_TYPE_CACHE.set(key, list);
   return list;
@@ -574,11 +567,8 @@ export function getPokedexIconPath(entry) {
   return `https://storage.yandexcloud.net/poketracker/Images/Pokedex/0001-1025 Original/${entry.numberStr}_${encodeURIComponent(safeName)}.webp`;
 }
 
-export function getPokedexSpriteFallback(entry) {
-  if (!entry?.number) return null;
-  const number = Number(entry.number);
-  if (!Number.isFinite(number) || number < 1) return null;
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.webp`;
+export function getPokedexSpriteFallback() {
+  return null;
 }
 
 export function renderPokemonTypeIcons(types, sizeClass = "") {
@@ -588,7 +578,7 @@ export function renderPokemonTypeIcons(types, sizeClass = "") {
     .map((type) => {
       const icon = (state.data?.cards || []).find((card) => {
         const value = String(card.type || "").split(/[?#]/, 1)[0].split("/").pop() || "";
-        return value.replace(/\.[^.]+$/, "").toUpperCase() === type;
+        return normalizePokedexType(value.replace(/\.[^.]+$/, "")) === type;
       })?.type || "";
       return `<span class="icon-badge type-badge ${sizeClass}"><img src="${icon}" alt="${type}" /></span>`;
     })
@@ -626,9 +616,11 @@ export function renderPokedexCardItem(card) {
     : "";
   return `
     <div class="card-item card-item--compact pokedex-card" data-pack="${card.pack}" data-card-id="${cardId}">
-      <div class="pokeball ${owned ? "collected" : ""}" data-card-id="${cardId}"></div>
-      ${wishlistHtml}
-      <img src="${card.image}" alt="${card.name}" loading="lazy" decoding="async"${fallbackAttr} />
+      <div class="pokedex-card-media">
+        <div class="pokeball ${owned ? "collected" : ""}" data-card-id="${cardId}"></div>
+        ${wishlistHtml}
+        <img src="${card.image}" alt="${card.name}" loading="lazy" decoding="async"${fallbackAttr} />
+      </div>
       <div class="card-meta">
         <h3>${card.name}</h3>
         <span>${displayCode}</span>
@@ -653,11 +645,7 @@ export function renderPokedexCards(cards) {
 }
 
 export function getPokedexDescription(entry) {
-  const desc = POKEDEX_DESCRIPTIONS[entry.number];
-  if (!desc) {
-    return { common: t("pokedex.descriptionFallback") };
-  }
-  return desc;
+  return { common: t("pokedex.descriptionFallback") };
 }
 
 export function resolvePokedexGender(desc) {
@@ -675,66 +663,41 @@ export function renderPokedexDetail(entry) {
   const region = getPokedexRegion(entry.number);
   const types = getPokemonTypes(entry.nameEn);
   const iconPath = getPokedexIconPath(entry);
-  const artwork = getPokemonArtwork(entry.nameEn);
-  const spriteFallback = getPokedexSpriteFallback(entry);
-  const fallbackSrc = artwork || spriteFallback || "";
+  const artwork = null;
+  const fallbackSrc = "";
   const fallbackData = fallbackSrc ? ` data-fallback-src="${fallbackSrc}"` : "";
   const iconHtml = iconPath
     ? `<img src="${iconPath}" alt="${displayName}"${fallbackData} onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-    : artwork
-      ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-      : `<span>${displayName.slice(0, 1)}</span>`;
+    : artwork ? `<img src="${artwork}" alt="${displayName}" loading="lazy" decoding="async" />` : `<span>${displayName.slice(0,1)}</span>`;
   const desc = getPokedexDescription(entry);
   const gender = resolvePokedexGender(desc);
-  const showGender = !!(desc.male || desc.female);
-  const descriptionText =
-    gender === "male" ? desc.male : gender === "female" ? desc.female : desc.common;
+  const descriptionText = gender === "male" ? desc.male : gender === "female" ? desc.female : desc.common;
+  const cards = getPokemonCardMatches(entry.nameEn);
+  const statsPanel = `<div class="pokedex-data-grid"><div class="pokedex-data-cell"><span>Национальный номер</span><strong>#${formatDexNumber(entry.number)}</strong></div><div class="pokedex-data-cell"><span>Регион</span><strong>${region}</strong></div><div class="pokedex-data-cell"><span>Тип</span><strong>${types.join(" / ")}</strong></div><div class="pokedex-data-cell"><span>Карты TCG Pocket</span><strong>${cards.length}</strong></div></div><p class="pokedex-data-note">Рост, вес и базовые характеристики будут показаны здесь после загрузки проверенных данных Pokédex.</p>`;
   return `
     <div class="pokedex-detail">
       <div class="pokedex-detail-header">
-        <div class="pokedex-icon pokedex-icon--large">
-          ${iconHtml}
-        </div>
+        <div class="pokedex-icon pokedex-icon--large">${iconHtml}</div>
         <div class="pokedex-detail-meta">
-          <div class="pokedex-title">
-            <span class="pokedex-number">${formatDexNumber(entry.number)}</span>
-            <span class="pokedex-name">${displayName}</span>
-          </div>
-          <div class="pokedex-subline">
-            <span class="pokedex-region">${region}</span>
-            <span class="pokedex-types">${renderPokemonTypeIcons(types, "icon-sm")}</span>
-          </div>
-          ${renderGameIcons(entry.nameEn)}
+          <div class="pokedex-title"><span class="pokedex-number">NATIONAL DEX · #${formatDexNumber(entry.number)}</span><span class="pokedex-name">${displayName}</span></div>
+          <div class="pokedex-subline"><span class="pokedex-region">${region}</span><span class="pokedex-types">${renderPokemonTypeIcons(types, "icon-sm")}</span></div>
+          <div class="pokedex-detail-kicker">POKÉMON DATABASE</div>
         </div>
       </div>
-      <div class="pokedex-divider"></div>
-      <div class="pokedex-description">
-        <div class="pokedex-description-header">
-          <h3>${t("pokedex.descriptionTitle")}</h3>
-          ${
-            showGender
-              ? `
-                <div class="pokedex-gender-toggle">
-                  <button class="gender-btn ${gender === "male" ? "active" : ""}" data-gender="male" type="button">♂</button>
-                  <button class="gender-btn ${gender === "female" ? "active" : ""}" data-gender="female" type="button">♀</button>
-                </div>
-              `
-              : ""
-          }
-        </div>
-        <p>${descriptionText}</p>
-      </div>
-      <div class="pokedex-divider"></div>
-      <div class="pokedex-cards-block">
-        <div class="pokedex-cards-header">
-          <h3>${t("pokedex.cardsFromPacks")}</h3>
-          <div class="pokedex-scroll-controls">
-            <button class="scroll-btn" id="pokedexScrollPrev" type="button" aria-label="${t("common.back")}">‹</button>
-            <button class="scroll-btn" id="pokedexScrollNext" type="button" aria-label="${t("common.next")}">›</button>
-          </div>
-        </div>
-        ${renderPokedexCards(getPokemonCardMatches(entry.nameEn))}
-      </div>
+      <section class="pokedex-overview-description"><div class="pokedex-description-heading"><span class="pokedex-section-mark"></span><h3>Описание</h3></div><p>${descriptionText || t("pokedex.descriptionFallback")}</p></section>
+      <nav class="pokedex-detail-tabs" role="tablist" aria-label="Информация о покемоне">
+        <button type="button" class="active" data-dex-tab="cards" role="tab" aria-selected="true">Карты TCG Pocket</button>
+        <button type="button" data-dex-tab="stats" role="tab" aria-selected="false">Характеристики</button>
+        <button type="button" data-dex-tab="moves" role="tab" aria-selected="false">Приёмы</button>
+        <button type="button" data-dex-tab="evolution" role="tab" aria-selected="false">Эволюции</button>
+      </nav>
+      <section class="pokedex-tab-panel" data-dex-panel="cards">
+        <div class="pokedex-cards-header"><h3>Карты TCG Pocket <span class="pokedex-tab-count">${cards.length}</span></h3><div class="pokedex-scroll-controls"><button class="scroll-btn" id="pokedexScrollPrev" type="button" aria-label="Предыдущие карты">‹</button><button class="scroll-btn" id="pokedexScrollNext" type="button" aria-label="Следующие карты">›</button></div></div>
+        ${renderPokedexCards(cards)}
+      </section>
+      <section class="pokedex-tab-panel" data-dex-panel="stats" hidden><h3 class="pokedex-tab-heading">Характеристики</h3>${statsPanel}</section>
+      <section class="pokedex-tab-panel" data-dex-panel="moves" hidden><h3 class="pokedex-tab-heading">Известные приёмы</h3><p class="pokedex-data-note">Достоверный список приёмов для этого покемона ещё не подключён к локальным данным проекта.</p></section>
+      <section class="pokedex-tab-panel" data-dex-panel="evolution" hidden><h3 class="pokedex-tab-heading">Эволюционная цепочка</h3><p class="pokedex-data-note">Эволюции и предыдущие формы требуют отдельного источника данных. Здесь не будут подставляться предположительные связи.</p></section>
     </div>
   `;
 }

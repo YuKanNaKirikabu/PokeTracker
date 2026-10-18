@@ -1,11 +1,11 @@
 import { loadData } from "./core/data.js";
-import { loadAuth } from "./core/auth.js";
+import { loadAuth } from "./core/auth.js?v=20261018-3";
 import { applyTranslations, t } from "./core/i18n.js";
-import { initStorage, loadBootstrapFromFile, loadDataFromFile, saveDataToFile } from "./core/storage.js";
+import { initStorage, loadBootstrapFromFile, loadDataFromFile } from "./core/storage.js";
 import { applyTheme, normalizeUiSettings } from "./core/theme.js";
 import { state } from "./core/state.js";
-import { setupProfileMenu, setupSidePanel } from "./core/ui.js";
-import { loadPokedexNamesFromFile, loadGamePokedexes } from "./features/pokedex.js";
+import { setupProfileMenu, setupSidePanel } from "./core/ui.js?v=20261018-3";
+import { loadPokedexNamesFromFile, loadGamePokedexes } from "./features/pokedex.js?v=20261018-5";
 import { renderRoute } from "./router.js";
 
 function setupImageErrorDiagnostics() {
@@ -70,19 +70,6 @@ async function init() {
     setupSidePanel();
     setupProfileMenu();
     renderRoute();
-    let saveTimer = null;
-    window.addEventListener("cardsdatachanged", () => {
-      if (saveTimer) clearTimeout(saveTimer);
-      saveTimer = setTimeout(async () => {
-        try {
-          await saveDataToFile();
-          state.ui.cardsDirty = false;
-          window.dispatchEvent(new CustomEvent("cardsdatasaved"));
-        } catch (error) {
-          console.error("Ошибка автоматического сохранения коллекции:", error);
-        }
-      }, 400);
-    });
     window.addEventListener("hashchange", renderRoute);
     window.addEventListener("cardsdataready", () => {
       if (

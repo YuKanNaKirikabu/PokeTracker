@@ -8,98 +8,163 @@ import {
     getPokedexList,
     getPokedexRegion,
     getPokemonDisplayName,
+    getPokemonTypes,
+    renderPokemonTypeIcons,
+    getGamePokedexData,
+    loadGameDexCatalog,
+    getGamePokedexConfig,
+    ensureGamePokedexLoaded,
+    getPokedexDescription,
+    getPokemonCardMatches,
     renderPokedexDetail,
 } from "../features/pokedex.js";
 
 export function renderPokedex() {
   const app = document.getElementById("app");
+  document.body.classList.add("route-pokedex");
   setBrandSubtitle(t("pokedex.title"));
   setPageTitle("");
-  setPokedexSearchVisible(true);
+  setPokedexSearchVisible(false);
   const list = getPokedexList();
   if (!list.length) {
-    app.innerHTML = `
-      <section class="placeholder">
-        <h1 class="section-title">${t("pokedex.title")}</h1>
-        <p>${t("pokedex.empty")}</p>
-      </section>
-    `;
+    app.innerHTML = `<section class="placeholder"><h1 class="section-title">${t("pokedex.title")}</h1><p>${t("pokedex.empty")}</p></section>`;
     return;
   }
   const selectedNumber = state.ui.pokedexSelected || 1;
   const selected = list.find((entry) => entry.number === selectedNumber) || list[0];
   state.ui.pokedexSelected = selected.number;
-  const listHtml = list
-    .map((entry) => {
-      const displayName = getPokemonDisplayName(entry);
-      const region = getPokedexRegion(entry.number);
-      const iconPath = getPokedexIconPath(entry);
-      const iconHtml = iconPath
-        ? `<img src="${iconPath}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
-        : `<span>${displayName.slice(0, 1)}</span>`;
-      return `
-        <button class="pokedex-item ${entry.number === selected.number ? "active" : ""}" data-dex="${entry.number}" type="button">
-          <div class="pokedex-icon">
-            ${iconHtml}
-          </div>
-          <div class="pokedex-info">
-            <div class="pokedex-title">
-              <span class="pokedex-number">${formatDexNumber(entry.number)}</span>
-              <span class="pokedex-name">${displayName}</span>
-            </div>
-            <div class="pokedex-subline">
-              <span class="pokedex-region">${region}</span>
-            </div>
-          </div>
-        </button>
-      `;
-    })
-    .join("");
-
-  app.innerHTML = `
-    <section class="pokedex-page">
-      <div class="pokedex-layout">
-        <aside class="pokedex-list">
-          ${listHtml}
-        </aside>
-        <div id="pokedexDetailMount" class="pokedex-detail">
-          <p class="pokedex-empty">${t("common.loading")}</p>
-        </div>
-      </div>
-    </section>
-  `;
+  const listHtml = list.map((entry) => {
+    const displayName = getPokemonDisplayName(entry);
+    const types = getPokemonTypes(entry.nameEn);
+    const iconPath = getPokedexIconPath(entry);
+    const iconHtml = iconPath
+      ? `<img src="${iconPath}" alt="" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
+      : `<span>${displayName.slice(0, 1)}</span>`;
+    return `<button class="pokedex-item ${entry.number === selected.number ? "active" : ""}" data-dex="${entry.number}" type="button">
+      <span class="pokedex-icon">${iconHtml}</span>
+      <span class="pokedex-info"><span class="pokedex-title"><span class="pokedex-number">#${formatDexNumber(entry.number)}</span><span class="pokedex-name">${displayName}</span></span>
+      <span class="pokedex-list-types">${renderPokemonTypeIcons(types, "icon-xs")}</span></span>
+      <span class="pokedex-item-chevron" aria-hidden="true">›</span>
+    </button>`;
+  }).join("");
+  const regionNames = ["Канто","Джото","Хоэнн","Синно","Юнова","Калос","Алола","Галар","Палдея"];
+  app.innerHTML = `<section class="pokedex-page">
+    
+    <div class="pokedex-workspace">
+      <aside class="pokedex-sidebar"><div class="pokedex-sidebar-head"><label class="pokedex-inline-search"><span aria-hidden="true">⌕</span><input id="pokedexListSearch" type="search" placeholder="Поиск покемонов…" autocomplete="off" aria-label="Поиск покемонов"></label></div><div class="pokedex-list" role="listbox" aria-label="Список покемонов">${listHtml}</div></aside>
+      <section class="pokedex-center" aria-label="Карточка покемона"><div id="pokedexDetailMount" class="pokedex-detail"><p class="pokedex-empty">${t("common.loading")}</p></div></section>
+      <aside class="pokedex-world">
+        <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◎</span><div><h2>Регионы</h2><p>Порядок по поколениям</p></div></div><div class="pokedex-region-grid" id="pokedexRegions">${regionNames.map((name,i)=>`<div class="pokedex-region-chip" data-region="${name}" data-order="${i}"><span class="region-index">${String(i+1).padStart(2,"0")}</span><span>${name}</span></div>`).join("")}</div></section>
+        <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◉</span><div><h2>Доступно в играх</h2><p id="pokedexGamesCount">Проверка доступности…</p></div></div><div class="pokedex-games-grid" id="pokedexGames"><div class="pokedex-loading">Загружаем каталог игр…</div></div></section>
+      </aside>
+    </div>
+  </section>`;
   const listEl = app.querySelector(".pokedex-list");
-  if (listEl && Number.isFinite(state.ui.pokedexListScroll)) {
-    requestAnimationFrame(() => {
-      listEl.scrollTop = state.ui.pokedexListScroll;
+  if (listEl && Number.isFinite(state.ui.pokedexListScroll)) requestAnimationFrame(() => { listEl.scrollTop = state.ui.pokedexListScroll; });
+  const search = document.getElementById("pokedexListSearch");
+  search.value = state.ui.pokedexSearch || "";
+  search.addEventListener("input", () => {
+    state.ui.pokedexSearch = search.value;
+    const raw = search.value.trim().toLowerCase();
+    let first = null;
+    listEl.querySelectorAll(".pokedex-item").forEach(item => {
+      const entry = list.find(x => x.number === Number(item.dataset.dex));
+      const match = !raw || (entry && (getPokemonDisplayName(entry).toLowerCase().includes(raw) || entry.nameEn.toLowerCase().includes(raw) || String(entry.number).includes(raw)));
+      item.hidden = !match;
+      if (match && !first) first = item;
     });
-  }
-  const stripEl = app.querySelector("#pokedexCardStrip");
-  if (stripEl && Number.isFinite(state.ui.pokedexCardScroll)) {
-    requestAnimationFrame(() => {
-      stripEl.scrollLeft = state.ui.pokedexCardScroll;
-    });
-  }
-  attachPokedexSearch(list);
+    if (raw && first) {
+      listEl.querySelectorAll(".pokedex-item.match").forEach(item => item.classList.remove("match"));
+      first.classList.add("match");
+      const top = first.offsetTop - listEl.offsetTop;
+      listEl.scrollTo({top:Math.max(0,top-listEl.clientHeight/2),behavior:"smooth"});
+    }
+  });
+  if (search.value) search.dispatchEvent(new Event("input"));
   setTimeout(() => {
-    const detailMount = document.getElementById("pokedexDetailMount");
-    if (!detailMount) return;
-    detailMount.outerHTML = renderPokedexDetail(selected);
+    const mount = document.getElementById("pokedexDetailMount");
+    if (!mount) return;
+    mount.innerHTML = renderPokedexDetail(selected);
     attachPokedexEvents(selected.number);
+    attachDetailTabs(selected);
+    renderPokedexWorld(selected, regionNames);
   }, 0);
+}
+function attachDetailTabs(entry) {
+  const root = document.querySelector(".pokedex-center");
+  const tabs = root?.querySelectorAll("[data-dex-tab]");
+  if (!tabs?.length) return;
+  tabs.forEach(tab => tab.addEventListener("click", () => {
+    tabs.forEach(button => {
+      const active = button === tab;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", String(active));
+    });
+    root.querySelectorAll("[data-dex-panel]").forEach(panel => {
+      panel.hidden = panel.dataset.dexPanel !== tab.dataset.dexTab;
+    });
+  }));
+}
+
+async function renderPokedexWorld(entry, regionNames) {
+  const regions = document.getElementById("pokedexRegions");
+  const gamesRoot = document.getElementById("pokedexGames");
+  if (!regions || !gamesRoot) return;
+  try {
+    await loadGameDexCatalog();
+    const catalog = (await import("../config/pokedex.js")).GAME_POKEDEXES;
+    const normalizedName = value => String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const nameKey = normalizedName(entry.nameEn);
+    const games = (await Promise.all(catalog.map(async (game,index) => {
+      await ensureGamePokedexLoaded(game.id);
+      const data = getGamePokedexData(game.id);
+      const available = data.byName.has(nameKey) || data.list.some(p => normalizedName(p.nameEn || p.name || p) === nameKey);
+      return {...game,index,available};
+    }))).sort((a,b) => Number(b.available)-Number(a.available) || a.index-b.index);
+    const regionOrder = [{ru:"Канто",en:"kanto"},{ru:"Джото",en:"johto"},{ru:"Хоэнн",en:"hoenn"},{ru:"Синно",en:"sinnoh"},{ru:"Юнова",en:"unova"},{ru:"Калос",en:"kalos"},{ru:"Алола",en:"alola"},{ru:"Галар",en:"galar"},{ru:"Палдея",en:"paldea"}];
+    const availableRegions = new Set();
+    for (const game of games) {
+      for (const dex of (game.dexes || [])) {
+        const exists = (dex.entries || []).some(p => normalizedName(p.nameEn || p.name || p) === nameKey);
+        if (!exists) continue;
+        const title = String(dex.title || "").toLowerCase();
+        const found = regionOrder.find(region => title.includes(region.ru.toLowerCase()) || title.includes(region.en));
+        if (found) availableRegions.add(found.ru);
+      }
+    }
+    regions.querySelectorAll(".pokedex-region-chip").forEach(chip => {
+      const available = availableRegions.has(chip.dataset.region);
+      chip.classList.toggle("available",available);
+      chip.classList.toggle("unavailable",!available);
+      chip.style.order = (available ? 0 : 1) * 100 + Number(chip.dataset.order || 0);
+    });
+    if (!document.getElementById("pokedexGames")) return;
+    gamesRoot.innerHTML = games.map(game => `<div class="pokedex-game-chip ${game.available?"available":"unavailable"}" title="${game.title}"><span class="game-chip-icons">${(game.icons||[]).slice(0,2).map(icon=>`<img src="${icon.src}" alt="" loading="lazy">`).join("")}</span><span class="game-chip-name">${game.title}</span></div>`).join("");
+    const count = document.getElementById("pokedexGamesCount");
+    if (count) count.textContent = `${games.filter(game=>game.available).length} из ${games.length} игр`;
+  } catch {
+    gamesRoot.innerHTML = `<p class="pokedex-loading">Каталог игр временно недоступен.</p>`;
+  }
 }
 
 function attachPokedexSearch(list) {
   const input = document.getElementById("pokedexSearchInput");
   if (!input) return;
   input.placeholder = t("header.searchPlaceholder");
+  input.value = state.ui.pokedexSearch || "";
   if (input._pokedexHandler) {
     input.removeEventListener("input", input._pokedexHandler);
   }
   if (input._gamePokedexHandler) {
     input.removeEventListener("input", input._gamePokedexHandler);
+    input._gamePokedexHandler = null;
+  }
+  if (input._packHandler) {
+    input.removeEventListener("input", input._packHandler);
+    input._packHandler = null;
   }
   const handler = () => {
+    state.ui.pokedexSearch = input.value;
     const listEl = document.querySelector(".pokedex-list");
     if (!listEl) return;
     const raw = input.value.trim().toLowerCase();

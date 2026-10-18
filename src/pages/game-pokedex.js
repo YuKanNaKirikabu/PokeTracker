@@ -28,7 +28,7 @@ function setGamePokedexDirty(isDirty) {
   state.ui.gamePokedexDirty = isDirty;
   const button = document.getElementById("gamePokedexSaveBtn");
   if (!button) return;
-  button.disabled = !isDirty;
+  button.disabled = !isDirty || !state.user;
   button.classList.toggle("is-dirty", isDirty);
 }
 
@@ -155,13 +155,6 @@ export async function renderGamePokedex(gameId) {
   const foundCount = list.filter((entry) => foundKeys.has(normalizePokemonName(entry.nameEn))).length;
   const rangeStart = start + 1;
   const rangeEnd = Math.min(start + pageSize, list.length);
-  const searchInput = document.getElementById("pokedexSearchInput");
-  const searchRaw = searchInput ? searchInput.value.trim().toLowerCase() : "";
-  const matchIndex = getGamePokedexMatchIndex(searchRaw, list);
-  const matchKey = matchIndex >= start && matchIndex < start + pageSize
-    ? normalizePokemonName(list[matchIndex].nameEn)
-    : null;
-
   const cardsHtml = pageItems.map((entry) => {
     const key = normalizePokemonName(entry.nameEn);
     const baseEntry = getPokedexEntryByName(entry.nameEn) || entry;
@@ -177,7 +170,7 @@ export async function renderGamePokedex(gameId) {
         ? `<img src="${artwork}" alt="${displayName}" onerror="window.__pokedexHandleImgError(this)" loading="lazy" decoding="async" />`
       : `<span>${displayName.slice(0, 1)}</span>`;
     const isSelected = marks.blue.has(key);
-    const isMatch = matchKey && key === matchKey;
+    const isMatch = false;
     return `
       <div class="game-pokedex-item ${isSelected ? "active" : ""} ${isMatch ? "match" : ""}" data-game-entry="${key}">
         <div class="game-pokedex-icon">
@@ -253,8 +246,16 @@ export async function renderGamePokedex(gameId) {
   const foundCountEl = app.querySelector("#gamePokedexFound");
   const saveButton = app.querySelector("#gamePokedexSaveBtn");
   saveButton?.addEventListener("click", async () => {
-    await saveGamePokedexToFile();
-    setGamePokedexDirty(false);
+    if (!state.user) {
+      location.hash = "#/register?mode=login";
+      return;
+    }
+    try {
+      await saveGamePokedexToFile();
+      setGamePokedexDirty(false);
+    } catch (error) {
+      window.alert(`Не удалось сохранить игровой покедекс: ${error.message}`);
+    }
   });
 
   const unsavedModal = app.querySelector("#gamePokedexUnsavedModal");
@@ -308,13 +309,6 @@ export async function renderGamePokedex(gameId) {
 
   attachGamePokedexSearch(gameId, list, pageSize);
 
-  const matchEl = app.querySelector(".game-pokedex-item.match");
-  if (matchEl) {
-    requestAnimationFrame(() => {
-      matchEl.scrollIntoView({ block: "center", behavior: "smooth" });
-    });
-  }
-
   app.querySelectorAll("[data-page]").forEach((button) => {
     button.addEventListener("click", () => {
       const dir = button.dataset.page;
@@ -348,16 +342,16 @@ export async function renderGamePokedex(gameId) {
 function attachGamePokedexSearch(gameId, list, pageSize) {
   const input = document.getElementById("pokedexSearchInput");
   if (!input) return;
-  if (input._pokedexHandler) {
-    input.removeEventListener("input", input._pokedexHandler);
-  }
-  if (input._gamePokedexHandler) {
-    input.removeEventListener("input", input._gamePokedexHandler);
-  }
+  input.value = state.ui.gamePokedexSearch || "";
+  input.placeholder = t("header.searchPlaceholder");
+  if (input._pokedexHandler) input.removeEventListener("input", input._pokedexHandler);
+  if (input._gamePokedexHandler) input.removeEventListener("input", input._gamePokedexHandler);
+
   const handler = () => {
+    state.ui.gamePokedexSearch = input.value;
     const raw = input.value.trim().toLowerCase();
-    document.querySelectorAll(".game-pokedex-item.match").forEach((item) => {
-      item.classList.remove("match");
+    document.querySelectorAll(".game-pokedex-item.search-pulse, .game-pokedex-item.match").forEach((item) => {
+      item.classList.remove("search-pulse", "match");
     });
     if (!raw) return;
     const matchIndex = getGamePokedexMatchIndex(raw, list);
@@ -366,18 +360,39 @@ function attachGamePokedexSearch(gameId, list, pageSize) {
     const currentPage = state.ui.gamePokedexPage?.[gameId] || 1;
     if (nextPage !== currentPage) {
       state.ui.gamePokedexPage[gameId] = nextPage;
-      renderGamePokedex(gameId);
+      renderGamePokedex(gameId).then(() => pulseSearchMatch(gameId, list[matchIndex]));
       return;
     }
     const key = normalizePokemonName(list[matchIndex].nameEn);
     const target = document.querySelector(`.game-pokedex-item[data-game-entry="${key}"]`);
-    if (target) {
-      target.classList.add("match");
-      target.scrollIntoView({ block: "center", behavior: "smooth" });
-    }
+    if (target) pulseSearchTarget(target);
   };
   input.addEventListener("input", handler);
   input._gamePokedexHandler = handler;
+}
+
+function pulseSearchTarget(target) {
+  target.classList.remove("match", "search-pulse");
+  const scroller = document.querySelector(".content");
+  if (scroller) {
+    const viewport = scroller.getBoundingClientRect();
+    const item = target.getBoundingClientRect();
+    const margin = Math.max(16, (viewport.height - item.height) / 2);
+    if (item.top < viewport.top + margin) {
+      scroller.scrollBy({ top: item.top - viewport.top - margin, behavior: "smooth" });
+    } else if (item.bottom > viewport.bottom - margin) {
+      scroller.scrollBy({ top: item.bottom - viewport.bottom + margin, behavior: "smooth" });
+    }
+  }
+  target.classList.add("search-pulse");
+  target.addEventListener("animationend", () => target.classList.remove("search-pulse"), { once: true });
+}
+
+function pulseSearchMatch(gameId, entry) {
+  if (!location.hash.startsWith(`#/projects/pokedexes/${gameId}`)) return;
+  const key = normalizePokemonName(entry.nameEn);
+  const target = document.querySelector(`.game-pokedex-item[data-game-entry="${key}"]`);
+  if (target) pulseSearchTarget(target);
 }
 
 function getGamePokedexMatchIndex(raw, list) {
