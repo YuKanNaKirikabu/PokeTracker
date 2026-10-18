@@ -200,14 +200,22 @@ class Credentials(BaseModel):
  username:str=Field(min_length=3,max_length=32)
  password:str=Field(min_length=8,max_length=256)
 
+class AvatarPayload(BaseModel):
+ pokemon_number:int=Field(ge=1,le=1025)
+
 @app.get("/api/auth/me")
 def auth_me(request:FastRequest):
- session=session_for(request); return {"authenticated":bool(session),"username":session["username"] if session else None}
+ session=session_for(request)
+ if not session: return {"authenticated":False,"username":None,"pokemon_number":1}
+ try:
+  user=mongo().users.find_one({"_id":ObjectId(session["user_id"])},{"avatar_pokemon_number":1}) or {}
+  return {"authenticated":True,"username":session["username"],"pokemon_number":user.get("avatar_pokemon_number",1)}
+ except Exception as exc: raise HTTPException(503,"Could not load profile.") from exc
 
-def login_response(user_id,username):
+def login_response(user_id,username,pokemon_number=1):
  token=secrets.token_urlsafe(32)
  with _session_lock: _sessions[token]={"user_id":user_id,"username":username,"expires":time.time()+SESSION_TTL}
- response=JSONResponse({"success":True,"username":username})
+ response=JSONResponse({"success":True,"username":username,"pokemon_number":pokemon_number})
  response.set_cookie(SESSION_COOKIE,token,max_age=SESSION_TTL,httponly=True,samesite="lax",path="/")
  return response
 
@@ -216,7 +224,7 @@ def register(credentials:Credentials):
  username=credentials.username.strip()
  if len(username)<3 or len(username)>32: raise HTTPException(400,"Username must be 3-32 characters.")
  try:
-  db=mongo(); result=db.users.insert_one({"username":username,"password_hash":hash_password(credentials.password),"created_at":time.time(),"updated_at":time.time()})
+  db=mongo(); result=db.users.insert_one({"username":username,"password_hash":hash_password(credentials.password),"avatar_pokemon_number":1,"created_at":time.time(),"updated_at":time.time()})
   db.user_collections.update_one({"user_id":result.inserted_id},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
   return login_response(str(result.inserted_id),username)
  except Exception as exc:
@@ -230,9 +238,17 @@ def login(credentials:Credentials):
   db=mongo(); user=db.users.find_one({"username":credentials.username.strip()})
   if not user or not verify_password(credentials.password,user.get("password_hash","")): raise HTTPException(401,"Invalid username or password.")
   db.user_collections.update_one({"user_id":user["_id"]},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
-  return login_response(str(user["_id"]),user["username"])
+  return login_response(str(user["_id"]),user["username"],user.get("avatar_pokemon_number",1))
  except HTTPException: raise
  except Exception as exc: raise HTTPException(503,"Could not sign in. Check MongoDB connection.") from exc
+
+@app.post("/api/auth/avatar")
+def save_avatar(payload:AvatarPayload, request:FastRequest):
+ session=require_session(request)
+ try:
+  mongo().users.update_one({"_id":ObjectId(session["user_id"])},{"$set":{"avatar_pokemon_number":payload.pokemon_number,"updated_at":time.time()}})
+  return {"success":True,"pokemon_number":payload.pokemon_number}
+ except Exception as exc: raise HTTPException(503,"Could not save profile avatar.") from exc
 
 @app.post("/api/auth/logout")
 def logout(request:FastRequest):

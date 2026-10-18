@@ -1,6 +1,7 @@
 ﻿import { t } from "./i18n.js";
 import { logout } from "./auth.js";
 import { state } from "./state.js";
+import { getPokedexIconPath, getPokedexList } from "../features/pokedex.js";
 
 export function setActiveNav() {
   const route = location.hash || "#/";
@@ -113,9 +114,10 @@ export function setupProfileMenu() {
 
   const render = () => {
     const username = state.user?.username || "";
-    const initial = username ? username.slice(0, 1).toUpperCase() : "👤";
+    const avatarEntry = state.user ? getPokedexList().find((entry) => entry.number === (state.user.pokemonNumber || 1)) : null;
+    const avatar = avatarEntry ? `<img class="profile-avatar-image" src="${getPokedexIconPath(avatarEntry)}" alt="" aria-hidden="true" />` : "";
     toggle.innerHTML = state.user
-      ? `<span class="profile-avatar" aria-hidden="true">${initial}</span><span class="profile-status-dot" aria-hidden="true"></span>`
+      ? `<span class="profile-avatar profile-avatar--pokemon">${avatar}</span><span class="profile-status-dot" aria-hidden="true"></span>`
       : '<span class="profile-avatar profile-avatar--guest" aria-hidden="true">👤</span>';
     toggle.setAttribute("aria-label", state.user ? `${t("profile.profileLink")}: ${username}` : t("header.profileMenu"));
     dropdown.innerHTML = state.user

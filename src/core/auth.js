@@ -3,7 +3,7 @@ import { DEFAULT_LANGUAGE, DEFAULT_THEME, state } from "./state.js";
 export async function loadAuth() {
   const response = await fetch("/api/auth/me");
   const data = await response.json();
-  state.user = data.authenticated ? { username: data.username } : null;
+  state.user = data.authenticated ? { username: data.username, pokemonNumber: data.pokemon_number || 1 } : null;
   return state.user;
 }
 
@@ -17,8 +17,21 @@ export async function authenticate(endpoint, username, password) {
   if (!response.ok || !data.success) {
     throw new Error(data.error || data.detail || "Authentication failed.");
   }
-  state.user = { username: data.username };
+  state.user = { username: data.username, pokemonNumber: data.pokemon_number || 1 };
   return state.user;
+}
+
+export async function saveAvatar(pokemonNumber) {
+  const response = await fetch("/api/auth/avatar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pokemon_number: pokemonNumber }),
+  });
+  const data = await response.json();
+  if (!response.ok || !data.success) throw new Error(data.error || data.detail || "Could not save avatar.");
+  if (state.user) state.user.pokemonNumber = data.pokemon_number;
+  window.dispatchEvent(new Event("authstatechange"));
+  return data;
 }
 
 export async function logout() {

@@ -14,11 +14,16 @@ let POKEDEX_LOOKUP = null;
 const POKEDEX_TYPE_CACHE = new Map();
 const GAME_POKEDEX_CACHE = new Map();
 const POKEDEX_CARD_CACHE = new Map();
+let POKEDEX_CARD_CACHE_SIZE = -1;
 const GAME_POKEDEX_LOADING = new Map();
 let GAME_DEX_POKEMON_INDEX = null;
 let GAME_DEX_LOAD_PROMISE = null;
 let GAME_DEX_LOAD_ERROR = null;
 let POKEDEX_NAMES_LOADING = null;
+
+window.addEventListener("cardsdataready", () => {
+  POKEDEX_CARD_CACHE.clear();
+});
 
 const POKEDEX_VALIDATION_ANCHORS = [
   { number: 1, nameEn: "Bulbasaur" },
@@ -431,6 +436,10 @@ export function getPokedexRegion(number) {
 
 export function getPokemonCardMatches(nameEn) {
   if (!state.data?.cards?.length) return [];
+  if (POKEDEX_CARD_CACHE_SIZE !== state.data.cards.length) {
+    POKEDEX_CARD_CACHE.clear();
+    POKEDEX_CARD_CACHE_SIZE = state.data.cards.length;
+  }
   const key = normalizePokemonName(nameEn);
   if (POKEDEX_CARD_CACHE.has(key)) return POKEDEX_CARD_CACHE.get(key);
   const baseTokens = tokenizePokemonName(nameEn);
