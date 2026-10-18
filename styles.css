@@ -3083,3 +3083,34 @@ body.route-pokedex {
   .pokedex-center > #pokedexDetailMount { height: auto; overflow: visible; }
   .pokedex-card-strip { grid-auto-columns: minmax(130px, 34%); min-height: 240px; }
 }
+
+
+/* Keep Pokédex search beside the list it filters; remove duplicate totals. */
+.pokedex-toolbar .dex-count,
+.pokedex-sidebar-head > span:not(.pokedex-sidebar-title) { display: none !important; }
+.pokedex-sidebar-head {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 13px 12px 12px;
+  min-height: 0;
+}
+.pokedex-sidebar-title {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+.pokedex-sidebar-head .pokedex-inline-search {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 9px;
+  gap: 7px;
+  border-radius: 9px;
+}
+.pokedex-sidebar-head .pokedex-inline-search > span { font-size: 18px; }
+.pokedex-sidebar-head .pokedex-inline-search input { font-size: 10px; }
