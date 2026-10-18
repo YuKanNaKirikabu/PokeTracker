@@ -49,11 +49,10 @@ export function renderPokedex() {
   }).join("");
   const regionNames = ["Канто","Джото","Хоэнн","Синно","Юнова","Калос","Алола","Галар","Палдея"];
   app.innerHTML = `<section class="pokedex-page">
-    <div class="pokedex-toolbar"><div><span class="eyebrow">NATIONAL DATABASE</span><h1 class="section-title">Pokédex <span class="dex-count">1,025</span></h1></div>
-      <label class="pokedex-inline-search"><span aria-hidden="true">⌕</span><input id="pokedexListSearch" type="search" placeholder="Поиск по имени или номеру" autocomplete="off" aria-label="Поиск покемонов"></label>
+    <div class="pokedex-toolbar"><div><span class="eyebrow">NATIONAL DATABASE</span><h1 class="section-title">Pokédex</h1></div>
     </div>
     <div class="pokedex-workspace">
-      <aside class="pokedex-sidebar"><div class="pokedex-sidebar-head"><span>ПОКЕМОНЫ</span><span>1025</span></div><div class="pokedex-list" role="listbox" aria-label="Список покемонов">${listHtml}</div></aside>
+      <aside class="pokedex-sidebar"><div class="pokedex-sidebar-head"><span class="pokedex-sidebar-title">ПОКЕМОНЫ</span><label class="pokedex-inline-search"><span aria-hidden="true">⌕</span><input id="pokedexListSearch" type="search" placeholder="Поиск по имени или номеру" autocomplete="off" aria-label="Поиск покемонов"></label></div><div class="pokedex-list" role="listbox" aria-label="Список покемонов">${listHtml}</div></aside>
       <section class="pokedex-center" aria-label="Карточка покемона"><div id="pokedexDetailMount" class="pokedex-detail"><p class="pokedex-empty">${t("common.loading")}</p></div></section>
       <aside class="pokedex-world">
         <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◎</span><div><h2>Регионы</h2><p>Порядок по поколениям</p></div></div><div class="pokedex-region-grid" id="pokedexRegions">${regionNames.map((name,i)=>`<div class="pokedex-region-chip" data-region="${name}" data-order="${i}"><span class="region-index">${String(i+1).padStart(2,"0")}</span><span>${name}</span></div>`).join("")}</div></section>
