@@ -89,7 +89,6 @@ export function renderPokedex() {
     mount.innerHTML = renderPokedexDetail(selected);
     attachPokedexEvents(selected.number);
     attachDetailTabs(selected);
-    loadPokedexFlavorText(selected);
     renderPokedexWorld(selected, regionNames);
   }, 0);
 }
@@ -107,70 +106,22 @@ function attachDetailTabs(entry) {
     }
   }));
 }
-async function loadSupplementalPokemonData(entry, root) {
-  const statsPanel = root.querySelector('[data-dex-panel="stats"]');
-  const movesPanel = root.querySelector('[data-dex-panel="moves"]');
-  const evolutionPanel = root.querySelector('[data-dex-panel="evolution"]');
-  try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${entry.number}`);
-    if (!response.ok) throw new Error("PokéAPI request failed");
-    const pokemon = await response.json();
-    if (!root.isConnected) return;
-    const statNames = {hp:"HP",attack:"Атака",defense:"Защита","special-attack":"Спец. атака","special-defense":"Спец. защита",speed:"Скорость"};
-    const stats = (pokemon.stats || []).map(stat => {
-      const name = statNames[stat.stat.name] || stat.stat.name;
-      const value = Number(stat.base_stat) || 0;
-      return `<div class="pokedex-stat-row"><span>${name}</span><div class="pokedex-stat-track"><i style="width:${Math.min(100,value/255*100)}%"></i></div><strong>${value}</strong></div>`;
-    }).join("");
-    if (statsPanel) statsPanel.innerHTML = `<h3 class="pokedex-tab-heading">Базовые характеристики</h3><div class="pokedex-data-grid"><div class="pokedex-data-cell"><span>Рост</span><strong>${(pokemon.height/10).toLocaleString("ru-RU")} м</strong></div><div class="pokedex-data-cell"><span>Вес</span><strong>${(pokemon.weight/10).toLocaleString("ru-RU")} кг</strong></div><div class="pokedex-data-cell"><span>Базовый опыт</span><strong>${pokemon.base_experience ?? "—"}</strong></div><div class="pokedex-data-cell"><span>Способности</span><strong>${(pokemon.abilities||[]).map(a=>a.ability.name.replace(/-/g," ")).join(", ") || "—"}</strong></div></div><div class="pokedex-stats-list">${stats}</div>`;
-    const moveNames = (pokemon.moves || []).map(item => item.move.name.replace(/-/g," ")).sort((a,b)=>a.localeCompare(b));
-    if (movesPanel) movesPanel.innerHTML = `<h3 class="pokedex-tab-heading">Известные приёмы <span class="pokedex-tab-count">${moveNames.length}</span></h3><div class="pokedex-move-list">${moveNames.map(name=>`<span class="pokedex-move-chip">${name}</span>`).join("")}</div>`;
-    if (evolutionPanel) await loadEvolutionChain(entry, evolutionPanel);
-  } catch {
-    [statsPanel,movesPanel,evolutionPanel].filter(Boolean).forEach(panel => {
-      if (panel.querySelector(".pokedex-data-note")) panel.querySelector(".pokedex-data-note").textContent = "Не удалось загрузить дополнительные данные. Проверь подключение к интернету и повтори попытку.";
+function attachDetailTabs(entry) {
+  const root = document.querySelector(".pokedex-center");
+  const tabs = root?.querySelectorAll("[data-dex-tab]");
+  if (!tabs?.length) return;
+  tabs.forEach(tab => tab.addEventListener("click", () => {
+    tabs.forEach(button => {
+      const active = button === tab;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", String(active));
     });
-  }
-}
-async function loadEvolutionChain(entry, panel) {
-  const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${entry.number}`);
-  if (!speciesResponse.ok) throw new Error("Species request failed");
-  const species = await speciesResponse.json();
-  const chainResponse = await fetch(species.evolution_chain.url);
-  if (!chainResponse.ok) throw new Error("Evolution request failed");
-  const chainData = await chainResponse.json();
-  const chain = [];
-  const walk = node => {
-    if (!node) return;
-    chain.push({name:node.species.name,id:Number((node.species.url.match(/pokemon-species\/(\d+)\//)||[])[1])||0});
-    (node.evolves_to||[]).forEach(walk);
-  };
-  walk(chainData.chain);
-  const known = chain.filter(item=>item.id>0);
-  const index = known.findIndex(item=>item.id===entry.number);
-  if (known.length <= 1) {
-    const tab = document.querySelector('[data-dex-tab="evolution"]');
-    if (tab) tab.hidden = true;
-    panel.hidden = true;
-    return;
-  }
-  const relevant = index<0 ? known : known;
-  panel.innerHTML = `<h3 class="pokedex-tab-heading">Эволюционная цепочка</h3><div class="pokedex-evolution-chain">${relevant.map((item,i)=>`<div class="pokedex-evolution-node ${item.id===entry.number?"current":""}"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png" alt="" loading="lazy"><span>#${String(item.id).padStart(4,"0")}</span><strong>${item.name.replace(/-/g," ")}</strong></div>${i<relevant.length-1?'<span class="pokedex-evolution-arrow" aria-hidden="true">→</span>':""}`).join("")}</div><p class="pokedex-data-note">Цепочка показывает предыдущие и последующие формы, включая текущую.</p>`;
+    root.querySelectorAll("[data-dex-panel]").forEach(panel => {
+      panel.hidden = panel.dataset.dexPanel !== tab.dataset.dexTab;
+    });
+  }));
 }
 
-async function loadPokedexFlavorText(entry) {
-  const target = document.querySelector(".pokedex-overview-description p");
-  if (!target) return;
-  try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${entry.number}`);
-    if (!response.ok) return;
-    const species = await response.json();
-    const lang = document.documentElement.lang === "ru" ? "ru" : "en";
-    const flavor = (species.flavor_text_entries || []).find(item => item.language?.name === lang)
-      || (species.flavor_text_entries || []).find(item => item.language?.name === "en");
-    if (flavor && target.isConnected) target.textContent = flavor.flavor_text.replace(/[\n\f\r]+/g," ").replace(/\s+/g," ").trim();
-  } catch {}
-}
 async function renderPokedexWorld(entry, regionNames) {
   const regions = document.getElementById("pokedexRegions");
   const gamesRoot = document.getElementById("pokedexGames");
