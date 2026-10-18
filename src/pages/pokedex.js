@@ -49,7 +49,7 @@ export function renderPokedex() {
   }).join("");
   const regionNames = ["Канто","Джото","Хоэнн","Синно","Юнова","Калос","Алола","Галар","Палдея"];
   app.innerHTML = `<section class="pokedex-page">
-    <div class="pokedex-toolbar"><h1 class="section-title">Pokédex</h1></div>
+    
     <div class="pokedex-workspace">
       <aside class="pokedex-sidebar"><div class="pokedex-sidebar-head"><label class="pokedex-inline-search"><span aria-hidden="true">⌕</span><input id="pokedexListSearch" type="search" placeholder="Поиск покемонов…" autocomplete="off" aria-label="Поиск покемонов"></label></div><div class="pokedex-list" role="listbox" aria-label="Список покемонов">${listHtml}</div></aside>
       <section class="pokedex-center" aria-label="Карточка покемона"><div id="pokedexDetailMount" class="pokedex-detail"><p class="pokedex-empty">${t("common.loading")}</p></div></section>
