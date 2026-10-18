@@ -96,20 +96,6 @@ function attachDetailTabs(entry) {
   const root = document.querySelector(".pokedex-center");
   const tabs = root?.querySelectorAll("[data-dex-tab]");
   if (!tabs?.length) return;
-  let loaded = false;
-  tabs.forEach(tab => tab.addEventListener("click", async () => {
-    tabs.forEach(button => { const active = button === tab; button.classList.toggle("active",active); button.setAttribute("aria-selected",String(active)); });
-    root.querySelectorAll("[data-dex-panel]").forEach(panel => { panel.hidden = panel.dataset.dexPanel !== tab.dataset.dexTab; });
-    if (!loaded && tab.dataset.dexTab !== "cards") {
-      loaded = true;
-      await loadSupplementalPokemonData(entry, root);
-    }
-  }));
-}
-function attachDetailTabs(entry) {
-  const root = document.querySelector(".pokedex-center");
-  const tabs = root?.querySelectorAll("[data-dex-tab]");
-  if (!tabs?.length) return;
   tabs.forEach(tab => tab.addEventListener("click", () => {
     tabs.forEach(button => {
       const active = button === tab;
