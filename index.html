@@ -32,6 +32,7 @@
           </div>
         </a>
         <div class="page-title" id="pageTitle" aria-live="polite"></div>
+        <div class="pack-header-context" id="packHeaderContext" hidden></div>
         <div class="pokedex-search" id="pokedexSearchWrap">
           <input
             type="text"
@@ -42,6 +43,7 @@
             data-i18n-aria="header.searchAria"
           />
         </div>
+        <div class="pack-scale-control" id="packScaleControl" hidden></div>
         <div class="header-actions">
           <button class="mobile-filters-toggle" id="mobileFiltersToggle" type="button" aria-expanded="false" aria-label="Открыть фильтры">☷</button>
           <div class="profile-menu" id="profileMenu">
@@ -79,10 +81,6 @@
       </aside>
 
       <main class="content" id="app"></main>
-
-      <footer class="site-footer">
-        <span data-i18n="app.footer">Сделано для PokeTracker</span>
-      </footer>
     </div>
 
     <script type="module" src="src/main.js"></script>

@@ -505,7 +505,11 @@ function extractPokedexCardType(typeRaw) {
 
 export function getPokemonTypes(nameEn) {
   const key = normalizePokemonName(nameEn);
-  if (POKEDEX_TYPE_CACHE.has(key)) return POKEDEX_TYPE_CACHE.get(key);
+  const cards = state.data?.cards || [];
+  const cached = POKEDEX_TYPE_CACHE.get(key);
+  if (cached && (cached.length !== 1 || cached[0] !== "COLORLESS" || !cards.length)) {
+    return cached;
+  }
 
   const types = new Set();
 
@@ -529,7 +533,10 @@ export function getPokemonTypes(nameEn) {
   }
 
   // Colorless is only the fallback when no valid type can be determined.
-  if (!list.length) list = ["COLORLESS"];
+  if (!list.length) {
+    list = ["COLORLESS"];
+    if (!cards.length) return list;
+  }
 
   POKEDEX_TYPE_CACHE.set(key, list);
   return list;
@@ -562,7 +569,7 @@ export function renderPokemonTypeIcons(types, sizeClass = "") {
     .map((type) => {
       const icon = (state.data?.cards || []).find((card) => {
         const value = String(card.type || "").split(/[?#]/, 1)[0].split("/").pop() || "";
-        return value.replace(/\.[^.]+$/, "").toUpperCase() === type;
+        return normalizePokedexType(value.replace(/\.[^.]+$/, "")) === type;
       })?.type || "";
       return `<span class="icon-badge type-badge ${sizeClass}"><img src="${icon}" alt="${type}" /></span>`;
     })

@@ -6,13 +6,16 @@ import { getPack, getSubpacks, resolveSubpack, filterPackCards } from "../core/p
 import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
 
-function renderSubpackSelector(pack, activeSubpack) {
+function renderSubpackSelector(pack, activeSubpack, count) {
   const children = getSubpacks(pack);
   if (!children.length) return "";
   const activeId = activeSubpack?.id || "all";
   return `
     <div class="filter-group filter-subpack-group">
-      <h4>${pack.display || pack.id}</h4>
+      <div class="filter-context-title">
+        <strong>${pack.display || pack.id}</strong>
+        <span>${count}</span>
+      </div>
       <div class="toggle-group" id="subpackGroup">
         <button class="toggle-btn ${activeId === "all" ? "active" : ""}" data-subpack="all" type="button">${t("common.all")}</button>
         ${children.map((subpack) => {
@@ -49,6 +52,28 @@ function renderPackMedia(pack, activeSubpack) {
   return url ? `<img src="${url}" alt="${pack.display || pack.id}" class="pack-logo" loading="lazy" decoding="async" />` : "";
 }
 
+function renderPackHeaderContext(media) {
+  const context = document.getElementById("packHeaderContext");
+  if (!context) return;
+  context.innerHTML = media || "";
+  context.hidden = false;
+}
+
+function renderPackScaleControl() {
+  const control = document.getElementById("packScaleControl");
+  if (!control) return;
+  const labels = { lg: "Крупные", md: "Средние", sm: "Мелкие" };
+  control.innerHTML = `
+    <span class="pack-scale-label">Размер карт</span>
+    <div class="scale-group" id="packScaleGroup" role="group" aria-label="Размер карт">
+      ${Object.entries(labels).map(([value, label]) => `
+        <button class="scale-btn ${state.filters.scale === value ? "active" : ""}" data-scale="${value}" type="button" aria-label="${label}" title="${label}">${label}</button>
+      `).join("")}
+    </div>
+  `;
+  control.hidden = false;
+}
+
 export function renderPack(packTitle, subpackValue) {
   const app = document.getElementById("app");
   setPokedexSearchVisible(true);
@@ -64,9 +89,11 @@ export function renderPack(packTitle, subpackValue) {
     const ownedCount = state.data.cards.filter((card) => state.owned.has(formatCardId(card))).length;
     app.innerHTML = `
       <section class="pack-page">
-        ${renderFilters(renderAllPackGroup(), { showApplyButton: true, showSearch: false })}
-        <div><div class="pack-header-info"><h1 class="section-title">${t("pack.allTitle")}</h1><p class="section-subtitle">${ownedCount}/${state.data.cards.length}</p><button class="game-pokedex-save-btn left" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button></div>${renderCardGrid(cards)}</div>
+        ${renderFilters(`<div class="filter-group filter-context-group"><div class="filter-context-title"><strong>${t("pack.allTitle")}</strong><span>${ownedCount}/${state.data.cards.length}</span></div>${renderAllPackGroup()}</div>`, { showApplyButton: true, showSearch: false })}
+        <div><div class="pack-header-info"><button class="game-pokedex-save-btn left" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button></div>${renderCardGrid(cards)}</div>
       </section>`;
+    renderPackHeaderContext("");
+    renderPackScaleControl();
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
     attachCollectionSave();
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
@@ -85,23 +112,19 @@ export function renderPack(packTitle, subpackValue) {
   const visibleCards = filterPackCards(state.data.cards, pack, activeSubpack);
   const cards = applyFilters(visibleCards);
   const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
-  const selector = renderSubpackSelector(pack, activeSubpack);
+  const selector = renderSubpackSelector(pack, activeSubpack, `${ownedCount}/${visibleCards.length}`);
   const title = activeSubpack ? (activeSubpack.display || activeSubpack.id) : (pack.display || pack.id);
 
   app.innerHTML = `
     <section class="pack-page">
       ${renderFilters(selector, { showApplyButton: true, showSearch: false })}
       <div>
-        <div class="pack-header">
-          ${renderPackMedia(pack, activeSubpack)}
-          <div class="pack-header-info">
-            <h1 class="section-title">${title}</h1>
-            <p class="section-subtitle">${ownedCount}/${visibleCards.length}</p><button class="game-pokedex-save-btn left" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button>
-          </div>
-        </div>
+        <div class="pack-header-info"><button class="game-pokedex-save-btn left" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button></div>
         ${renderCardGrid(cards)}
       </div>
     </section>`;
+  renderPackHeaderContext(renderPackMedia(pack, activeSubpack));
+  renderPackScaleControl();
   attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { deferApply: true });
   attachCollectionSave();
   attachMobileFilterToggle();

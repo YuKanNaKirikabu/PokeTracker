@@ -19,7 +19,6 @@ export const I18N = {
   ru: {
     app: {
       title: "PokeTracker",
-      footer: "Сделано для PokeTracker",
     },
     nav: {
       title: "Навигация",
@@ -212,7 +211,7 @@ export const I18N = {
     },
   },
   en: {
-    app: { title: "PokeTracker", footer: "Made for PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navigation",
       home: "Home",
@@ -365,7 +364,7 @@ export const I18N = {
     showcase: { aria: "Showcase" },
   },
   de: {
-    app: { title: "PokeTracker", footer: "Für PokeTracker erstellt" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navigation",
       home: "Start",
@@ -512,7 +511,7 @@ export const I18N = {
     showcase: { aria: "Vitrine" },
   },
   cs: {
-    app: { title: "PokeTracker", footer: "Vytvořeno pro PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navigace",
       home: "Domů",
@@ -659,7 +658,7 @@ export const I18N = {
     showcase: { aria: "Vitrína" },
   },
   "zh-Hans": {
-    app: { title: "PokeTracker", footer: "为 PokeTracker 制作" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "导航",
       home: "主页",
@@ -806,7 +805,7 @@ export const I18N = {
     showcase: { aria: "展示" },
   },
   ja: {
-    app: { title: "PokeTracker", footer: "PokeTracker 用に作成" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "ナビゲーション",
       home: "ホーム",
@@ -953,7 +952,7 @@ export const I18N = {
     showcase: { aria: "ショーケース" },
   },
   fr: {
-    app: { title: "PokeTracker", footer: "Cree pour PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navigation",
       home: "Accueil",
@@ -1100,7 +1099,7 @@ export const I18N = {
     showcase: { aria: "Vitrine" },
   },
   pt: {
-    app: { title: "PokeTracker", footer: "Feito para PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navegação",
       home: "Início",
@@ -1247,7 +1246,7 @@ export const I18N = {
     showcase: { aria: "Vitrine" },
   },
   "es-MX": {
-    app: { title: "PokeTracker", footer: "Hecho para PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navegación",
       home: "Inicio",
@@ -1394,7 +1393,7 @@ export const I18N = {
     showcase: { aria: "Vitrina" },
   },
   es: {
-    app: { title: "PokeTracker", footer: "Hecho para PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navegación",
       home: "Inicio",
@@ -1541,7 +1540,7 @@ export const I18N = {
     showcase: { aria: "Vitrina" },
   },
   it: {
-    app: { title: "PokeTracker", footer: "Creato per PokeTracker" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Navigazione",
       home: "Home",
@@ -1688,7 +1687,7 @@ export const I18N = {
     showcase: { aria: "Vetrina" },
   },
   tr: {
-    app: { title: "PokeTracker", footer: "PokeTracker için hazırlandı" },
+    app: { title: "PokeTracker" },
     nav: {
       title: "Gezinti",
       home: "Ana Sayfa",

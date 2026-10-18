@@ -128,18 +128,6 @@ export function renderFilters(extraGroups = "", options = {}) {
   return `
     <div class="filters">
       ${extraGroups}
-      <div class="filter-group filter-scale-group">
-        <button class="filter-toggle" data-filter-target="scaleWrap" type="button" aria-expanded="${isSectionOpen("scaleWrap")}">
-          <span>${t("filters.scale")}</span><span class="filter-toggle-icon">${isSectionOpen("scaleWrap") ? "▲" : "▼"}</span>
-        </button>
-        <div class="filter-collapsible ${isSectionOpen("scaleWrap") ? "is-open" : ""}" id="scaleWrap">
-          <div class="scale-group" id="scaleGroup">
-            <button class="scale-btn ${state.filters.scale === "lg" ? "active" : ""}" data-scale="lg">LG</button>
-            <button class="scale-btn ${state.filters.scale === "md" ? "active" : ""}" data-scale="md">MD</button>
-            <button class="scale-btn ${state.filters.scale === "sm" ? "active" : ""}" data-scale="sm">SM</button>
-          </div>
-        </div>
-      </div>
       ${showSearch ? `
         <div class="filter-group">
           <h4>${t("filters.search")}</h4>
@@ -147,10 +135,7 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       ` : ""}
       <div class="filter-group">
-        <button class="filter-toggle" data-filter-target="sortWrap" type="button" aria-expanded="${isSectionOpen("sortWrap")}">
-          <span>${t("filters.sort")}</span><span class="filter-toggle-icon">${isSectionOpen("sortWrap") ? "▲" : "▼"}</span>
-        </button>
-        <div class="filter-collapsible ${isSectionOpen("sortWrap") ? "is-open" : ""}" id="sortWrap">
+        <div class="filter-collapsible is-open" id="sortWrap">
           <div class="toggle-group" id="sortGroup">
             <button class="toggle-btn ${state.filters.sort === "number" ? "active" : ""}" data-sort="number">${t("filters.sortNumber")}</button>
             <button class="toggle-btn ${state.filters.sort === "name" ? "active" : ""}" data-sort="name">${t("filters.sortName")}</button>
@@ -159,10 +144,7 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       </div>
       <div class="filter-group">
-        <button class="filter-toggle" data-filter-target="ownedWrap" type="button" aria-expanded="${isSectionOpen("ownedWrap")}">
-          <span>${t("filters.owned")}</span><span class="filter-toggle-icon">${isSectionOpen("ownedWrap") ? "▲" : "▼"}</span>
-        </button>
-        <div class="filter-collapsible ${isSectionOpen("ownedWrap") ? "is-open" : ""}" id="ownedWrap">
+        <div class="filter-collapsible is-open" id="ownedWrap">
           <div class="toggle-group" id="ownedGroup">
             <button class="toggle-btn ${state.filters.owned === "all" ? "active" : ""}" data-owned="all">${t("filters.ownedAll")}</button>
             <button class="toggle-btn ${state.filters.owned === "owned" ? "active" : ""}" data-owned="owned">${t("filters.ownedHave")}</button>
@@ -172,20 +154,14 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       </div>
       <div class="filter-group">
-        <button class="filter-toggle" data-filter-target="cardTypeWrap" type="button" aria-expanded="${isSectionOpen("cardTypeWrap")}">
-          <span>${t("filters.cardType")}</span><span class="filter-toggle-icon">${isSectionOpen("cardTypeWrap") ? "▲" : "▼"}</span>
-        </button>
-        <div class="filter-collapsible ${isSectionOpen("cardTypeWrap") ? "is-open" : ""}" id="cardTypeWrap">
+        <div class="filter-collapsible is-open" id="cardTypeWrap">
           <div class="toggle-group" id="cardTypeGroup">
             ${availableCardTypeFilters().map((item) => `<button class="toggle-btn ${state.filters.cardType === item.id ? "active" : ""}" data-card-type="${item.id}">${item.label || t(item.labelKey)}</button>`).join("")}
           </div>
         </div>
       </div>
       <div class="filter-group">
-        <button class="filter-toggle" data-filter-target="rarityPillsWrap" type="button" aria-expanded="${isSectionOpen("rarityPillsWrap")}">
-          <span>${t("filters.rarity")}</span><span class="filter-toggle-icon">${isSectionOpen("rarityPillsWrap") ? "▲" : "▼"}</span>
-        </button>
-        <div class="filter-collapsible ${isSectionOpen("rarityPillsWrap") ? "is-open" : ""}" id="rarityPillsWrap">
+        <div class="filter-collapsible is-open" id="rarityPillsWrap">
         <div class="filter-pills" id="rarityPills">
           ${availableRarities().map(
             (rarity) => `
@@ -198,10 +174,7 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       </div>
       <div class="filter-group">
-        <button class="filter-toggle" data-filter-target="typePillsWrap" type="button" aria-expanded="${isSectionOpen("typePillsWrap")}">
-          <span>${t("filters.type")}</span><span class="filter-toggle-icon">${isSectionOpen("typePillsWrap") ? "▲" : "▼"}</span>
-        </button>
-        <div class="filter-collapsible ${isSectionOpen("typePillsWrap") ? "is-open" : ""}" id="typePillsWrap">
+        <div class="filter-collapsible is-open" id="typePillsWrap">
         <div class="filter-pills" id="typePills">
           ${availableTypes().map(
             (type) => `
@@ -290,7 +263,7 @@ export function renderAllPackGroup() {
 export function attachFilterEvents(render, options = {}) {
   const { deferApply = false } = options;
   const searchInput = document.getElementById("searchInput");
-  const scaleGroup = document.getElementById("scaleGroup");
+  const scaleGroup = document.getElementById("packScaleGroup") || document.getElementById("scaleGroup");
   const sortGroup = document.getElementById("sortGroup");
   const ownedGroup = document.getElementById("ownedGroup");
   const cardTypeGroup = document.getElementById("cardTypeGroup");
