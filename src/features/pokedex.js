@@ -500,12 +500,6 @@ function extractPokedexCardType(typeRaw) {
   const normalized = normalizePokedexType(value);
   if (!normalized || POKEDEX_NON_POKEMON_CARD_TYPES.has(normalized)) return null;
 
-  const cloudTypes = new Set((state.data?.cards || []).map((card) => {
-    const fileName = String(card.type || "").split(/[?#]/, 1)[0].split("/").pop() || "";
-    return fileName.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim().toUpperCase();
-  }));
-  if (!cloudTypes.has(normalized)) return null;
-
   return normalized;
 }
 
