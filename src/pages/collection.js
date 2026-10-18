@@ -1,4 +1,5 @@
 import { t } from "../core/i18n.js";
+import { saveDataToFile } from "../core/storage.js";
 import { state } from "../core/state.js";
 import { attachCardImageFallbacks, formatCardId, renderCardGrid, toggleOwned } from "../features/cards.js";
 
@@ -119,9 +120,45 @@ export function renderCollection() {
         <div class="toggle ${groupMode === "packs" ? "active" : ""}" data-mode="packs">${t("collection.togglePacks")}</div>
         <div class="toggle ${groupMode === "all" ? "active" : ""}" data-mode="all">${t("collection.toggleAll")}</div>
       </div>
+      <div class="collection-save-row"><button type="button" class="game-pokedex-save-btn left collection-save-btn" id="collectionSaveBtn" disabled>Сохранить изменения</button><span class="collection-save-status" id="collectionSaveStatus" aria-live="polite"></span></div>
       ${content || `<div class="placeholder">${t("collection.empty")}</div>`}
     </section>
   `;
+
+  const saveButton = app.querySelector("#collectionSaveBtn");
+  const saveStatus = app.querySelector("#collectionSaveStatus");
+  const refreshSaveButton = () => {
+    const dirty = Boolean(state.ui.cardsDirty);
+    if (saveButton) {
+      saveButton.disabled = !dirty || !state.user;
+      saveButton.classList.toggle("is-dirty", dirty);
+    }
+    if (saveStatus) saveStatus.textContent = dirty ? "Есть несохранённые изменения" : "";
+  };
+  refreshSaveButton();
+  saveButton?.addEventListener("click", async () => {
+    if (!state.user) {
+      location.hash = "#/register?mode=login";
+      return;
+    }
+    saveButton.disabled = true;
+    saveButton.textContent = "Сохранение…";
+    if (saveStatus) saveStatus.textContent = "";
+    try {
+      await saveDataToFile();
+      state.ui.cardsDirty = false;
+      collectionPendingRemoved.clear();
+      window.dispatchEvent(new CustomEvent("cardsdatasaved"));
+      renderCollection();
+    } catch (error) {
+      console.error("Не удалось сохранить коллекцию:", error);
+      if (saveStatus) saveStatus.textContent = "Не удалось сохранить. Повтори попытку.";
+      saveButton.disabled = false;
+      saveButton.textContent = "Повторить сохранение";
+    }
+  });
+  window.addEventListener("cardsdatachanged", refreshSaveButton);
+  window.addEventListener("cardsdatasaved", refreshSaveButton);
 
   document.querySelectorAll(".toggle").forEach((toggle) => {
     toggle.addEventListener("click", () => {
