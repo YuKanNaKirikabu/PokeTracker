@@ -1,6 +1,7 @@
 from __future__ import annotations
 import hashlib, hmac, os, secrets, threading, time, json
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from pathlib import Path
 from typing import Any
 from fastapi import FastAPI, HTTPException, Request
@@ -149,13 +150,43 @@ def documents(database: str, collection: str, request: Request, skip: int = 0, l
                 "documents": [safe(d) for d in coll.find({}).skip(skip).limit(limit)]}
     except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать документы.") from exc
 
-def period_start(period):
-    hours = {"1h": 1, "24h": 24, "7d": 168, "30d": 720}.get(period, 24)
-    return datetime.now(timezone.utc) - timedelta(hours=hours)
+def resolve_timezone(name):
+    try:
+        return ZoneInfo(name)
+    except (ZoneInfoNotFoundError, ValueError):
+        return timezone.utc
 
-def profiler_rows(period, limit=5000):
+
+def month_offset(value, offset):
+    total = value.year * 12 + value.month - 1 + offset
+    return value.replace(year=total // 12, month=total % 12 + 1, day=1,
+                         hour=0, minute=0, second=0, microsecond=0)
+
+
+def period_start(period, timezone_name="UTC"):
+    now_utc = datetime.now(timezone.utc)
+    rolling_hours = {"1h": 1, "24h": 24, "7d": 168, "30d": 720}
+    if period in rolling_hours:
+        return now_utc - timedelta(hours=rolling_hours[period])
+    tz = resolve_timezone(timezone_name)
+    now = datetime.now(tz)
+    if period == "hours":
+        start = now.replace(minute=0, second=0, microsecond=0) - timedelta(hours=23)
+    elif period == "days":
+        start = now.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=30)
+    elif period == "months":
+        start = month_offset(now, -11)
+    elif period == "years":
+        return None
+    else:
+        return now_utc - timedelta(hours=24)
+    return start.astimezone(timezone.utc)
+
+
+def profiler_rows(period, limit=5000, timezone_name="UTC"):
     rows, missing = [], []
-    since = period_start(period)
+    since = period_start(period, timezone_name)
+    query = {"ts": {"$gte": since}} if since is not None else {}
     client = mongo()
     for name in client.list_database_names():
         try:
@@ -163,7 +194,7 @@ def profiler_rows(period, limit=5000):
             if "system.profile" not in db.list_collection_names():
                 missing.append(name)
                 continue
-            for doc in db["system.profile"].find({"ts": {"$gte": since}}).sort("ts", -1).limit(limit):
+            for doc in db["system.profile"].find(query).sort("ts", -1).limit(limit):
                 cmd = doc.get("command") or {}
                 op = str(doc.get("op", "unknown"))
                 coll = next((cmd[k] for k in ("find", "aggregate", "insert", "update", "delete", "count", "distinct") if k in cmd), doc.get("ns", "").split(".", 1)[-1])
@@ -183,7 +214,7 @@ def query_log(request: Request, period: str = "24h", limit: int = 200):
     except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать журнал запросов.") from exc
 
 @app.get("/api/mdb/dashboard")
-def dashboard(request: Request, period: str = "24h"):
+def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"):
     current_user(request)
     try:
         client = mongo()
@@ -197,20 +228,63 @@ def dashboard(request: Request, period: str = "24h"):
                 dbs.append(row)
                 for key in totals: totals[key] += row[key]
             except PyMongoError: pass
-        rows, missing = profiler_rows(period, 5000)
-        timeline = {}
+
+        tz = resolve_timezone(timezone_name)
+        now = datetime.now(tz)
+        rows, missing = profiler_rows(period, 5000, timezone_name)
+        if period == "hours":
+            first = now.replace(minute=0, second=0, microsecond=0) - timedelta(hours=23)
+            bucket_keys = [first + timedelta(hours=i) for i in range(24)]
+            label_format = "%d.%m %H:00"
+        elif period == "days":
+            first = now.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=30)
+            bucket_keys = [first + timedelta(days=i) for i in range(31)]
+            label_format = "%d.%m"
+        elif period == "months":
+            first = month_offset(now, -11)
+            bucket_keys = [month_offset(first, i) for i in range(12)]
+            label_format = "%m.%Y"
+        else:
+            observed_years = []
+            for row in rows:
+                stamp = row.get("time")
+                if stamp:
+                    if stamp.tzinfo is None:
+                        stamp = stamp.replace(tzinfo=timezone.utc)
+                    observed_years.append(stamp.astimezone(tz).year)
+            first_year = min(observed_years) if observed_years else now.year
+            bucket_keys = [datetime(year, 1, 1, tzinfo=tz) for year in range(first_year, now.year + 1)]
+            label_format = "%Y"
+
+        timeline = {key: {"queries": 0, "durationMs": 0} for key in bucket_keys}
         for row in rows:
             stamp = row.get("time")
-            if not stamp: continue
-            label = stamp.strftime("%d.%m %H:00" if period == "1h" else "%d.%m")
-            point = timeline.setdefault(label, {"queries": 0, "durationMs": 0})
-            point["queries"] += 1
-            point["durationMs"] += row["durationMs"]
+            if not stamp:
+                continue
+            if stamp.tzinfo is None:
+                stamp = stamp.replace(tzinfo=timezone.utc)
+            local_stamp = stamp.astimezone(tz)
+            if period == "hours":
+                key = local_stamp.replace(minute=0, second=0, microsecond=0)
+            elif period == "days":
+                key = local_stamp.replace(hour=0, minute=0, second=0, microsecond=0)
+            elif period == "months":
+                key = local_stamp.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            else:
+                key = datetime(local_stamp.year, 1, 1, tzinfo=tz)
+            if key in timeline:
+                timeline[key]["queries"] += 1
+                timeline[key]["durationMs"] += row["durationMs"]
+
+        ordered_timeline = [
+            {"label": key.strftime(label_format), **values}
+            for key, values in sorted(timeline.items(), key=lambda item: item[0])
+        ]
         return {"period": period, "server": {"version": server.get("version", "?"), "uptimeSeconds": int(server.get("uptime", 0)),
                 "connections": server.get("connections", {}), "opcounters": server.get("opcounters", {})},
                 "totals": totals, "databases": dbs, "queryCount": len(rows),
                 "averageDurationMs": round(sum(r["durationMs"] for r in rows) / len(rows), 2) if rows else 0,
-                "timeline": [{"label": k, **v} for k, v in sorted(timeline.items())], "profilingUnavailable": missing}
+                "timeline": ordered_timeline, "profilingUnavailable": missing}
     except PyMongoError as exc: raise HTTPException(503, "Не удалось получить статистику MongoDB.") from exc
 
 @app.get("/")
