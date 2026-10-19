@@ -181,6 +181,8 @@ export async function renderGamePokedex(gameId) {
     </section>
   `;
 
+  fitGamePokedexToViewport();
+
   const foundCountEl = app.querySelector("#gamePokedexFound");
 
   app.querySelectorAll(".game-pokedex-item").forEach((card) => {
@@ -311,4 +313,57 @@ function getGamePokedexMatchIndex(raw, list) {
     const nameEn = String(entry.nameEn || "").toLowerCase();
     return nameEn.includes(raw) || (nameRu && nameRu.includes(raw));
   });
+}
+
+
+let gamePokedexFitObserver = null;
+let gamePokedexFitResizeHandler = null;
+
+function fitGamePokedexToViewport() {
+  const content = document.getElementById("app");
+  const section = content?.querySelector(":scope > section");
+  if (!content || !section?.querySelector(".game-pokedex-header")) return;
+
+  section.classList.add("game-pokedex-fit");
+
+  if (gamePokedexFitObserver) gamePokedexFitObserver.disconnect();
+  if (gamePokedexFitResizeHandler) {
+    window.removeEventListener("resize", gamePokedexFitResizeHandler);
+  }
+
+  const fit = () => {
+    if (!section.isConnected || !content.isConnected) return;
+
+    section.style.setProperty("--game-pokedex-scale", "1");
+    const style = getComputedStyle(content);
+    const availableWidth = content.clientWidth
+      - parseFloat(style.paddingLeft || "0")
+      - parseFloat(style.paddingRight || "0");
+    const availableHeight = content.clientHeight
+      - parseFloat(style.paddingTop || "0")
+      - parseFloat(style.paddingBottom || "0");
+    const bottomGap = Math.min(24, Math.max(12, availableHeight * 0.025));
+    const naturalWidth = section.scrollWidth;
+    const naturalHeight = section.scrollHeight;
+
+    if (availableWidth <= 0 || availableHeight <= bottomGap || naturalWidth <= 0 || naturalHeight <= 0) return;
+
+    const scale = Math.min(
+      1,
+      availableWidth / naturalWidth,
+      (availableHeight - bottomGap) / naturalHeight
+    );
+    section.style.setProperty("--game-pokedex-scale", String(scale));
+  };
+
+  gamePokedexFitResizeHandler = () => requestAnimationFrame(fit);
+  window.addEventListener("resize", gamePokedexFitResizeHandler);
+
+  if ("ResizeObserver" in window) {
+    gamePokedexFitObserver = new ResizeObserver(() => requestAnimationFrame(fit));
+    gamePokedexFitObserver.observe(content);
+    gamePokedexFitObserver.observe(section);
+  }
+
+  requestAnimationFrame(fit);
 }
