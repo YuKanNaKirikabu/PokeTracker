@@ -260,30 +260,32 @@ def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"
         client = mongo()
         server = client.admin.command("serverStatus")
         dbs, totals = [], {"collections": 0, "documents": 0, "dataSize": 0, "storageSize": 0}
-        for name in client.list_database_names():
-            try:
-                s = client[name].command("dbStats")
-                # system.profile is MongoDB's internal profiler output, not application data.
-                # Do not let admin-page reads inflate the visible database/document metrics.
-                if "system.profile" in client[name].list_collection_names():
-                    try:
-                        profile = client[name].command("collStats", "system.profile")
-                        s["collections"] = max(0, int(s.get("collections", 0)) - 1)
-                        s["objects"] = max(0, int(s.get("objects", 0)) - int(profile.get("count", 0)))
-                        s["dataSize"] = max(0, int(s.get("dataSize", 0)) - int(profile.get("size", 0)))
-                        s["storageSize"] = max(0, int(s.get("storageSize", 0)) - int(profile.get("storageSize", 0)))
-                    except PyMongoError:
-                        pass
-                row = {"name": name, "collections": int(s.get("collections", 0)), "documents": int(s.get("objects", 0)),
-                       "dataSize": int(s.get("dataSize", 0)), "storageSize": int(s.get("storageSize", 0))}
-                dbs.append(row)
-                for key in totals: totals[key] += row[key]
-            except PyMongoError: pass
+
+        # Count only non-system collections. dbStats.objects is approximate/stale
+        # around profiler writes and includes internal MongoDB collections.
+        for name in sorted(client.list_database_names()):
+            database = client[name]
+            collections = [n for n in database.list_collection_names()
+                           if not n.startswith("system.")]
+            row = {"name": name, "collections": len(collections), "documents": 0,
+                   "dataSize": 0, "storageSize": 0}
+            for collection_name in collections:
+                collection = database[collection_name]
+                row["documents"] += collection.count_documents({})
+                try:
+                    stats = database.command("collStats", collection_name)
+                    row["dataSize"] += int(stats.get("size", 0))
+                    row["storageSize"] += int(stats.get("storageSize", 0))
+                except PyMongoError:
+                    # Some views or restricted collections do not expose collStats.
+                    pass
+            dbs.append(row)
+            for key in totals:
+                totals[key] += row[key]
 
         tz = resolve_timezone(timezone_name)
         now = datetime.now(tz)
         rows = activity_rows(period, 50000 if period == "years" else 5000, timezone_name)
-        missing = []
         if period == "hours":
             first = now.replace(minute=0, second=0, microsecond=0) - timedelta(hours=23)
             bucket_keys = [first + timedelta(hours=i) for i in range(24)]
@@ -336,7 +338,7 @@ def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"
                 "connections": server.get("connections", {}), "opcounters": server.get("opcounters", {})},
                 "totals": totals, "databases": dbs, "queryCount": len(rows),
                 "averageDurationMs": round(sum(r["durationMs"] for r in rows) / len(rows), 2) if rows else 0,
-                "timeline": ordered_timeline, "profilingUnavailable": missing}
+                "timeline": ordered_timeline, "profilingUnavailable": []}
     except PyMongoError as exc: raise HTTPException(503, "Не удалось получить статистику MongoDB.") from exc
 
 @app.get("/")
