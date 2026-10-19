@@ -6,7 +6,7 @@ import { applyTheme, normalizeUiSettings } from "./core/theme.js";
 import { state } from "./core/state.js";
 import { setupProfileMenu, setupSidePanel } from "./core/ui.js?v=20261018-3";
 import { loadPokedexNamesFromFile, loadGamePokedexes } from "./features/pokedex.js?v=20261018-5";
-import { renderRoute } from "./router.js";
+import { renderRoute } from "./router.js?v=20261019-1";
 
 function setupImageErrorDiagnostics() {
   window.__pokedexHandleImgError = (img) => {
