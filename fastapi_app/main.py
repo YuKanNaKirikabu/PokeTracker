@@ -1,6 +1,7 @@
 from __future__ import annotations
 import hashlib, hmac, json, os, secrets, threading, time
 from pathlib import Path
+from datetime import datetime, timezone
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlparse
@@ -25,6 +26,28 @@ try:
 except ImportError:
  MongoClient=None; ObjectId=None
 app=FastAPI(title="PokeTracker API",version="2.0.0")
+
+def record_write(result, operation, collection, started):
+ """Persist only successful PokeTracker data mutations; dashboard reads never create activity."""
+ changed = (
+  hasattr(result, "inserted_id") and result.inserted_id is not None
+ ) or bool(getattr(result, "modified_count", 0)) or bool(getattr(result, "deleted_count", 0)) or (
+  getattr(result, "upserted_id", None) is not None
+ )
+ if not changed:
+  return
+ try:
+  db=mongo()
+  db["activity_log"].insert_one({
+   "ts":datetime.now(timezone.utc),
+   "operation":operation,
+   "collection":collection,
+   "durationMs":round((time.perf_counter()-started)*1000, 2),
+   "source":"PokeTracker",
+  })
+ except Exception:
+  # A monitoring failure must never turn a successful user save into an API error.
+  pass
 
 def mongo():
  global _mongo_client,_mongo_db
@@ -161,7 +184,7 @@ def save_settings(payload:dict[str,Any],request:FastRequest):
  session=require_session(request)
  if not isinstance(payload.get("ui"),dict): raise HTTPException(400,"Settings payload must contain ui object.")
  try:
-  mongo().user_preferences.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"settings":payload,"updated_at":time.time()}},upsert=True)
+  started=time.perf_counter(); result=mongo().user_preferences.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"settings":payload,"updated_at":time.time()}},upsert=True); record_write(result,"update","user_preferences",started)
   return {"success":True}
  except Exception as exc: raise HTTPException(503,"Could not save settings to MongoDB.") from exc
 
@@ -178,7 +201,7 @@ def save_game_pokedex(payload:dict[str,Any],request:FastRequest):
  session=require_session(request)
  if not isinstance(payload.get("pokedexes"),dict): raise HTTPException(400,"Game Pokédex payload must contain pokedexes object.")
  try:
-  mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_pokedex":payload,"updated_at":time.time()}},upsert=True)
+  started=time.perf_counter(); result=mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_pokedex":payload,"updated_at":time.time()}},upsert=True); record_write(result,"update","user_collections",started)
   return {"success":True}
  except Exception as exc: raise HTTPException(503,"Could not save game Pokédex to MongoDB.") from exc
 
@@ -198,7 +221,7 @@ def save_pocket_mortys_collection(payload:dict[str,Any],request:FastRequest):
   raise HTTPException(400,"owned must be an array of Morty index strings.")
  unique=sorted(set(owned),key=int)
  try:
-  mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"pocket_mortys":unique,"updated_at":time.time()}},upsert=True)
+  started=time.perf_counter(); result=mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"pocket_mortys":unique,"updated_at":time.time()}},upsert=True); record_write(result,"update","user_collections",started)
   return {"success":True,"owned":unique}
  except Exception as exc: raise HTTPException(503,"Could not save Pocket Mortys collection to MongoDB.") from exc
 
@@ -218,7 +241,7 @@ def save_game_favorites(payload:dict[str,Any],request:FastRequest):
   raise HTTPException(400,"favorites must be an array of game IDs.")
  try:
   unique=list(dict.fromkeys(favorites))
-  mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_favorites":unique,"updated_at":time.time()}},upsert=True)
+  started=time.perf_counter(); result=mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_favorites":unique,"updated_at":time.time()}},upsert=True); record_write(result,"update","user_collections",started)
   return {"success":True,"favorites":unique}
  except Exception as exc: raise HTTPException(503,"Could not save game favorites to MongoDB.") from exc
 
@@ -250,8 +273,8 @@ def register(credentials:Credentials):
  username=credentials.username.strip()
  if len(username)<3 or len(username)>32: raise HTTPException(400,"Username must be 3-32 characters.")
  try:
-  db=mongo(); result=db.users.insert_one({"username":username,"password_hash":hash_password(credentials.password),"avatar_pokemon_number":1,"created_at":time.time(),"updated_at":time.time()})
-  db.user_collections.update_one({"user_id":result.inserted_id},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
+  db=mongo(); started=time.perf_counter(); result=db.users.insert_one({"username":username,"password_hash":hash_password(credentials.password),"avatar_pokemon_number":1,"created_at":time.time(),"updated_at":time.time()}); record_write(result,"insert","users",started)
+  started=time.perf_counter(); write_result=db.user_collections.update_one({"user_id":result.inserted_id},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True); record_write(write_result,"update","user_collections",started)
   return login_response(str(result.inserted_id),username)
  except Exception as exc:
   if isinstance(exc,HTTPException): raise
@@ -263,7 +286,7 @@ def login(credentials:Credentials):
  try:
   db=mongo(); user=db.users.find_one({"username":credentials.username.strip()})
   if not user or not verify_password(credentials.password,user.get("password_hash","")): raise HTTPException(401,"Invalid username or password.")
-  db.user_collections.update_one({"user_id":user["_id"]},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True)
+  started=time.perf_counter(); write_result=db.user_collections.update_one({"user_id":user["_id"]},{"$setOnInsert":{"owned":[],"wishlist":[],"created_at":time.time(),"updated_at":time.time()}},upsert=True); record_write(write_result,"update","user_collections",started)
   return login_response(str(user["_id"]),user["username"],user.get("avatar_pokemon_number",1))
  except HTTPException: raise
  except Exception as exc: raise HTTPException(503,"Could not sign in. Check MongoDB connection.") from exc
@@ -272,7 +295,7 @@ def login(credentials:Credentials):
 def save_avatar(payload:AvatarPayload, request:FastRequest):
  session=require_session(request)
  try:
-  mongo().users.update_one({"_id":ObjectId(session["user_id"])},{"$set":{"avatar_pokemon_number":payload.pokemon_number,"updated_at":time.time()}})
+  started=time.perf_counter(); result=mongo().users.update_one({"_id":ObjectId(session["user_id"])},{"$set":{"avatar_pokemon_number":payload.pokemon_number,"updated_at":time.time()}}); record_write(result,"update","users",started)
   return {"success":True,"pokemon_number":payload.pokemon_number}
  except Exception as exc: raise HTTPException(503,"Could not save profile avatar.") from exc
 
@@ -299,7 +322,7 @@ class CollectionPayload(BaseModel):
 def save_collection(payload:CollectionPayload,request:FastRequest):
  session=require_session(request)
  try:
-  now=time.time(); mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"owned":sorted(set(payload.owned)),"wishlist":sorted(set(payload.wishlist)),"updated_at":now}},upsert=True)
+  now=time.time(); started=time.perf_counter(); result=mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"owned":sorted(set(payload.owned)),"wishlist":sorted(set(payload.wishlist)),"updated_at":now}},upsert=True); record_write(result,"update","user_collections",started)
   return {"success":True,"owned_count":len(payload.owned),"wishlist_count":len(payload.wishlist)}
  except Exception as exc: raise HTTPException(503,"Could not save collection to MongoDB.") from exc
 
