@@ -1,7 +1,7 @@
 import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { getCardsForPack, getPackPrimaryMedia, getTopLevelPacks } from "../core/packs.js";
-import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
+import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js?v=20261019-1";
 
 function getOrderedPacks() {
   return getTopLevelPacks();

@@ -2,7 +2,7 @@ import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { setPokedexSearchVisible } from "../core/ui.js";
 import { getPack, getPackPrimaryMedia, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
-import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
+import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js?v=20261019-1";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
 
 function renderSubpackSelector(pack, activeSubpack, count) {

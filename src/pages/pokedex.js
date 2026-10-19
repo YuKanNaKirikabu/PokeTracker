@@ -1,7 +1,7 @@
 import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";
-import { attachCardEvents } from "../features/cards.js";
+import { attachCardEvents } from "../features/cards.js?v=20261019-1";
 import {
     formatDexNumber,
     getPokedexIconPath,

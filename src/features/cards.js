@@ -3,6 +3,7 @@ import {
     TRAINER_TYPES,
 } from "../config/packs.js";
 import { state } from "../core/state.js";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { saveDataToFile } from "../core/storage.js";
 
 export function formatCardId(card) {
