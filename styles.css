@@ -4113,3 +4113,13 @@ body.route-pokedex .pokedex-world { min-width: 0; min-height: 0; }
   transform: translateX(-50%) scale(var(--game-pokedex-scale, 1));
   transform-origin: top center;
 }
+
+/* Pack pages: preserve visible breathing room after the final card row. */
+.pack-page > :last-child .cards-grid {
+  box-sizing: border-box;
+  padding-bottom: 28px;
+  scroll-padding-bottom: 28px;
+}
+.content:has(.pack-page) {
+  padding-bottom: clamp(28px, 3vw, 44px);
+}
