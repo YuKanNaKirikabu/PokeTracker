@@ -263,6 +263,17 @@ def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"
         for name in client.list_database_names():
             try:
                 s = client[name].command("dbStats")
+                # system.profile is MongoDB's internal profiler output, not application data.
+                # Do not let admin-page reads inflate the visible database/document metrics.
+                if "system.profile" in client[name].list_collection_names():
+                    try:
+                        profile = client[name].command("collStats", "system.profile")
+                        s["collections"] = max(0, int(s.get("collections", 0)) - 1)
+                        s["objects"] = max(0, int(s.get("objects", 0)) - int(profile.get("count", 0)))
+                        s["dataSize"] = max(0, int(s.get("dataSize", 0)) - int(profile.get("size", 0)))
+                        s["storageSize"] = max(0, int(s.get("storageSize", 0)) - int(profile.get("storageSize", 0)))
+                    except PyMongoError:
+                        pass
                 row = {"name": name, "collections": int(s.get("collections", 0)), "documents": int(s.get("objects", 0)),
                        "dataSize": int(s.get("dataSize", 0)), "storageSize": int(s.get("storageSize", 0))}
                 dbs.append(row)
