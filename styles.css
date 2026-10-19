@@ -1950,6 +1950,11 @@ body.home-route .content {
 .pokedex-item.match {
   background: rgba(124, 131, 255, 0.14);
   border-color: rgba(124, 131, 255, 0.25);
+  animation: pokedexSearchBlink 0.7s ease-in-out 3;
+}
+@keyframes pokedexSearchBlink {
+  0%, 100% { background: rgba(124, 131, 255, 0.14); }
+  50% { background: var(--accent-strong); color: #111; border-color: var(--accent-strong); }
 }
 
 .pokedex-icon {
