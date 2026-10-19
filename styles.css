@@ -4017,3 +4017,45 @@ body.route-pokedex .pokedex-world { min-width: 0; min-height: 0; }
   body.route-pokedex .pokedex-center { min-height: 560px; }
   body.route-pokedex .pokedex-world { display: flex; }
 }
+
+
+/* Pocket Mortys tracker */
+.pocket-mortys-page{display:flex;flex-direction:column;gap:12px;height:100%;min-height:0}
+.pocket-mortys-workspace{display:grid;grid-template-columns:minmax(340px,.92fr) minmax(0,1.08fr);gap:16px;flex:1;min-height:0}
+.pocket-mortys-list-panel,.pocket-mortys-detail{min-width:0;min-height:0;border:1px solid var(--header-border);border-radius:16px;background:var(--panel);overflow:hidden}
+.pocket-mortys-list-panel{display:flex;flex-direction:column}
+.pocket-mortys-list-head,.pocket-mortys-row{display:grid;grid-template-columns:52px minmax(90px,1fr) 44px 44px 34px;align-items:center;gap:8px}
+.pocket-mortys-list-head{min-height:40px;padding:8px 12px;background:var(--panel-light);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.pocket-mortys-list{overflow:auto;min-height:0;scrollbar-gutter:stable}
+.pocket-mortys-row{min-height:48px;padding:5px 12px;border-bottom:1px solid var(--header-border);cursor:pointer;outline:none;transition:background .16s ease}
+.pocket-mortys-row:hover,.pocket-mortys-row.is-selected{background:var(--accent-soft)}
+.pocket-mortys-row.is-selected{box-shadow:inset 3px 0 var(--accent)}
+.pocket-mortys-index{color:var(--muted);font:11px "IBM Plex Mono",monospace}
+.pocket-mortys-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:500}
+.pocket-mortys-icon-slot{display:grid;place-items:center;width:36px;height:36px}
+.pocket-mortys-icon-slot img{display:block;width:30px;height:30px;object-fit:contain}
+.pocket-mortys-row-check,.pocket-mortys-check{display:grid;place-items:center;border:1.5px solid var(--muted);border-radius:50%;color:#fff;background:transparent;cursor:pointer;padding:0;font-weight:800}
+.pocket-mortys-row-check{width:24px;height:24px;font-size:15px}
+.pocket-mortys-row-check.is-owned,.pocket-mortys-check{border-color:#39bd72;background:#39bd72}
+.pocket-mortys-detail{overflow:auto;padding:18px}
+.pocket-mortys-detail-top{display:grid;grid-template-columns:minmax(150px,.85fr) minmax(190px,1fr);align-items:start;gap:20px}
+.pocket-mortys-art{width:100%;height:clamp(250px,48vh,560px);display:grid;place-items:center;overflow:hidden;border-radius:12px;background:var(--panel-light)}
+.pocket-mortys-art img{width:100%;height:100%;object-fit:contain;padding:10px}
+.pocket-mortys-info{min-width:0}
+.pocket-mortys-detail-number{color:var(--accent-strong);font:12px "IBM Plex Mono",monospace}
+.pocket-mortys-info h2{margin:5px 0 14px;font-size:clamp(19px,2vw,28px);overflow-wrap:anywhere}
+.pocket-mortys-owned-toggle{display:flex;align-items:center;gap:9px;border:1px solid var(--header-border);border-radius:999px;background:var(--panel-light);color:var(--text);padding:8px 12px;cursor:pointer;margin-bottom:16px;font:inherit;font-size:12px}
+.pocket-mortys-check{width:21px;height:21px;flex:0 0 21px}
+.pocket-mortys-owned-toggle:not(.is-owned) .pocket-mortys-check{background:transparent;border-color:var(--muted)}
+.pocket-mortys-stats{display:grid;grid-template-columns:1fr;gap:0}
+.pocket-mortys-stat{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:7px 0;border-bottom:1px solid var(--header-border);font-size:11px}
+.pocket-mortys-stat span{color:var(--muted)}
+.pocket-mortys-stat strong{text-align:right;overflow-wrap:anywhere;font-weight:600}
+.pocket-mortys-footnote{display:flex;align-items:center;justify-content:center;gap:9px;color:var(--muted);font-size:10px;line-height:1.45;padding:2px 8px 5px}
+.pocket-mortys-footnote img{width:28px;height:28px;object-fit:contain;flex:0 0 auto}
+.pocket-mortys-footnote strong{color:var(--text)}
+.pocket-mortys-message{padding:22px;color:var(--muted);font-size:13px;line-height:1.6}
+.pocket-mortys-row.is-search-hit{animation:pocketMortysBlink .7s ease-in-out 3}
+@keyframes pocketMortysBlink{0%,100%{background:var(--accent-soft)}50%{background:var(--accent-strong);color:#111}}
+@media(max-width:900px){.pocket-mortys-workspace{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(220px,.9fr) minmax(0,1.1fr)}.pocket-mortys-detail-top{grid-template-columns:minmax(120px,.75fr) minmax(0,1fr);gap:12px}.pocket-mortys-art{height:clamp(180px,32vh,340px)}}
+@media(max-width:520px){.pocket-mortys-list-head,.pocket-mortys-row{grid-template-columns:44px minmax(70px,1fr) 32px 32px 28px;gap:5px;padding-left:8px;padding-right:8px}.pocket-mortys-icon-slot{width:30px;height:30px}.pocket-mortys-icon-slot img{width:26px;height:26px}.pocket-mortys-detail{padding:10px}.pocket-mortys-detail-top{grid-template-columns:minmax(95px,.7fr) minmax(0,1fr);gap:10px}.pocket-mortys-info h2{font-size:18px}.pocket-mortys-stat{font-size:10px;gap:7px}}
