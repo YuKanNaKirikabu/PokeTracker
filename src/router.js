@@ -13,6 +13,7 @@ import { renderSettings } from "./pages/settings.js";
 import { renderAuthRequired, renderProfile } from "./pages/profile.js";
 import { renderRegister } from "./pages/register.js";
 import { renderWishlist } from "./pages/wishlist.js";
+import { renderPocketMortys } from "./pages/pocket-mortys.js";
 
 export function renderRoute() {
   const packHeaderContext = document.getElementById("packHeaderContext");
@@ -109,6 +110,11 @@ export function renderRoute() {
       state.ui.pokedexGender = "common";
     }
     renderPokedex();
+    return;
+  }
+  if (hash === "#/projects/pocket-mortys") {
+    setBrandMode("home");
+    renderPocketMortys();
     return;
   }
   if (hash.startsWith("#/projects/pokedexes")) {
