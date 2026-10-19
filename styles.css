@@ -4108,6 +4108,8 @@ body.route-pokedex .pokedex-world { min-width: 0; min-height: 0; }
 }
 
 #app.content:has(.game-pokedex-header) > section.game-pokedex-fit {
-  transform: scale(var(--game-pokedex-scale, 1));
-  transform-origin: top left;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%) scale(var(--game-pokedex-scale, 1));
+  transform-origin: top center;
 }
