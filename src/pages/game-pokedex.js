@@ -22,7 +22,7 @@ import { renderPlaceholder } from "./placeholder.js";
 
 let lastGamePokedexId = null;
 let allowNavigation = false;
-let pendingNavigation = null;
+let pendingNavigation = null;\nlet gamePokedexSaveTimer = null;
 
 function setGamePokedexDirty(isDirty) {
   state.ui.gamePokedexDirty = isDirty;
