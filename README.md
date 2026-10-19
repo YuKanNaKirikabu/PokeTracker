@@ -11,6 +11,36 @@ PokeTracker is served by **FastAPI**. The existing browser interface is retained
 
 The local `run.config.bat` controls host, port, safe mode, Yandex data URL, remote writes, and MongoDB settings. Do not commit credentials.
 
+## Deploy with Docker
+
+On a server with Docker Compose, copy `.env.example` to `.env`, adjust the
+settings if needed, and start the application:
+
+```bash
+docker compose up -d --build
+```
+
+The application is available on both `http://<server>:1025` and
+`http://<server>:1111`. Both ports serve the same container. MongoDB is
+started automatically and its data is stored in the `poketracker-mongodb`
+Docker volume.
+
+Check the deployment with:
+
+```bash
+docker compose ps
+docker compose logs -f app
+```
+
+Stop the services without deleting MongoDB data with:
+
+```bash
+docker compose down
+```
+
+Set `MONGODB_URI`, `MONGODB_DATABASE`, and the Yandex storage settings in
+`.env`; do not commit that file because it may contain credentials.
+
 ## Data sources
 
 - TCG Pocket packs and cards: `https://storage.yandexcloud.net/poketracker/data/cards.json`.

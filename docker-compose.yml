@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${POKETRACKER_PORT:-1025}:1025"
+      - "${POKETRACKER_SECOND_PORT:-1111}:1025"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:1025/api/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    environment:
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongodb:27017}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-poketracker}
+      POKETRACKER_DATA_BASE_URL: ${POKETRACKER_DATA_BASE_URL:-https://storage.yandexcloud.net/poketracker/data}
+      POKETRACKER_REMOTE_WRITE: ${POKETRACKER_REMOTE_WRITE:-1}
+      POKETRACKER_SAFE_MODE: ${POKETRACKER_SAFE_MODE:-0}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE:-poketracker}
+    volumes:
+      - poketracker-mongodb:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  poketracker-mongodb:
