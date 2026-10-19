@@ -59,7 +59,7 @@ export async function renderPocketMortys() {
       <div class="pocket-mortys-info"><div class="pocket-mortys-title-line"><span class="pocket-mortys-detail-number">#${key}</span><h2>${esc(e.name)}</h2>${statusMarkup(has)}</div>
         <div class="pocket-mortys-stats">${fields.map(([k,v])=>`<div class="pocket-mortys-stat"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join("")}</div>
       </div></div>
-      <footer class="pocket-mortys-footnote"><img src="${ROOT}/Logo/Logo.webp" alt=""><span><strong>О Pocket Mortys.</strong> Мобильная ролевая игра по мультсериалу «Рик и Морти», построенная вокруг коллекционирования и сражений существ. Вышла 13 января 2016 года.</span></footer>`;
+      <footer class="pocket-mortys-footnote"><img src="${ROOT}/Logo/Logo.webp" alt=""><span><strong>Pocket Mortys.</strong> Мобильная ролевая игра по мультсериалу «Рик и Морти», построенная вокруг коллекционирования и сражений существ. Вышла 13 января 2016 года.</span></footer>`;
   }
   function renderRows(query="") {
     const q=query.trim().toLocaleLowerCase().replace(/^#/,"");
