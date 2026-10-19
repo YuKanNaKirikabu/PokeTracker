@@ -1932,6 +1932,23 @@ export function getCurrentLanguage() {
 
 export function t(key, params) {
   const lang = getCurrentLanguage();
+  if (key === "common.reset") {
+    const resetLabels = {
+      ru: "Сбросить",
+      en: "Reset",
+      de: "Zurücksetzen",
+      cs: "Resetovat",
+      "zh-Hans": "重置",
+      ja: "リセット",
+      fr: "Réinitialiser",
+      pt: "Redefinir",
+      "es-MX": "Restablecer",
+      es: "Restablecer",
+      it: "Reimposta",
+      tr: "Sıfırla",
+    };
+    return resetLabels[lang] || resetLabels.en;
+  }
   const dict = I18N[lang] || I18N[DEFAULT_LANGUAGE];
   const fallback = I18N[DEFAULT_LANGUAGE];
   const extra = EXTRA_I18N[lang] || EXTRA_I18N.en;
