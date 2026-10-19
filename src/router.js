@@ -13,7 +13,7 @@ import { renderSettings } from "./pages/settings.js";
 import { renderAuthRequired, renderProfile } from "./pages/profile.js";
 import { renderRegister } from "./pages/register.js";
 import { renderWishlist } from "./pages/wishlist.js";
-import { renderPocketMortys } from "./pages/pocket-mortys.js";
+import { renderPocketMortys } from "./pages/pocket-mortys.js?v=20261019-1";
 
 export function renderRoute() {
   const packHeaderContext = document.getElementById("packHeaderContext");
