@@ -17,19 +17,16 @@ function typeUrl(e) { return ["Paper","Rock","Scissors"].includes(e.type) ? ROOT
 function mortyUrl(e) { return e.image || ROOT+"/Mortys/"+encodeURIComponent(e.name)+".webp"; }
 
 export async function renderPocketMortys() {
-  if (!document.getElementById("pocketMortysFinalFixes")) { const style = document.createElement("style"); style.id = "pocketMortysFinalFixes"; style.textContent = ".pocket-mortys-list-head,.pocket-mortys-row{grid-template-columns:48px minmax(0,1fr) 42px 36px 26px!important;column-gap:4px!important;padding-left:8px!important;padding-right:8px!important}.pocket-mortys-name{min-width:0}.pocket-mortys-detail{display:block!important;overflow-y:auto}.pocket-mortys-detail-top{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}.pocket-mortys-art{height:clamp(320px,55vh,540px)!important;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}.pocket-mortys-art img{display:block;width:100%;height:100%;object-fit:contain!important;object-position:center;padding:0!important}.pocket-mortys-title-line{gap:6px!important;margin-bottom:8px!important}.pocket-mortys-detail-footnote{display:flex;flex-direction:column;gap:5px;margin-top:12px;padding:10px 12px;border:1px solid var(--header-border);border-radius:9px;background:var(--panel-light);font-size:11px;line-height:1.45;color:var(--text)}.pocket-mortys-detail-footnote strong{font-size:11px}@media(min-width:901px){.pocket-mortys-detail-top{grid-template-columns:minmax(0,1fr)!important}.pocket-mortys-art{height:clamp(340px,53vh,500px)!important}.pocket-mortys-info{width:100%}.pocket-mortys-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}}"; document.head.appendChild(style); }
   const app = document.getElementById("app");
   setBrandSubtitle("Pocket Mortys"); setPageTitle("Pocket Mortys"); setPokedexSearchVisible(false);
   app.innerHTML = `<section class="pocket-mortys-page">
     <div class="pocket-mortys-workspace">
       <div class="pocket-mortys-list-panel">
         <div class="pocket-mortys-search"><input id="pocketMortysSearch" type="search" placeholder="Поиск по имени или номеру…" aria-label="Поиск по Pocket Mortys" autocomplete="off"></div>
-        <div class="pocket-mortys-list-head"><span>Индекс</span><span>Имя</span><span>Редкость</span><span>Тип</span><span>Есть</span></div>
         <div class="pocket-mortys-list" id="pocketMortysList"><div class="pocket-mortys-message">Загрузка списка…</div></div>
       </div>
       <aside class="pocket-mortys-detail" id="pocketMortysDetail"><div class="pocket-mortys-message">Выберите Морти из списка.</div></aside>
     </div>
-    <footer class="pocket-mortys-footnote"><img src="${ROOT}/Logo/Logo.webp" alt=""><span><strong>О Pocket Mortys.</strong> Мобильная ролевая игра по мультсериалу «Рик и Морти», построенная вокруг коллекционирования и сражений существ. Вышла 13 января 2016 года.</span></footer>
   </section>`;
   const list = document.getElementById("pocketMortysList"), detail = document.getElementById("pocketMortysDetail");
   const search = document.getElementById("pocketMortysSearch");
@@ -61,8 +58,8 @@ export async function renderPocketMortys() {
       <div class="pocket-mortys-art"><img src="${esc(mortyUrl(e))}" alt="${esc(e.name)}" loading="eager" decoding="async"></div>
       <div class="pocket-mortys-info"><div class="pocket-mortys-title-line"><span class="pocket-mortys-detail-number">#${key}</span><h2>${esc(e.name)}</h2>${statusMarkup(has)}</div>
         <div class="pocket-mortys-stats">${fields.map(([k,v])=>`<div class="pocket-mortys-stat"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join("")}</div>
-      </div></div>`;
-    detail.insertAdjacentHTML("beforeend", `<footer class="pocket-mortys-detail-footnote"><strong>Об этом Морти</strong><span>${esc(e.description || e.info || e.lore || (e.name + " — персонаж Pocket Mortys. Характеристики и место получения указаны выше."))}</span></footer>`);
+      </div></div>
+      <footer class="pocket-mortys-footnote"><img src="${ROOT}/Logo/Logo.webp" alt=""><span><strong>О Pocket Mortys.</strong> Мобильная ролевая игра по мультсериалу «Рик и Морти», построенная вокруг коллекционирования и сражений существ. Вышла 13 января 2016 года.</span></footer>`;
   }
   function renderRows(query="") {
     const q=query.trim().toLocaleLowerCase().replace(/^#/,"");
