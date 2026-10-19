@@ -12,6 +12,30 @@ export function getSubpacks(pack) {
   return Array.isArray(pack?.subpacks) ? pack.subpacks : [];
 }
 
+export function getPackPrimaryMedia(pack) {
+  if (pack?.logo || pack?.artwork) return pack.logo || pack.artwork;
+  if (pack?.kind !== "collection") return "";
+  const display = String(pack.display || pack.id || "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return display
+    ? `https://storage.yandexcloud.net/poketracker/Images/PacksLogos/${encodeURIComponent(display)}.webp`
+    : "";
+}
+
+function packKeys(pack) {
+  return [pack?.id, pack?.display, pack?.name].filter(Boolean).map(normalizeKey);
+}
+
+export function getTopLevelPacks() {
+  const packs = getPacks();
+  const childKeys = new Set(packs.flatMap((pack) => getSubpacks(pack).flatMap(packKeys)));
+  return packs.filter((pack) => !childKeys.has(normalizeKey(pack.id)) && !childKeys.has(normalizeKey(pack.display)));
+}
+
+export function getCardsForPack(cards, pack) {
+  const keys = new Set([normalizeKey(pack?.id), normalizeKey(pack?.display), ...getSubpacks(pack).flatMap(packKeys)]);
+  return (cards || []).filter((card) => keys.has(normalizeKey(card.pack)));
+}
+
 function normalizeKey(value) {
   return String(value || "").trim().toLocaleLowerCase();
 }
@@ -72,6 +96,6 @@ export function getPackMediaHtml(pack, className = "pack-logo") {
       `<img class="${className}" src="${subpack.logo || subpack.artwork || ""}" alt="${subpack.display || subpack.id}" loading="lazy" decoding="async" />`
     ).join("")}</span>`;
   }
-  const url = pack?.logo || pack?.artwork || "";
+  const url = getPackPrimaryMedia(pack);
   return url ? `<img src="${url}" alt="${pack?.display || pack?.id || ""}" class="${className}" loading="lazy" decoding="async" />` : "";
 }

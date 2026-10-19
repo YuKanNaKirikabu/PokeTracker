@@ -65,7 +65,7 @@ export function setBrandMode(mode) {
   logoImg.alt = t("app.title");
   logoText.style.display = "none";
   link.setAttribute("href", "#/");
-  setBrandSubtitle(t("brand.homeSubtitle"));
+  setBrandSubtitle(t("nav.home"));
 }
 
 export function updateBrandLink() {

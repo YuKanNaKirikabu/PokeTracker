@@ -118,7 +118,7 @@ export function applyFilters(cards) {
 }
 
 export function renderFilters(extraGroups = "", options = {}) {
-  const { showApplyButton = false, showSearch = true, showCollectionSave = false } = options;
+  const { showApplyButton = false, showSearch = true, showCollectionSave = false, leadingMedia = "" } = options;
   const arrows = {
     asc: "▲",
     desc: "▼",
@@ -127,6 +127,7 @@ export function renderFilters(extraGroups = "", options = {}) {
   const isSectionOpen = (id) => state.ui.filterSectionsOpen?.has(id);
   return `
     <div class="filters">
+      ${leadingMedia}
       ${extraGroups}
       ${showSearch ? `
         <div class="filter-group">

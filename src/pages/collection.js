@@ -1,6 +1,7 @@
 import { t } from "../core/i18n.js";
 import { saveDataToFile } from "../core/storage.js";
 import { state } from "../core/state.js";
+import { getCardsForPack, getPackPrimaryMedia, getTopLevelPacks } from "../core/packs.js";
 import { attachCardImageFallbacks, formatCardId, renderCardGrid, toggleOwned } from "../features/cards.js";
 
 const collectionPendingRemoved = new Set();
@@ -8,25 +9,22 @@ const collectionOpenPacks = new Set();
 let collectionSaveRefreshHandler = null;
 
 function getOrderedPacks() {
-  return state.data?.packs || [];
-}
-
-function resolvePackBanner(pack) {
-  return pack?.logo || pack?.artwork || pack?.subpacks?.[0]?.logo || pack?.subpacks?.[0]?.artwork || "";
+  return getTopLevelPacks();
 }
 
 function renderGroupedByPacks(cards) {
   const blocks = getOrderedPacks()
     .map((pack) => {
-      const packCards = cards.filter((card) => card.pack === pack.id);
+      const packCards = getCardsForPack(cards, pack);
       if (!packCards.length) return "";
-      const logo = resolvePackBanner(pack);
+      const logo = getPackPrimaryMedia(pack);
+      const display = String(pack.display || pack.id).replace(/\s*\([^)]*\)\s*$/, "").trim();
       const isOpen = collectionOpenPacks.has(pack.id);
       return `
         <div class="pack-block pack-accordion ${isOpen ? "is-open" : ""}" data-pack-block="${pack.id}">
           <button class="pack-accordion-header" data-pack-toggle="${pack.id}" type="button" aria-expanded="${isOpen ? "true" : "false"}">
-            <span class="pack-accordion-logo-wrap">${pack.kind === "collection" ? (pack.subpacks || []).map((subpack) => '<img src="' + (subpack.logo || subpack.artwork || "") + '" alt="' + (subpack.display || subpack.id) + '" loading="lazy" decoding="async" />').join("") : '<img src="' + logo + '" alt="' + pack.display + '" loading="lazy" decoding="async" />'}</span>
-            <span class="pack-accordion-title">${pack.display}</span>
+            <span class="pack-accordion-logo-wrap">${logo ? '<img src="' + logo + '" alt="' + display + '" loading="lazy" decoding="async" />' : ""}</span>
+            <span class="pack-accordion-heading"><span class="pack-accordion-kicker">PACK COLLECTION</span><span class="pack-accordion-title">${display}</span><span class="pack-accordion-count">${packCards.length} карт</span></span>
             <span class="pack-accordion-chevron" aria-hidden="true">▾</span>
           </button>
           <div class="pack-accordion-divider"></div>

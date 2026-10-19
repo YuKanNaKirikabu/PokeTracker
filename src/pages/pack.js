@@ -1,7 +1,7 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
 import { setPokedexSearchVisible } from "../core/ui.js";
-import { getPack, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
+import { getPack, getPackPrimaryMedia, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
 import { attachCardEvents, attachCollectionSaveButton, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
 
@@ -39,23 +39,19 @@ function attachSubpackEvents(pack, activeSubpack) {
 }
 
 function renderPackMedia(pack, activeSubpack) {
-  if (pack.kind === "collection") {
-    const subpacks = getSubpacks(pack);
-    const selected = activeSubpack ? [activeSubpack] : subpacks;
-    return `<div class="pack-children-media">${selected.map((sub) => {
-      const url = sub.logo || sub.artwork || "";
-      return url ? `<img src="${url}" alt="${sub.display || sub.id}" class="pack-logo" loading="lazy" decoding="async" />` : "";
-    }).join("")}</div>`;
+  if (activeSubpack) {
+    const url = activeSubpack.logo || activeSubpack.artwork || "";
+    return url ? `<img src="${url}" alt="${activeSubpack.display || activeSubpack.id}" class="pack-logo" loading="lazy" decoding="async" />` : "";
   }
-  const url = pack.logo || pack.artwork || "";
+  const url = getPackPrimaryMedia(pack);
   return url ? `<img src="${url}" alt="${pack.display || pack.id}" class="pack-logo" loading="lazy" decoding="async" />` : "";
 }
 
 function renderPackHeaderContext(media) {
   const context = document.getElementById("packHeaderContext");
   if (!context) return;
-  context.innerHTML = media || "";
-  context.hidden = false;
+  context.innerHTML = "";
+  context.hidden = true;
 }
 
 function renderPackScaleControl() {
@@ -112,11 +108,14 @@ export function renderPack(packTitle, subpackValue) {
   const cards = applyFilters(visibleCards);
   const ownedCount = visibleCards.filter((card) => state.owned.has(formatCardId(card))).length;
   const selector = renderSubpackSelector(pack, activeSubpack, `${ownedCount}/${visibleCards.length}`);
-  const title = activeSubpack ? (activeSubpack.display || activeSubpack.id) : (pack.display || pack.id);
+  const media = renderPackMedia(pack, activeSubpack);
+  const leadingMedia = media
+    ? `<div class="filter-group filter-pack-media" aria-label="Логотип пака">${media}</div>`
+    : "";
 
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters(selector, { showApplyButton: true, showCollectionSave: true, showSearch: false })}
+      ${renderFilters(selector, { showApplyButton: true, showCollectionSave: true, showSearch: false, leadingMedia })}
       <div>
         ${renderCardGrid(cards)}
       </div>

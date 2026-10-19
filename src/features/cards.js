@@ -261,6 +261,7 @@ export function attachCardEvents(render, options = {}) {
       ball.classList.toggle("collected", ownedNow);
       const cardItem = ball.closest(".card-item");
       if (!cardItem) return;
+      cardItem.classList.toggle("pending-remove", ownedNow || state.wishlist.has(id));
 
       const existingHeart = cardItem.querySelector(".wishlist-heart");
       if (ownedNow) {
@@ -281,6 +282,7 @@ export function attachCardEvents(render, options = {}) {
             return;
           }
           updateHeartVisual(heart, heartId, state.wishlist.has(heartId));
+          cardItem.classList.toggle("pending-remove", state.owned.has(heartId) || state.wishlist.has(heartId));
         });
       }
     });
@@ -296,6 +298,7 @@ export function attachCardEvents(render, options = {}) {
         return;
       }
       updateHeartVisual(heart, id, state.wishlist.has(id));
+      heart.closest(".card-item")?.classList.toggle("pending-remove", state.owned.has(id) || state.wishlist.has(id));
     });
   });
   if (enableShowcase && showcaseId) {

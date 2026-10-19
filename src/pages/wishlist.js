@@ -1,26 +1,24 @@
 import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
-import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
+import { getCardsForPack, getPackPrimaryMedia, getTopLevelPacks } from "../core/packs.js";
+import { attachCardEvents, attachCollectionSaveButton, formatCardId, renderCardGrid } from "../features/cards.js";
 
 function getOrderedPacks() {
-  return state.data?.packs || [];
-}
-
-function resolvePackBanner(pack) {
-  return pack?.logo || pack?.artwork || pack?.subpacks?.[0]?.logo || pack?.subpacks?.[0]?.artwork || "";
+  return getTopLevelPacks();
 }
 
 function renderGroupedByPacks(cards) {
   const blocks = getOrderedPacks()
     .map((pack) => {
-      const packCards = cards.filter((card) => card.pack === pack.id);
+      const packCards = getCardsForPack(cards, pack);
       if (!packCards.length) return "";
-      const logo = resolvePackBanner(pack);
+      const logo = getPackPrimaryMedia(pack);
+      const display = String(pack.display || pack.id).replace(/\s*\([^)]*\)\s*$/, "").trim();
       return `
         <div class="pack-block pack-accordion" data-pack-block="${pack.id}">
           <button class="pack-accordion-header" data-pack-toggle="${pack.id}" type="button" aria-expanded="false">
-            <span class="pack-accordion-logo-wrap">${pack.kind === "collection" ? (pack.subpacks || []).map((subpack) => '<img src="' + (subpack.logo || subpack.artwork || "") + '" alt="' + (subpack.display || subpack.id) + '" loading="lazy" decoding="async" />').join("") : '<img src="' + logo + '" alt="' + pack.display + '" loading="lazy" decoding="async" />'}</span>
-            <span class="pack-accordion-title">${pack.display}</span>
+            <span class="pack-accordion-logo-wrap">${logo ? '<img src="' + logo + '" alt="' + display + '" loading="lazy" decoding="async" />' : ""}</span>
+            <span class="pack-accordion-heading"><span class="pack-accordion-kicker">WISHLIST PACK</span><span class="pack-accordion-title">${display}</span><span class="pack-accordion-count">${packCards.length} карт</span></span>
             <span class="pack-accordion-chevron" aria-hidden="true">▾</span>
           </button>
           <div class="pack-accordion-divider"></div>
@@ -86,6 +84,7 @@ export function renderWishlist() {
         <div class="toggle ${groupMode === "packs" ? "active" : ""}" data-mode="packs">${t("wishlist.togglePacks")}</div>
         <div class="toggle ${groupMode === "all" ? "active" : ""}" data-mode="all">${t("wishlist.toggleAll")}</div>
       </div>
+      <div class="collection-save-row"><button type="button" class="game-pokedex-save-btn left collection-save-btn" id="collectionSaveBtn" disabled>Сохранить изменения</button><span class="collection-save-status" id="collectionSaveStatus" aria-live="polite"></span></div>
       ${content || `<div class="placeholder">${t("wishlist.empty")}</div>`}
     </section>
   `;
@@ -102,7 +101,7 @@ export function renderWishlist() {
   }
 
   if (cards.length) {
-    attachCardEvents(renderWishlist);
+    attachCardEvents(renderWishlist, { rerenderOnToggle: false });
   }
-
+  attachCollectionSaveButton(app);
 }
