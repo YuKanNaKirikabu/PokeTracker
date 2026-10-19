@@ -78,5 +78,4 @@ export async function renderPocketMortys() {
   renderRows();
   if(entries.length){selected=Number(entries[0].number);renderRows();renderDetail(entries[0]);}
   if(search) search.oninput=()=>{renderRows(search.value);const row=list.querySelector("[data-number]");if(row){row.scrollIntoView({behavior:"smooth",block:"nearest"});row.classList.add("is-search-hit");window.setTimeout(()=>row.classList.remove("is-search-hit"),1600);}};
-  }
 }
