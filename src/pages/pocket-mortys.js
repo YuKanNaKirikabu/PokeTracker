@@ -18,20 +18,20 @@ function mortyUrl(e) { return e.image || ROOT+"/Mortys/"+encodeURIComponent(e.na
 
 export async function renderPocketMortys() {
   const app = document.getElementById("app");
-  setBrandSubtitle("Pocket Mortys"); setPageTitle("Pocket Mortys"); setPokedexSearchVisible(true);
-  const search = document.getElementById("pokedexSearchInput");
-  if (search) { search.placeholder = "Поиск Морти или #001"; search.setAttribute("aria-label","Поиск по Pocket Mortys"); search.value = ""; }
+  setBrandSubtitle("Pocket Mortys"); setPageTitle("Pocket Mortys"); setPokedexSearchVisible(false);
   app.innerHTML = `<section class="pocket-mortys-page">
     <div class="pocket-mortys-workspace">
       <div class="pocket-mortys-list-panel">
+        <div class="pocket-mortys-search"><input id="pocketMortysSearch" type="search" placeholder="Поиск по имени или номеру…" aria-label="Поиск по Pocket Mortys" autocomplete="off"></div>
         <div class="pocket-mortys-list-head"><span>Индекс</span><span>Имя</span><span>Редкость</span><span>Тип</span><span>Есть</span></div>
         <div class="pocket-mortys-list" id="pocketMortysList"><div class="pocket-mortys-message">Загрузка списка…</div></div>
       </div>
       <aside class="pocket-mortys-detail" id="pocketMortysDetail"><div class="pocket-mortys-message">Выберите Морти из списка.</div></aside>
     </div>
-    <footer class="pocket-mortys-footnote"><img src="${ROOT}/Logo/Logo.webp" alt=""><span><strong>Pocket Mortys</strong> — мобильная игра по мультсериалу «Рик и Морти», основанная на серии видеоигр Pokémon. Вышла 13 января 2016 года.</span></footer>
+    <footer class="pocket-mortys-footnote"><img src="${ROOT}/Logo/Logo.webp" alt=""><span><strong>О Pocket Mortys.</strong> Мобильная ролевая игра по мультсериалу «Рик и Морти», построенная вокруг коллекционирования и сражений существ. Вышла 13 января 2016 года.</span></footer>
   </section>`;
   const list = document.getElementById("pocketMortysList"), detail = document.getElementById("pocketMortysDetail");
+  const search = document.getElementById("pocketMortysSearch");
   let entries, owned = new Set(), selected = null;
   try {
     entries = await loadCatalog();
@@ -49,17 +49,20 @@ export async function renderPocketMortys() {
     if (!r.ok) throw new Error("HTTP "+r.status);
     owned = next; return true;
   }
+  function statusMarkup(has) {
+    return `<span class="pocket-mortys-status ${has?"is-owned":"is-missing"}">${has?"Пойман":"Отсутствует"}</span>`;
+  }
   function renderDetail(e) {
     if (!e) return;
     const key=pad(e.number), has=owned.has(key);
     const fields=[["Тип",e.type],["Редкость",e.rarity],["Base XP",e.baseXP],["Base HP",e.baseHP],["Base ATK",e.baseATK],["Base DEF",e.baseDEF],["Base SPD",e.baseSPD],["Stat Total",e.statTotal],["# to Evolve",e.toEvolve],["Badges Required",e.badgesRequired],["Where Found",Array.isArray(e.whereFound)?e.whereFound.join(", "):e.whereFound],["Club Rick Dimension Pools",Array.isArray(e.clubRickDimensionPools)?e.clubRickDimensionPools.join(", "):e.clubRickDimensionPools]].filter(x=>x[1]!==null&&x[1]!==undefined&&x[1]!=="");
     detail.innerHTML=`<div class="pocket-mortys-detail-top">
-      <div class="pocket-mortys-art"><img src="${esc(mortyUrl(e))}" alt="${esc(e.name)}"></div>
-      <div class="pocket-mortys-info"><div class="pocket-mortys-detail-number">#${key}</div><h2>${esc(e.name)}</h2>
-        <button type="button" id="mortyDetailToggle" class="pocket-mortys-owned-toggle ${has?"is-owned":""}" aria-pressed="${has}"><span class="pocket-mortys-check">${has?"✓":""}</span><span>${has?"В коллекции":"Отметить наличие"}</span></button>
+      <div class="pocket-mortys-art"><img src="${esc(mortyUrl(e))}" alt="${esc(e.name)}" loading="eager" decoding="async"></div>
+      <div class="pocket-mortys-info"><div class="pocket-mortys-title-line"><span class="pocket-mortys-detail-number">#${key}</span><h2>${esc(e.name)}</h2>${statusMarkup(has)}</div>
+        <button type="button" id="mortyDetailToggle" class="pocket-mortys-owned-toggle" aria-label="Изменить статус коллекции">${has?"Отметить как отсутствующего":"Отметить как пойманного"}</button>
         <div class="pocket-mortys-stats">${fields.map(([k,v])=>`<div class="pocket-mortys-stat"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join("")}</div>
       </div></div>`;
-    detail.querySelector("#mortyDetailToggle").onclick=async()=>{try{if(await setOwned(key,!owned.has(key))){renderRows(search?.value||"");renderDetail(e);}}catch(err){console.error("Pocket Mortys save failed",err);}};
+    detail.querySelector("#mortyDetailToggle").onclick=async()=>{try{if(await setOwned(key,!owned.has(key))){renderRows(search.value);renderDetail(e);}}catch(err){console.error("Pocket Mortys save failed",err);}};
   }
   function renderRows(query="") {
     const q=query.trim().toLocaleLowerCase().replace(/^#/,"");
@@ -70,12 +73,12 @@ export async function renderPocketMortys() {
         <span class="pocket-mortys-index">#${key}</span><span class="pocket-mortys-name" title="${esc(e.name)}">${esc(e.name)}</span>
         <span class="pocket-mortys-icon-slot">${rarity?`<img src="${esc(rarity)}" alt="${esc(e.rarity||"Редкость")}" loading="lazy">`:""}</span>
         <span class="pocket-mortys-icon-slot">${type?`<img src="${esc(type)}" alt="${esc(e.type||"Тип")}" loading="lazy">`:""}</span>
-        <button type="button" class="pocket-mortys-row-check ${has?"is-owned":""}" data-toggle="${key}" aria-label="Отметить наличие" aria-pressed="${has}">${has?"✓":""}</button></div>`;
+        <button type="button" class="pocket-mortys-row-check ${has?"is-owned":""}" data-toggle="${key}" aria-label="${has?"Убрать из пойманных":"Отметить пойманным"}" aria-pressed="${has}">${has?"✓":""}</button></div>`;
     }).join(""):'<div class="pocket-mortys-message">Ничего не найдено.</div>';
-    list.querySelectorAll("[data-number]").forEach(row=>{const choose=()=>{selected=Number(row.dataset.number);const e=entries.find(x=>Number(x.number)===selected);renderRows(search?.value||"");renderDetail(e);};row.onclick=ev=>{if(!ev.target.closest("[data-toggle]"))choose();};row.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();choose();}};});
-    list.querySelectorAll("[data-toggle]").forEach(btn=>btn.onclick=async()=>{try{const key=btn.dataset.toggle;await setOwned(key,!owned.has(key));renderRows(search?.value||"");if(selected!==null)renderDetail(entries.find(e=>Number(e.number)===selected));}catch(e){console.error("Pocket Mortys save failed",e);}});
+    list.querySelectorAll("[data-number]").forEach(row=>{const choose=()=>{selected=Number(row.dataset.number);const e=entries.find(x=>Number(x.number)===selected);renderRows(search.value);renderDetail(e);};row.onclick=ev=>{if(!ev.target.closest("[data-toggle]"))choose();};row.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();choose();}};});
+    list.querySelectorAll("[data-toggle]").forEach(btn=>btn.onclick=async()=>{try{const key=btn.dataset.toggle;await setOwned(key,!owned.has(key));renderRows(search.value);if(selected!==null)renderDetail(entries.find(e=>Number(e.number)===selected));}catch(e){console.error("Pocket Mortys save failed",e);}});
   }
+  search.addEventListener("input",()=>renderRows(search.value));
   renderRows();
   if(entries.length){selected=Number(entries[0].number);renderRows();renderDetail(entries[0]);}
-  if(search) search.oninput=()=>{renderRows(search.value);const row=list.querySelector("[data-number]");if(row){row.scrollIntoView({behavior:"smooth",block:"nearest"});row.classList.add("is-search-hit");window.setTimeout(()=>row.classList.remove("is-search-hit"),1600);}};
 }
