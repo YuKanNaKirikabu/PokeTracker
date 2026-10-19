@@ -234,14 +234,14 @@ def dashboard_stream(request: Request):
         activity = mongo()[DB_NAME]["activity_log"]
         latest = activity.find_one({}, {"_id": 1}, sort=[("_id", -1)])
         last_id = latest["_id"] if latest else None
-        yield "event: ready\\ndata: {}\\n\\n"
+        yield "event: ready\ndata: {}\n\n"
         while True:
             time.sleep(1.5)
             latest = activity.find_one({}, {"_id": 1}, sort=[("_id", -1)])
             current_id = latest["_id"] if latest else None
             if current_id is not None and current_id != last_id:
                 last_id = current_id
-                yield "event: change\\ndata: {}\\n\\n"
+                yield "event: change\ndata: {}\n\n"
     return StreamingResponse(events(), media_type="text/event-stream",
         headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"})
 
