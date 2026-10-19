@@ -261,9 +261,12 @@ def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"
         server = client.admin.command("serverStatus")
         dbs, totals = [], {"collections": 0, "documents": 0, "dataSize": 0, "storageSize": 0}
 
-        # Count only non-system collections. dbStats.objects is approximate/stale
-        # around profiler writes and includes internal MongoDB collections.
+        # Dashboard totals describe application data, not MongoDB's internal databases.
+        # Exclude admin/config/local and all system.* collections from these user-facing totals.
+        internal_databases = {"admin", "config", "local"}
         for name in sorted(client.list_database_names()):
+            if name in internal_databases:
+                continue
             database = client[name]
             collections = [n for n in database.list_collection_names()
                            if not n.startswith("system.")]
