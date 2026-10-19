@@ -205,13 +205,34 @@ def profiler_rows(period, limit=5000, timezone_name="UTC"):
     rows.sort(key=lambda r: r["time"] or datetime.min.replace(tzinfo=timezone.utc), reverse=True)
     return rows[:limit], sorted(set(missing))
 
+def activity_rows(period, limit=5000, timezone_name="UTC"):
+    """Only successful data mutations recorded by the PokeTracker API; excludes dashboard/admin reads."""
+    since = period_start(period, timezone_name)
+    query = {"ts": {"$gte": since}} if since is not None else {}
+    cursor = mongo()[DB_NAME]["activity_log"].find(query).sort("ts", -1).limit(max(1, min(limit, 50000)))
+    rows = []
+    for doc in cursor:
+        stamp = doc.get("ts")
+        rows.append({
+            "time": stamp,
+            "database": DB_NAME,
+            "operation": str(doc.get("operation", "update")),
+            "collection": str(doc.get("collection", "")),
+            "durationMs": float(doc.get("durationMs", 0)),
+            "namespace": DB_NAME + "." + str(doc.get("collection", "")),
+            "command": {"source": "PokeTracker"},
+            "nReturned": None,
+        })
+    return rows
+
+
 @app.get("/api/mdb/query-log")
 def query_log(request: Request, period: str = "24h", limit: int = 200):
     current_user(request)
     try:
-        rows, missing = profiler_rows(period, max(1, min(limit, 500)))
-        return {"period": period, "rows": safe(rows), "profilingUnavailable": missing}
-    except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать журнал запросов.") from exc
+        rows = activity_rows(period, max(1, min(limit, 500)))
+        return {"period": period, "rows": safe(rows), "profilingUnavailable": []}
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать журнал изменений PokeTracker.") from exc
 
 @app.get("/api/mdb/dashboard")
 def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"):
@@ -231,7 +252,8 @@ def dashboard(request: Request, period: str = "days", timezone_name: str = "UTC"
 
         tz = resolve_timezone(timezone_name)
         now = datetime.now(tz)
-        rows, missing = profiler_rows(period, 5000, timezone_name)
+        rows = activity_rows(period, 50000 if period == "years" else 5000, timezone_name)
+        missing = []
         if period == "hours":
             first = now.replace(minute=0, second=0, microsecond=0) - timedelta(hours=23)
             bucket_keys = [first + timedelta(hours=i) for i in range(24)]
