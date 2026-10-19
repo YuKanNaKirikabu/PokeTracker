@@ -19,7 +19,7 @@ function mortyUrl(e) { return e.image || ROOT+"/Mortys/"+encodeURIComponent(e.na
 
 export async function renderPocketMortys() {
   const app = document.getElementById("app");
-  setBrandSubtitle(t("pocket.title")); setPageTitle(t("pocket.title")); setPokedexSearchVisible(false);
+  setBrandSubtitle(t("pocket.title")); setPageTitle(""); setPokedexSearchVisible(false);
   app.innerHTML = `<section class="pocket-mortys-page">
     <div class="pocket-mortys-workspace">
       <div class="pocket-mortys-list-panel">

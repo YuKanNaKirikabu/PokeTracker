@@ -84,12 +84,12 @@ export function renderPack(packTitle, subpackValue) {
     const ownedCount = state.data.cards.filter((card) => state.owned.has(formatCardId(card))).length;
     app.innerHTML = `
       <section class="pack-page">
-        ${renderFilters(`<div class="filter-group filter-context-group"><div class="filter-context-title"><strong>${t("pack.allTitle")}</strong><span>${ownedCount}/${state.data.cards.length}</span></div>${renderAllPackGroup()}</div>`, { showApplyButton: true, showSearch: false })}
+        ${renderFilters(`<div class="filter-group filter-context-group"><div class="filter-context-title"><strong>${t("pack.allTitle")}</strong><span>${ownedCount}/${state.data.cards.length}</span></div>${renderAllPackGroup()}</div>`, { showSearch: false })}
         <div>${renderCardGrid(cards)}</div>
       </section>`;
     renderPackHeaderContext("");
     renderPackScaleControl();
-    attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
+    attachFilterEvents(() => renderPack("ALL"));
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
     attachHeaderPackSearch(() => renderPack("ALL"));
     attachMobileFilterToggle();
@@ -114,14 +114,14 @@ export function renderPack(packTitle, subpackValue) {
 
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters(selector, { showApplyButton: true, showSearch: false, leadingMedia })}
+      ${renderFilters(selector, { showSearch: false, leadingMedia })}
       <div>
         ${renderCardGrid(cards)}
       </div>
     </section>`;
   renderPackHeaderContext(renderPackMedia(pack, activeSubpack));
   renderPackScaleControl();
-  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { deferApply: true });
+  attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display));
   attachMobileFilterToggle();
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });

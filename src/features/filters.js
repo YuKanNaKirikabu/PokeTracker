@@ -118,7 +118,7 @@ export function applyFilters(cards) {
 }
 
 export function renderFilters(extraGroups = "", options = {}) {
-  const { showApplyButton = false, showSearch = true, leadingMedia = "" } = options;
+  const { showSearch = true, leadingMedia = "" } = options;
   const arrows = {
     asc: "▲",
     desc: "▼",
@@ -188,7 +188,6 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       </div>
       <div class="filter-actions">
-        ${showApplyButton ? `<button class="toggle-btn filter-apply" id="filtersApply" type="button">${t("common.apply")}</button>` : ""}
         <button class="toggle-btn filter-reset" id="filtersReset" type="button">${t("common.reset")}</button>
       </div>
     </div>
@@ -261,8 +260,8 @@ export function renderAllPackGroup() {
   `;
 }
 
-export function attachFilterEvents(render, options = {}) {
-  const { deferApply = false } = options;
+export function attachFilterEvents(render) {
+  const deferApply = false;
   const searchInput = document.getElementById("searchInput");
   const scaleGroup = document.getElementById("packScaleGroup") || document.getElementById("scaleGroup");
   const sortGroup = document.getElementById("sortGroup");

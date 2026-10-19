@@ -20,8 +20,7 @@ settings if needed, and start the application:
 docker compose up -d --build
 ```
 
-The application is available on both `http://<server>:1025` and
-`http://<server>:1111`. Both ports serve the same container. MongoDB is
+The application is available at `http://<server>:1025`. MongoDB is
 started automatically and its data is stored in the `poketracker-mongodb`
 Docker volume.
 

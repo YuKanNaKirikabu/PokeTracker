@@ -145,7 +145,6 @@ export async function renderGamePokedex(gameId) {
     <section>
       <div class="game-pokedex-header ${config.icons && config.icons.length > 1 && config.dexes && config.dexes.length > 1 ? "has-game-versions-and-dexes" : ""}">
         <div class="game-pokedex-meta">
-          <h1 class="section-title">${config.title}</h1>
           <div class="section-subtitle" id="gamePokedexFound">${t("gamePokedex.found", { found: foundCount, total: list.length })}</div>
         </div>
         <div class="game-pokedex-header-lines">

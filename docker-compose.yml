@@ -6,7 +6,6 @@ services:
     restart: unless-stopped
     ports:
       - "${POKETRACKER_PORT:-1025}:1025"
-      - "${POKETRACKER_SECOND_PORT:-1111}:1025"
     healthcheck:
       test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:1025/api/health', timeout=3)"]
       interval: 30s
