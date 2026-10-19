@@ -49,6 +49,13 @@ export function renderProjects() {
           <div class="choice-title">${t("projects.nintTitle")}</div>
           <div class="choice-desc">${t("projects.nintDesc")}</div>
         </a>
+        <a class="choice-card" href="#/projects/pocket-mortys">
+          <div class="choice-logo">
+            <img src="https://storage.yandexcloud.net/poketracker/Images/PocketMortys/Logo/Logo.webp" alt="Pocket Mortys" loading="lazy" decoding="async" />
+          </div>
+          <div class="choice-title">Pocket Mortys</div>
+          <div class="choice-desc">Коллекция и характеристики Морти</div>
+        </a>
       </div>
     </section>
   `;
