@@ -4,7 +4,7 @@ import { applyTranslations, t } from "./core/i18n.js?v=20261019-5";
 import { initStorage, loadBootstrapFromFile, loadDataFromFile } from "./core/storage.js";
 import { applyTheme, normalizeUiSettings } from "./core/theme.js";
 import { state } from "./core/state.js";
-import { setupProfileMenu, setupSidePanel } from "./core/ui.js?v=20261018-3";
+import { setupProfileMenu, setupSidePanel } from "./core/ui.js?v=20261019-4";
 import { loadPokedexNamesFromFile, loadGamePokedexes } from "./features/pokedex.js?v=20261018-5";
 import { renderRoute } from "./router.js?v=20261019-6";
 

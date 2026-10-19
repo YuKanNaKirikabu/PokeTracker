@@ -144,6 +144,7 @@ export function setupProfileMenu() {
   });
   menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", close));
   window.addEventListener("authstatechange", render);
+  window.addEventListener("languagechange", render);
   window.addEventListener("hashchange", close);
   window.addEventListener("click", (event) => {
     if (!menu.contains(event.target)) close();

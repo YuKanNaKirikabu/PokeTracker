@@ -4096,3 +4096,15 @@ body.route-pokedex .pokedex-world { min-width: 0; min-height: 0; }
 .pocket-mortys-footnote img{width:24px;height:24px}
 @media(max-width:900px){.pocket-mortys-page{height:auto;min-height:0}.pocket-mortys-workspace{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(320px,46vh) minmax(420px,auto)}.pocket-mortys-detail{overflow:visible}.pocket-mortys-detail-top{grid-template-columns:minmax(140px,.75fr) minmax(0,1fr)}.pocket-mortys-art{height:clamp(280px,40vh,420px)}}
 @media(max-width:560px){.pocket-mortys-list-head,.pocket-mortys-row{grid-template-columns:42px minmax(55px,1fr) 35px 32px 26px;gap:4px;padding-left:7px;padding-right:7px}.pocket-mortys-list-head span:nth-child(3),.pocket-mortys-list-head span:nth-child(4){font-size:8px}.pocket-mortys-icon-slot{width:30px;height:30px}.pocket-mortys-icon-slot img{width:26px;height:26px}.pocket-mortys-detail-top{grid-template-columns:minmax(100px,.7fr) minmax(0,1fr);gap:8px}.pocket-mortys-art{height:280px}.pocket-mortys-detail{padding:8px}.pocket-mortys-stats{grid-template-columns:1fr}.pocket-mortys-title-line{gap:5px}.pocket-mortys-status{font-size:9px;padding:3px 6px}}
+
+
+/* Keep game Pokédex controls and the last card row inside the scrollable viewport. */
+.content:has(.game-pokedex-header) {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: clamp(28px, 3vw, 44px);
+  scrollbar-gutter: stable;
+}
+.content:has(.game-pokedex-header) > section {
+  padding-bottom: 16px;
+}

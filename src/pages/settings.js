@@ -103,6 +103,7 @@ export function renderSettings() {
       if (!nextLanguage) return;
       state.ui.language = nextLanguage;
       applyTranslations();
+      window.dispatchEvent(new Event("languagechange"));
       saveSettingsToFile().catch((error) => console.error("Settings save failed:", error));
       renderRoute();
     });
