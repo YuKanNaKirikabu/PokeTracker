@@ -1,4 +1,4 @@
-const $=s=>document.querySelector(s);
+const $=(s,root=document)=>root.querySelector(s);
 const state={database:null,collection:null,skip:0,limit:50,total:0,expanded:new Set()};
 const pageNames={explorer:"Обозреватель MongoDB",dashboard:"Дашборд",queries:"Журнал запросов"};
 const fmt=n=>n==null?"—":new Intl.NumberFormat("ru-RU").format(n);
