@@ -1,4 +1,4 @@
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { saveGamePokedexToFile } from "../core/storage.js";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";

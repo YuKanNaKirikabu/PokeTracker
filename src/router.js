@@ -1,4 +1,4 @@
-import { applyTranslations, t } from "./core/i18n.js?v=20261019-4";
+import { applyTranslations, t } from "./core/i18n.js?v=20261019-5";
 import { state } from "./core/state.js";
 import { setActiveNav, setBrandMode, setPageTitle, setPokedexSearchVisible, updateBrandLink } from "./core/ui.js?v=20261019-4";
 import { renderCollection } from "./pages/collection.js?v=20261019-4";

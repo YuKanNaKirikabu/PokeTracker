@@ -1,4 +1,4 @@
-import { applyTranslations, getCurrentLanguage, LANGUAGE_OPTIONS, t } from "../core/i18n.js?v=20261019-4";
+import { applyTranslations, getCurrentLanguage, LANGUAGE_OPTIONS, t } from "../core/i18n.js?v=20261019-5";
 import { DEFAULT_LANGUAGE, DEFAULT_THEME, state } from "../core/state.js";
 import { saveDataToFile, saveSettingsToFile } from "../core/storage.js";
 import { applyTheme, normalizeUiSettings } from "../core/theme.js";

@@ -1,5 +1,5 @@
 import { GAME_POKEDEXES } from "../config/pokedex.js";
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { setBrandSubtitle, setPageTitle } from "../core/ui.js";
 import { loadGameDexCatalog } from "../features/pokedex.js";
 import { state } from "../core/state.js";

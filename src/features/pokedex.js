@@ -5,7 +5,7 @@ import {
     POKEDEX_RAW,
     POKEDEX_TRAINER_INCLUDES,
 } from "../config/pokedex.js";
-import { getCurrentLanguage, t } from "../core/i18n.js?v=20261019-4";
+import { getCurrentLanguage, t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { formatCardCode, formatCardId, renderCardTypeBadge } from "./cards.js";
 

@@ -1,5 +1,5 @@
 import { authenticate, logout, saveAvatar } from "../core/auth.js?v=20261018-3";
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { renderRoute } from "../router.js?v=20261019-4";
 import { getPokedexIconPath, getPokedexList, getPokemonDisplayName } from "../features/pokedex.js";
@@ -93,7 +93,7 @@ export function renderProfile() {
     app.querySelector("#logoutButton").addEventListener("click", async () => {
       await logout();
       const { applyTheme, normalizeUiSettings } = await import("../core/theme.js");
-      const { applyTranslations } = await import("../core/i18n.js?v=20261019-4");
+      const { applyTranslations } = await import("../core/i18n.js?v=20261019-5");
       normalizeUiSettings();
       applyTheme();
       applyTranslations();
@@ -175,7 +175,7 @@ export function renderProfile() {
         await loadDataFromFile();
       });
       const { normalizeUiSettings, applyTheme } = await import("../core/theme.js");
-      const { applyTranslations } = await import("../core/i18n.js?v=20261019-4");
+      const { applyTranslations } = await import("../core/i18n.js?v=20261019-5");
       normalizeUiSettings();
       applyTheme();
       applyTranslations();

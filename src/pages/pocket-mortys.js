@@ -1,5 +1,5 @@
 import { state } from "../core/state.js";
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";
 
 const ROOT = "https://storage.yandexcloud.net/poketracker/Images/PocketMortys";

@@ -1,4 +1,4 @@
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import { setPokedexSearchVisible } from "../core/ui.js";
 import { getPack, getPackPrimaryMedia, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";

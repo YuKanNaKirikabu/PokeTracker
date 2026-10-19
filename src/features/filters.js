@@ -1,7 +1,7 @@
 import {
     CARD_TYPE_FILTERS,
 } from "../config/packs.js";
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { state } from "../core/state.js";
 import {
     formatCardCode,

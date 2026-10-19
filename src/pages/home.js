@@ -1,5 +1,5 @@
 import { compilerPages } from "../config/compiler-pages.js";
-import { t } from "../core/i18n.js?v=20261019-4";
+import { t } from "../core/i18n.js?v=20261019-5";
 import { mountCompilerWidget } from "../widgets/compiler-widget/compiler-widget.js";
 
 export function renderHome() {

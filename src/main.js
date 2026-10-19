@@ -1,6 +1,6 @@
 import { loadData } from "./core/data.js";
 import { loadAuth } from "./core/auth.js?v=20261018-3";
-import { applyTranslations, t } from "./core/i18n.js?v=20261019-4";
+import { applyTranslations, t } from "./core/i18n.js?v=20261019-5";
 import { initStorage, loadBootstrapFromFile, loadDataFromFile } from "./core/storage.js";
 import { applyTheme, normalizeUiSettings } from "./core/theme.js";
 import { state } from "./core/state.js";
