@@ -1,0 +1,219 @@
+from __future__ import annotations
+import hashlib, hmac, os, secrets, threading, time, json
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, Field
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
+from bson import json_util
+
+ROOT = Path(__file__).resolve().parent.parent
+WEB = ROOT / "mongo_admin"
+URI = os.getenv("MONGODB_URI", "mongodb://127.0.0.1:27017").strip()
+DB_NAME = os.getenv("MONGODB_DATABASE", "poketracker").strip() or "poketracker"
+COOKIE = "poketracker_mdb_session"
+TTL = 28800
+sessions: dict[str, dict[str, Any]] = {}
+lock = threading.Lock()
+client_instance = None
+client_lock = threading.Lock()
+app = FastAPI(title="PokeTracker MongoDB Admin", docs_url=None, redoc_url=None, openapi_url=None)
+
+def mongo():
+    global client_instance
+    with client_lock:
+        if client_instance is None:
+            client_instance = MongoClient(URI, serverSelectionTimeoutMS=4000)
+            client_instance.admin.command("ping")
+    return client_instance
+
+def verify_password(password, encoded):
+    try:
+        algorithm, rounds, salt_hex, digest_hex = encoded.split("$")
+        if algorithm != "pbkdf2_sha256": return False
+        digest = hashlib.pbkdf2_hmac("sha256", password.encode(), bytes.fromhex(salt_hex), int(rounds))
+        return hmac.compare_digest(digest.hex(), digest_hex)
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+def session_for(request):
+    token = request.cookies.get(COOKIE)
+    if not token: return None
+    with lock:
+        session = sessions.get(token)
+        if not session or session["expires"] <= time.time():
+            sessions.pop(token, None)
+            return None
+        session["expires"] = time.time() + TTL
+        return session
+
+def current_user(request):
+    session = session_for(request)
+    if not session: raise HTTPException(401, "Требуется авторизация.")
+    try:
+        user = mongo()[DB_NAME].users.find_one({"_id": session["user_id"]}, {"ismdb": 1, "username": 1})
+        if not user or user.get("ismdb") is not True:
+            token = request.cookies.get(COOKIE)
+            if token:
+                with lock: sessions.pop(token, None)
+            raise HTTPException(403, "У этого аккаунта нет доступа к обозревателю MongoDB.")
+        return user
+    except HTTPException: raise
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось проверить доступ в MongoDB.") from exc
+
+class Credentials(BaseModel):
+    username: str = Field(min_length=3, max_length=32)
+    password: str = Field(min_length=1, max_length=256)
+
+@app.get("/api/mdb/auth/me")
+def auth_me(request: Request):
+    try:
+        user = current_user(request)
+        return {"authenticated": True, "username": user.get("username")}
+    except HTTPException as exc:
+        if exc.status_code in (401, 403): return {"authenticated": False, "username": None}
+        raise
+
+@app.post("/api/mdb/auth/login")
+def login(payload: Credentials):
+    try:
+        user = mongo()[DB_NAME].users.find_one({"username": payload.username.strip()})
+        if not user or not verify_password(payload.password, user.get("password_hash", "")):
+            raise HTTPException(401, "Неверный логин или пароль.")
+        if user.get("ismdb") is not True:
+            raise HTTPException(403, "У этого аккаунта нет доступа к обозревателю MongoDB.")
+        token = secrets.token_urlsafe(36)
+        with lock:
+            sessions[token] = {"user_id": user["_id"], "username": user["username"], "expires": time.time() + TTL}
+        response = JSONResponse({"success": True, "username": user["username"]})
+        response.set_cookie(COOKIE, token, max_age=TTL, httponly=True, samesite="strict",
+                            secure=os.getenv("MDB_ADMIN_COOKIE_SECURE", "0") == "1", path="/")
+        return response
+    except HTTPException: raise
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось подключиться к MongoDB.") from exc
+
+@app.post("/api/mdb/auth/logout")
+def logout(request: Request):
+    token = request.cookies.get(COOKIE)
+    if token:
+        with lock: sessions.pop(token, None)
+    response = JSONResponse({"success": True})
+    response.delete_cookie(COOKIE, path="/")
+    return response
+
+def safe(value): return json.loads(json_util.dumps(value))
+
+@app.get("/api/mdb/databases")
+def databases(request: Request):
+    current_user(request)
+    try:
+        result = []
+        for name in sorted(mongo().list_database_names()):
+            try:
+                s = mongo()[name].command("dbStats")
+                result.append({"name": name, "collections": int(s.get("collections", 0)), "documents": int(s.get("objects", 0)),
+                               "size": int(s.get("dataSize", 0)), "storageSize": int(s.get("storageSize", 0))})
+            except PyMongoError:
+                result.append({"name": name, "collections": None, "documents": None, "size": None, "storageSize": None})
+        return {"databases": result}
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать базы данных.") from exc
+
+@app.get("/api/mdb/databases/{database}/collections")
+def collections(database: str, request: Request):
+    current_user(request)
+    try:
+        db = mongo()[database]
+        result = []
+        for name in sorted(db.list_collection_names()):
+            try:
+                s = db.command("collStats", name)
+                result.append({"name": name, "documents": int(s.get("count", 0)), "size": int(s.get("size", 0)),
+                               "storageSize": int(s.get("storageSize", 0)), "indexes": int(s.get("nindexes", 0))})
+            except PyMongoError:
+                result.append({"name": name, "documents": None, "size": None, "storageSize": None, "indexes": None})
+        return {"database": database, "collections": result}
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать коллекции.") from exc
+
+@app.get("/api/mdb/databases/{database}/collections/{collection}/documents")
+def documents(database: str, collection: str, request: Request, skip: int = 0, limit: int = 50):
+    current_user(request)
+    skip, limit = max(0, min(skip, 1000000)), max(1, min(limit, 200))
+    try:
+        coll = mongo()[database][collection]
+        return {"database": database, "collection": collection, "skip": skip, "limit": limit,
+                "total": coll.estimated_document_count(),
+                "documents": [safe(d) for d in coll.find({}).skip(skip).limit(limit)]}
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать документы.") from exc
+
+def period_start(period):
+    hours = {"1h": 1, "24h": 24, "7d": 168, "30d": 720}.get(period, 24)
+    return datetime.now(timezone.utc) - timedelta(hours=hours)
+
+def profiler_rows(period, limit=5000):
+    rows, missing = [], []
+    since = period_start(period)
+    client = mongo()
+    for name in client.list_database_names():
+        try:
+            db = client[name]
+            if "system.profile" not in db.list_collection_names():
+                missing.append(name)
+                continue
+            for doc in db["system.profile"].find({"ts": {"$gte": since}}).sort("ts", -1).limit(limit):
+                cmd = doc.get("command") or {}
+                op = str(doc.get("op", "unknown"))
+                coll = next((cmd[k] for k in ("find", "aggregate", "insert", "update", "delete", "count", "distinct") if k in cmd), doc.get("ns", "").split(".", 1)[-1])
+                rows.append({"time": doc.get("ts"), "database": name, "operation": op, "collection": str(coll),
+                             "durationMs": int(doc.get("millis", 0)), "namespace": str(doc.get("ns", "")),
+                             "command": safe(cmd), "nReturned": doc.get("nreturned", doc.get("nReturned"))})
+        except PyMongoError: missing.append(name)
+    rows.sort(key=lambda r: r["time"] or datetime.min.replace(tzinfo=timezone.utc), reverse=True)
+    return rows[:limit], sorted(set(missing))
+
+@app.get("/api/mdb/query-log")
+def query_log(request: Request, period: str = "24h", limit: int = 200):
+    current_user(request)
+    try:
+        rows, missing = profiler_rows(period, max(1, min(limit, 500)))
+        return {"period": period, "rows": safe(rows), "profilingUnavailable": missing}
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось прочитать журнал запросов.") from exc
+
+@app.get("/api/mdb/dashboard")
+def dashboard(request: Request, period: str = "24h"):
+    current_user(request)
+    try:
+        client = mongo()
+        server = client.admin.command("serverStatus")
+        dbs, totals = [], {"collections": 0, "documents": 0, "dataSize": 0, "storageSize": 0}
+        for name in client.list_database_names():
+            try:
+                s = client[name].command("dbStats")
+                row = {"name": name, "collections": int(s.get("collections", 0)), "documents": int(s.get("objects", 0)),
+                       "dataSize": int(s.get("dataSize", 0)), "storageSize": int(s.get("storageSize", 0))}
+                dbs.append(row)
+                for key in totals: totals[key] += row[key]
+            except PyMongoError: pass
+        rows, missing = profiler_rows(period, 5000)
+        timeline = {}
+        for row in rows:
+            stamp = row.get("time")
+            if not stamp: continue
+            label = stamp.strftime("%d.%m %H:00" if period == "1h" else "%d.%m")
+            point = timeline.setdefault(label, {"queries": 0, "durationMs": 0})
+            point["queries"] += 1
+            point["durationMs"] += row["durationMs"]
+        return {"period": period, "server": {"version": server.get("version", "?"), "uptimeSeconds": int(server.get("uptime", 0)),
+                "connections": server.get("connections", {}), "opcounters": server.get("opcounters", {})},
+                "totals": totals, "databases": dbs, "queryCount": len(rows),
+                "averageDurationMs": round(sum(r["durationMs"] for r in rows) / len(rows), 2) if rows else 0,
+                "timeline": [{"label": k, **v} for k, v in sorted(timeline.items())], "profilingUnavailable": missing}
+    except PyMongoError as exc: raise HTTPException(503, "Не удалось получить статистику MongoDB.") from exc
+
+@app.get("/")
+def index(): return FileResponse(WEB / "index.html")
+
+app.mount("/", StaticFiles(directory=WEB), name="static")

@@ -22,6 +22,22 @@ services:
       mongodb:
         condition: service_healthy
 
+  mongo-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["uvicorn", "fastapi_app.mongodb_admin:app", "--host", "0.0.0.0", "--port", "1111"]
+    restart: unless-stopped
+    ports:
+      - "${MONGODB_ADMIN_PORT:-1111}:1111"
+    environment:
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongodb:27017}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-poketracker}
+      MDB_ADMIN_COOKIE_SECURE: ${MDB_ADMIN_COOKIE_SECURE:-0}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
   mongodb:
     image: mongo:7
     restart: unless-stopped
