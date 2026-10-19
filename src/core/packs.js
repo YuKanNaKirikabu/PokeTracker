@@ -5,7 +5,9 @@ export function getPacks() {
 }
 
 export function getPack(id) {
-  return getPacks().find((pack) => pack.id === id) || null;
+  const key = normalizeKey(id);
+  if (!key) return null;
+  return getPacks().find((pack) => [pack.id, pack.display, pack.name].some((value) => normalizeKey(value) === key)) || null;
 }
 
 export function getSubpacks(pack) {

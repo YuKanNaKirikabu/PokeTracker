@@ -48,11 +48,10 @@ export async function renderGamePokedex(gameId) {
     const details = [generation];
     if (Number.isFinite(config.pokemonCount)) details.push(`${config.pokemonCount} Pokémon`);
     setBrandSubtitle(config.title);
-    setPageTitle(config.title);
+    setPageTitle("");
     setPokedexSearchVisible(false);
     app.innerHTML = `
       <section class="placeholder game-pokedex-placeholder">
-        <h1 class="section-title">${config.title}</h1>
         <p class="section-subtitle">${details.join(" · ")}</p>
         <p>${config.status === "coming-soon" ? "Coming 2027" : t("gamePokedex.empty")}</p>
         <a class="settings-btn secondary" href="#/projects/pokedexes">${t("gamePokedex.back")}</a>
@@ -68,7 +67,6 @@ export async function renderGamePokedex(gameId) {
   if (!data.loaded) {
     app.innerHTML = `
       <section class="placeholder">
-        <h1 class="section-title">${config.title}</h1>
         <p>Loading...</p>
       </section>
     `;
@@ -81,12 +79,11 @@ export async function renderGamePokedex(gameId) {
   }
 
   setBrandSubtitle(config.title);
-  setPageTitle(config.title);
+  setPageTitle("");
   setPokedexSearchVisible(true);
   if (!list.length) {
     app.innerHTML = `
       <section class="placeholder">
-        <h1 class="section-title">${config.title}</h1>
         <p>${t("gamePokedex.empty")}</p>
         <a class="settings-btn secondary" href="#/projects/pokedexes">${t("gamePokedex.back")}</a>
       </section>
