@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from pathlib import Path
 from typing import Any
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pymongo import MongoClient
@@ -225,6 +225,25 @@ def activity_rows(period, limit=5000, timezone_name="UTC"):
         })
     return rows
 
+
+
+@app.get("/api/mdb/dashboard/stream")
+def dashboard_stream(request: Request):
+    current_user(request)
+    def events():
+        activity = mongo()[DB_NAME]["activity_log"]
+        latest = activity.find_one({}, {"_id": 1}, sort=[("_id", -1)])
+        last_id = latest["_id"] if latest else None
+        yield "event: ready\\ndata: {}\\n\\n"
+        while True:
+            time.sleep(1.5)
+            latest = activity.find_one({}, {"_id": 1}, sort=[("_id", -1)])
+            current_id = latest["_id"] if latest else None
+            if current_id is not None and current_id != last_id:
+                last_id = current_id
+                yield "event: change\\ndata: {}\\n\\n"
+    return StreamingResponse(events(), media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"})
 
 @app.get("/api/mdb/query-log")
 def query_log(request: Request, period: str = "24h", limit: int = 200):
