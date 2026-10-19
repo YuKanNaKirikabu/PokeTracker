@@ -71,7 +71,7 @@ def remote_read(name,fallback):
   req=Request(REMOTE_BASE+"/"+quote(name,safe="/")+"?_ts="+str(int(time.time())),headers={"Cache-Control":"no-cache"})
   with urlopen(req,timeout=15) as response: payload=json.loads(response.read().decode("utf-8-sig"))
   if name=="cards.json" and isinstance(payload,dict) and isinstance(payload.get("packs"),list) and isinstance(payload.get("cards"),list): return payload
-  if name=="GameDex.json" and isinstance(payload,list): return payload
+  if name in {"GameDex.json","PocketMortys/PocketMortys.json"} and isinstance(payload,list): return payload
   if name=="settings.json" and isinstance(payload,dict) and isinstance(payload.get("ui"),dict): return payload
   if name=="game-pokedex.json" and isinstance(payload,dict) and isinstance(payload.get("pokedexes"),dict): return payload
   return payload if isinstance(payload,dict) else fallback
