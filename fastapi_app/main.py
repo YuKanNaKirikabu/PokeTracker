@@ -68,10 +68,10 @@ def require_session(request):
 
 def remote_read(name,fallback):
  try:
-  req=Request(REMOTE_BASE+"/"+quote(name)+"?_ts="+str(int(time.time())),headers={"Cache-Control":"no-cache"})
+  req=Request(REMOTE_BASE+"/"+quote(name,safe="/")+"?_ts="+str(int(time.time())),headers={"Cache-Control":"no-cache"})
   with urlopen(req,timeout=15) as response: payload=json.loads(response.read().decode("utf-8-sig"))
   if name=="cards.json" and isinstance(payload,dict) and isinstance(payload.get("packs"),list) and isinstance(payload.get("cards"),list): return payload
-  if name=="GameDex.json" and isinstance(payload,list): return payload
+  if name in {"GameDex.json","PocketMortys/PocketMortys.json"} and isinstance(payload,list): return payload
   if name=="settings.json" and isinstance(payload,dict) and isinstance(payload.get("ui"),dict): return payload
   if name=="game-pokedex.json" and isinstance(payload,dict) and isinstance(payload.get("pokedexes"),dict): return payload
   return payload if isinstance(payload,dict) else fallback
@@ -119,6 +119,12 @@ def cards(limit:int=0,offset:int=0):
  offset=max(0,offset)
  limit=max(1,min(limit or max(len(data["cards"]),1),2000))
  return JSONResponse({**data,"cards":data["cards"][offset:offset+limit],"offset":offset,"limit":limit,"total":len(data["cards"]),"hasMore":offset+limit<len(data["cards"])},headers={"Cache-Control":"no-store"})
+
+@app.get("/api/pocket-mortys")
+def pocket_mortys_catalog():
+ payload=remote_read("PocketMortys/PocketMortys.json",[])
+ if isinstance(payload,list): return JSONResponse(payload,headers={"Cache-Control":"no-store"})
+ raise HTTPException(502,"PocketMortys.json must contain an array of Morty entries")
 
 @app.get("/api/game-dex")
 def game_dex():
@@ -175,6 +181,26 @@ def save_game_pokedex(payload:dict[str,Any],request:FastRequest):
   mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"game_pokedex":payload,"updated_at":time.time()}},upsert=True)
   return {"success":True}
  except Exception as exc: raise HTTPException(503,"Could not save game Pokédex to MongoDB.") from exc
+
+@app.get("/api/pocket-mortys-collection")
+def get_pocket_mortys_collection(request:FastRequest):
+ session=require_session(request)
+ try:
+  doc=mongo().user_collections.find_one({"user_id":ObjectId(session["user_id"])}) or {}
+  return {"owned":doc.get("pocket_mortys",[])}
+ except Exception as exc: raise HTTPException(503,"Could not load Pocket Mortys collection from MongoDB.") from exc
+
+@app.post("/api/pocket-mortys-collection")
+def save_pocket_mortys_collection(payload:dict[str,Any],request:FastRequest):
+ session=require_session(request)
+ owned=payload.get("owned")
+ if not isinstance(owned,list) or any(not isinstance(item,str) or not item.isdigit() or len(item)>3 for item in owned):
+  raise HTTPException(400,"owned must be an array of Morty index strings.")
+ unique=sorted(set(owned),key=int)
+ try:
+  mongo().user_collections.update_one({"user_id":ObjectId(session["user_id"])},{"$set":{"pocket_mortys":unique,"updated_at":time.time()}},upsert=True)
+  return {"success":True,"owned":unique}
+ except Exception as exc: raise HTTPException(503,"Could not save Pocket Mortys collection to MongoDB.") from exc
 
 @app.get("/api/game-favorites")
 def load_game_favorites(request:FastRequest):
