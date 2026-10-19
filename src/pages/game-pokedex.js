@@ -1,4 +1,4 @@
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { saveGamePokedexToFile } from "../core/storage.js";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";
@@ -21,51 +21,10 @@ import {
 import { renderPlaceholder } from "./placeholder.js";
 
 let lastGamePokedexId = null;
-let allowNavigation = false;
-let pendingNavigation = null;
-
-function setGamePokedexDirty(isDirty) {
-  state.ui.gamePokedexDirty = isDirty;
-  const button = document.getElementById("gamePokedexSaveBtn");
-  if (!button) return;
-  button.disabled = !isDirty || !state.user;
-  button.classList.toggle("is-dirty", isDirty);
-}
 
 function updateFoundCountText(element, found, total) {
   if (!element) return;
   element.textContent = t("gamePokedex.found", { found, total });
-}
-
-function openUnsavedModal() {
-  const modal = document.getElementById("gamePokedexUnsavedModal");
-  if (!modal) return;
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
-}
-
-function closeUnsavedModal() {
-  const modal = document.getElementById("gamePokedexUnsavedModal");
-  if (!modal) return;
-  modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
-}
-
-function ensureGamePokedexGuard() {
-  if (ensureGamePokedexGuard.bound) return;
-  document.addEventListener("click", (event) => {
-    const link = event.target.closest("a[href^='#/']");
-    if (!link) return;
-    if (allowNavigation) return;
-    if (!state.ui.gamePokedexDirty) return;
-    if (!location.hash.startsWith("#/projects/pokedexes")) return;
-    const target = link.getAttribute("href");
-    if (!target || target === location.hash) return;
-    event.preventDefault();
-    pendingNavigation = target;
-    openUnsavedModal();
-  });
-  ensureGamePokedexGuard.bound = true;
 }
 
 export async function renderGamePokedex(gameId) {
@@ -73,7 +32,7 @@ export async function renderGamePokedex(gameId) {
   if (!getGamePokedexConfig(gameId)) {
     try { await loadGameDexCatalog(); }
     catch (error) {
-      renderPlaceholder(t("projects.pokedexesTitle"), `Не удалось загрузить GameDex.json: ${String(error.message || error)}`);
+      renderPlaceholder(t("projects.pokedexesTitle"), `${t("common.gameDataError")} ${String(error.message || error)}`);
       return;
     }
   }
@@ -224,61 +183,9 @@ export async function renderGamePokedex(gameId) {
         </div>
       </div>
     </section>
-    <button class="game-pokedex-save-btn left" id="gamePokedexSaveBtn" type="button" disabled>
-      ${t("gamePokedex.save")}
-    </button>
-    <div class="game-pokedex-unsaved" id="gamePokedexUnsavedModal" aria-hidden="true">
-      <div class="game-pokedex-unsaved-backdrop" data-unsaved-backdrop></div>
-      <div class="game-pokedex-unsaved-card" role="dialog" aria-modal="true" aria-labelledby="gamePokedexUnsavedTitle" aria-describedby="gamePokedexUnsavedText">
-        <h2 id="gamePokedexUnsavedTitle">${t("gamePokedex.unsavedTitle")}</h2>
-        <p id="gamePokedexUnsavedText">${t("gamePokedex.unsavedText")}</p>
-        <div class="game-pokedex-unsaved-actions">
-          <button class="settings-btn secondary" type="button" data-unsaved-stay>${t("gamePokedex.unsavedStay")}</button>
-          <button class="settings-btn primary" type="button" data-unsaved-leave>${t("gamePokedex.unsavedLeave")}</button>
-        </div>
-      </div>
-    </div>
   `;
 
-  ensureGamePokedexGuard();
-  setGamePokedexDirty(Boolean(state.ui.gamePokedexDirty));
-
   const foundCountEl = app.querySelector("#gamePokedexFound");
-  const saveButton = app.querySelector("#gamePokedexSaveBtn");
-  saveButton?.addEventListener("click", async () => {
-    if (!state.user) {
-      location.hash = "#/register?mode=login";
-      return;
-    }
-    try {
-      await saveGamePokedexToFile();
-      setGamePokedexDirty(false);
-    } catch (error) {
-      window.alert(`Не удалось сохранить игровой покедекс: ${error.message}`);
-    }
-  });
-
-  const unsavedModal = app.querySelector("#gamePokedexUnsavedModal");
-  const stayBtn = unsavedModal?.querySelector("[data-unsaved-stay]");
-  const leaveBtn = unsavedModal?.querySelector("[data-unsaved-leave]");
-  const backdrop = unsavedModal?.querySelector("[data-unsaved-backdrop]");
-  stayBtn?.addEventListener("click", () => {
-    pendingNavigation = null;
-    closeUnsavedModal();
-  });
-  leaveBtn?.addEventListener("click", () => {
-    const target = pendingNavigation;
-    pendingNavigation = null;
-    closeUnsavedModal();
-    if (!target) return;
-    allowNavigation = true;
-    location.hash = target;
-    allowNavigation = false;
-  });
-  backdrop?.addEventListener("click", () => {
-    pendingNavigation = null;
-    closeUnsavedModal();
-  });
 
   app.querySelectorAll(".game-pokedex-item").forEach((card) => {
     card.style.cursor = "pointer";
@@ -300,7 +207,7 @@ export async function renderGamePokedex(gameId) {
         foundKeys.delete(key);
       }
       setGamePokedexMarks(gameId, nextMarks, selectedVersion);
-      setGamePokedexDirty(true);
+      saveGamePokedexToFile().catch((error) => console.error("Game Pokedex save failed:", error));
       if (wasFound !== foundKeys.has(key)) {
         updateFoundCountText(foundCountEl, foundKeys.size, list.length);
       }

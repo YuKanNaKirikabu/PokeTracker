@@ -40,6 +40,7 @@ export const I18N = {
       closeMenu: "Закрыть меню",
       menuAlt: "Меню",
       profileMenu: "Профиль",
+      openFilters: "Открыть фильтры",
     },
     brand: {
       homeSubtitle: "PokeTracker",
@@ -176,6 +177,7 @@ export const I18N = {
       desc: "Страница под рекламу и ссылки на другие проекты.",
       nintTitle: "Nintendo Pokedexes",
       nintDesc: "Покедексы по играм Nintendo.",
+      pocketMortysDesc: "Коллекция и характеристики Морти.",
       open: "Открыть",
       pokedexesTitle: "Nintendo Pokedexes",
       pokedexesSubtitle: "Выберите игру.",
@@ -228,6 +230,7 @@ export const I18N = {
       pokedex: "Pokedex",
       projects: "Projects",
       settings: "Settings",
+      profile: "Profile",
     },
     header: {
       brandAria: "Go to packs list",
@@ -236,6 +239,8 @@ export const I18N = {
       openMenu: "Open menu",
       closeMenu: "Close menu",
       menuAlt: "Menu",
+      openFilters: "Open filters",
+      profileMenu: "Profile",
     },
     brand: {
       homeSubtitle: "PokeTracker",
@@ -262,6 +267,7 @@ export const I18N = {
       arcNote: "Mode in development.",
     },
     filters: {
+      title: "Filters",
       scale: "Card size",
       search: "Search",
       searchPlaceholder: "Name or 001",
@@ -333,12 +339,42 @@ export const I18N = {
       cardsNotFound: "No cards for this Pokemon were found in available packs.",
       descriptionFallback: "Description will appear later. Pokemon text will be here.",
     },
+    profile: {
+      title: "Profile",
+      loggedInAs: "You are signed in as",
+      username: "Username",
+      password: "Password",
+      login: "Sign in",
+      register: "Register",
+      registerTitle: "Registration",
+      loginTitle: "Sign in",
+      registerSubmit: "Create account",
+      registerExisting: "Already have an account?",
+      registerLogin: "Sign in",
+      noAccount: "Don't have an account?",
+      profileLink: "Open profile",
+      collectionLink: "My collection",
+      wishlistLink: "My wishlist",
+      viewAll: "All",
+      noCards: "No cards yet.",
+      complete: "collected",
+      savedCards: "saved cards",
+      catalog: "Catalog",
+      cardsAvailable: "cards available",
+      recentCollection: "Recently added",
+      wishlistPreview: "I want to get",
+      showPassword: "Show password",
+      hidePassword: "Hide password",
+      authRequired: "Sign in or register to view this section.",
+      logout: "Sign out",
+    },
     physical: { title: "Physical version", desc: "Section in development." },
     projects: {
       title: "Other projects",
       desc: "A page for ads and links to other projects.",
       nintTitle: "Nintendo Pokedexes",
       nintDesc: "Nintendo game Pokedexes.",
+      pocketMortysDesc: "Morty collection and stats.",
       open: "Open",
       pokedexesTitle: "Nintendo Pokedexes",
       pokedexesSubtitle: "Choose a game.",
@@ -356,6 +392,11 @@ export const I18N = {
       back: "Back to projects",
       markBlue: "Blue Pokeball",
       markRed: "Red Pokeball",
+      save: "Save",
+      unsavedTitle: "Unsaved changes",
+      unsavedText: "You have unsaved changes. Leave this page?",
+      unsavedLeave: "Leave",
+      unsavedStay: "Stay",
     },
     common: {
       all: "All",
@@ -365,6 +406,7 @@ export const I18N = {
       next: "Next",
       apply: "Apply",
       reset: "Reset",
+      loading: "Loading...",
     },
     errors: { init: "Failed to load UI. Refresh the page." },
     showcase: { aria: "Showcase" },
@@ -1841,6 +1883,36 @@ export const I18N = {
   },
 }
 
+const EXTRA_I18N = {
+  ru: {
+    common: { saveChanges: "Сохранить изменения", unsaved: "Есть несохранённые изменения", saving: "Сохранение…", retrySave: "Повторить сохранение", saveFailed: "Не удалось сохранить. Повтори попытку.", gamesAvailable: "{found} из {total} игр", gamesUnavailable: "Каталог игр временно недоступен.", gameSaveFailed: "Не удалось сохранить игровой покедекс:", gameDataError: "Не удалось загрузить GameDex.json:" },
+    filters: { scaleLabel: "Размер карт", scaleLarge: "Крупные", scaleMedium: "Средние", scaleSmall: "Мелкие", packLogo: "Логотип пака" },
+    settings: { accentTitle: "Акцентный цвет", accentDesc: "Цвет интерфейса и выделения. Красный используется по умолчанию.", accentBlue: "Синий", accentPurple: "Фиолетовый", accentTeal: "Бирюзовый", accentAmber: "Янтарный", accentPink: "Розовый" },
+    pokedex: { search: "Поиск покемонов…", list: "Список покемонов", card: "Карточка покемона", regions: "Регионы", generationOrder: "Порядок по поколениям", games: "Доступно в играх", checking: "Проверка доступности…", loadingGames: "Загружаем каталог игр…", nationalNumber: "Национальный номер", region: "Регион", cards: "Карты TCG Pocket", stats: "Характеристики", moves: "Приёмы", evolution: "Эволюции", knownMoves: "Известные приёмы", evolutionChain: "Эволюционная цепочка", previousCards: "Предыдущие карты", nextCards: "Следующие карты", dataNote: "Рост, вес и базовые характеристики будут показаны здесь после загрузки проверенных данных Pokédex.", movesNote: "Достоверный список приёмов для этого покемона ещё не подключён к локальным данным проекта.", evolutionNote: "Эволюции и предыдущие формы требуют отдельного источника данных. Здесь не будут подставляться предположительные связи." },
+    profile: { chooseAvatar: "Выбрать аватар", close: "Закрыть", avatarSearch: "Поиск покемона" },
+    docs: { status: "Документация PokeTracker: ГОТОВО", files: "Файлы проекта", explorer: "Обозреватель", txtTabs: "Вкладки TXT", openFiles: "Открытые файлы" },
+    pocket: { title: "Pocket Mortys", search: "Поиск по имени или номеру…", searchAria: "Поиск по Pocket Mortys", caught: "Пойман", missing: "Отсутствует", noResults: "Ничего не найдено.", loading: "Загрузка списка…", choose: "Выберите Морти из списка.", type: "Тип", rarity: "Редкость", baseXp: "Базовый XP", baseHp: "Базовый HP", baseAtk: "Базовый ATK", baseDef: "Базовый DEF", baseSpd: "Базовый SPD", statTotal: "Всего характеристик", toEvolve: "До эволюции", badgesRequired: "Требуется значков", whereFound: "Где найден", clubRickPools: "Измерения Клуба Рика", ownedRemove: "Убрать из пойманных", ownedAdd: "Отметить пойманным", loadError: "Не удалось загрузить данные: ", description: "О Pocket Mortys. Мобильная ролевая игра по мультсериалу «Рик и Морти», построенная вокруг коллекционирования и сражений существ. Вышла 13 января 2016 года." },
+  },
+  en: {
+    common: { saveChanges: "Save changes", unsaved: "Unsaved changes", saving: "Saving…", retrySave: "Retry save", saveFailed: "Could not save. Try again.", gamesAvailable: "{found} of {total} games", gamesUnavailable: "Game catalog is temporarily unavailable.", gameSaveFailed: "Could not save the game Pokedex:", gameDataError: "Could not load GameDex.json:" },
+    filters: { scaleLabel: "Card size", scaleLarge: "Large", scaleMedium: "Medium", scaleSmall: "Small", packLogo: "Pack logo" },
+    settings: { accentTitle: "Accent color", accentDesc: "Interface and highlight color. Red is the default.", accentBlue: "Blue", accentPurple: "Purple", accentTeal: "Teal", accentAmber: "Amber", accentPink: "Pink" },
+    pokedex: { search: "Search Pokemon…", list: "Pokemon list", card: "Pokemon card", regions: "Regions", generationOrder: "Generation order", games: "Available in games", checking: "Checking availability…", loadingGames: "Loading game catalog…", nationalNumber: "National number", region: "Region", cards: "TCG Pocket cards", stats: "Stats", moves: "Moves", evolution: "Evolution", knownMoves: "Known moves", evolutionChain: "Evolution chain", previousCards: "Previous cards", nextCards: "Next cards", dataNote: "Height, weight, and base stats will appear here after verified Pokedex data is loaded.", movesNote: "A verified move list for this Pokemon is not connected to the local project data yet.", evolutionNote: "Evolution data requires a separate source. No assumed relationships will be inserted here." },
+    profile: { chooseAvatar: "Choose avatar", close: "Close", avatarSearch: "Search Pokemon" },
+    docs: { status: "PokeTracker Docs: READY", files: "Project Files", explorer: "Explorer", txtTabs: "TXT tabs", openFiles: "Open files" },
+    pocket: { title: "Pocket Mortys", search: "Search by name or number…", searchAria: "Search Pocket Mortys", caught: "Caught", missing: "Missing", noResults: "Nothing found.", loading: "Loading list…", choose: "Choose a Morty from the list.", type: "Type", rarity: "Rarity", baseXp: "Base XP", baseHp: "Base HP", baseAtk: "Base ATK", baseDef: "Base DEF", baseSpd: "Base SPD", statTotal: "Stat Total", toEvolve: "# to Evolve", badgesRequired: "Badges Required", whereFound: "Where Found", clubRickPools: "Club Rick Dimension Pools", ownedRemove: "Remove from caught", ownedAdd: "Mark as caught", loadError: "Could not load data: ", description: "About Pocket Mortys. A mobile RPG based on Rick and Morty, focused on collecting and battling creatures. Released January 13, 2016." },
+  },
+  de: { common: { saveChanges: "Änderungen speichern", unsaved: "Ungespeicherte Änderungen", saving: "Speichern…", retrySave: "Erneut speichern", saveFailed: "Speichern fehlgeschlagen. Erneut versuchen." }, filters: { scaleLabel: "Kartengröße", scaleLarge: "Groß", scaleMedium: "Mittel", scaleSmall: "Klein", packLogo: "Pack-Logo" }, settings: { accentTitle: "Akzentfarbe", accentDesc: "Farbe für Oberfläche und Hervorhebungen. Rot ist Standard.", accentBlue: "Blau", accentPurple: "Violett", accentTeal: "Türkis", accentAmber: "Bernstein", accentPink: "Rosa" }, pokedex: { search: "Pokémon suchen…", list: "Pokémon-Liste", card: "Pokémon-Karte", regions: "Regionen", generationOrder: "Reihenfolge der Generationen", games: "In Spielen verfügbar", checking: "Verfügbarkeit wird geprüft…", loadingGames: "Spielekatalog wird geladen…", nationalNumber: "Nationaldex-Nummer", region: "Region", cards: "TCG-Pocket-Karten", stats: "Werte", moves: "Attacken", evolution: "Entwicklung", knownMoves: "Bekannte Attacken", evolutionChain: "Entwicklungskette", previousCards: "Vorherige Karten", nextCards: "Nächste Karten", dataNote: "Größe, Gewicht und Basiswerte erscheinen nach dem Laden geprüfter Pokédex-Daten.", movesNote: "Eine geprüfte Attackenliste ist noch nicht mit den lokalen Projektdaten verbunden.", evolutionNote: "Entwicklungsdaten benötigen eine separate Quelle. Es werden keine Annahmen eingefügt." }, profile: { chooseAvatar: "Avatar auswählen", close: "Schließen", avatarSearch: "Pokémon suchen" }, pocket: { search: "Nach Name oder Nummer suchen…", searchAria: "Pocket-Mortys durchsuchen", caught: "Gefangen", missing: "Fehlt", noResults: "Nichts gefunden.", type: "Typ", rarity: "Seltenheit", ownedRemove: "Aus gefangen entfernen", ownedAdd: "Als gefangen markieren", loadError: "Daten konnten nicht geladen werden: ", description: "Über Pocket Mortys. Ein mobiles RPG zu Rick and Morty über das Sammeln und Kämpfen mit Kreaturen. Erschienen am 13. Januar 2016." } },
+  cs: { common: { saveChanges: "Uložit změny", unsaved: "Neuložené změny", saving: "Ukládání…", retrySave: "Zkusit uložit znovu", saveFailed: "Uložení se nezdařilo. Zkuste to znovu." }, filters: { scaleLabel: "Velikost karet", scaleLarge: "Velké", scaleMedium: "Střední", scaleSmall: "Malé", packLogo: "Logo balíčku" }, settings: { accentTitle: "Barva zvýraznění", accentDesc: "Barva rozhraní a zvýraznění. Výchozí je červená.", accentBlue: "Modrá", accentPurple: "Fialová", accentTeal: "Tyrkysová", accentAmber: "Jantarová", accentPink: "Růžová" }, pokedex: { search: "Hledat Pokémony…", list: "Seznam Pokémonů", card: "Karta Pokémonů", regions: "Regiony", generationOrder: "Pořadí generací", games: "Dostupné ve hrách", checking: "Ověřování dostupnosti…", loadingGames: "Načítání katalogu her…", nationalNumber: "Národní číslo", region: "Region", cards: "Karty TCG Pocket", stats: "Statistiky", moves: "Pohyby", evolution: "Vývoj", knownMoves: "Známé pohyby", evolutionChain: "Vývojová linie", previousCards: "Předchozí karty", nextCards: "Další karty", dataNote: "Výška, hmotnost a základní statistiky se zobrazí po načtení ověřených dat Pokédexu.", movesNote: "Ověřený seznam pohybů zatím není připojen k místním datům projektu.", evolutionNote: "Vývojová data vyžadují samostatný zdroj. Nebudou doplňovány domnělé vztahy." }, profile: { chooseAvatar: "Vybrat avatara", close: "Zavřít", avatarSearch: "Hledat Pokémony" }, pocket: { search: "Hledat podle jména nebo čísla…", searchAria: "Hledat v Pocket Mortys", caught: "Chycen", missing: "Chybí", noResults: "Nic nenalezeno.", type: "Typ", rarity: "Vzácnost", ownedRemove: "Odebrat z chycených", ownedAdd: "Označit jako chyceného", loadError: "Data se nepodařilo načíst: ", description: "O Pocket Mortys. Mobilní RPG podle Ricka a Mortyho zaměřené na sbírání a souboje tvorů. Vyšlo 13. ledna 2016." } },
+  "zh-Hans": { common: { saveChanges: "保存更改", unsaved: "有未保存的更改", saving: "正在保存…", retrySave: "重试保存", saveFailed: "保存失败，请重试。" }, filters: { scaleLabel: "卡牌大小", scaleLarge: "大", scaleMedium: "中", scaleSmall: "小", packLogo: "卡包标志" }, settings: { accentTitle: "强调色", accentDesc: "界面和高亮颜色。默认使用红色。", accentBlue: "蓝色", accentPurple: "紫色", accentTeal: "青色", accentAmber: "琥珀色", accentPink: "粉色" }, pokedex: { search: "搜索宝可梦…", list: "宝可梦列表", card: "宝可梦卡片", regions: "地区", generationOrder: "按世代排序", games: "游戏中可用", checking: "正在检查可用性…", loadingGames: "正在加载游戏目录…", nationalNumber: "全国图鉴编号", region: "地区", cards: "TCG Pocket 卡片", stats: "属性", moves: "招式", evolution: "进化", knownMoves: "已知招式", evolutionChain: "进化链", previousCards: "上一组卡片", nextCards: "下一组卡片", dataNote: "加载经过验证的图鉴数据后，这里会显示身高、体重和基础属性。", movesNote: "该宝可梦的可靠招式列表尚未连接到项目本地数据。", evolutionNote: "进化数据需要单独的数据源，这里不会填入推测关系。" }, profile: { chooseAvatar: "选择头像", close: "关闭", avatarSearch: "搜索宝可梦" }, pocket: { search: "按名称或编号搜索…", searchAria: "搜索 Pocket Mortys", caught: "已捕获", missing: "未捕获", noResults: "未找到结果。", type: "类型", rarity: "稀有度", ownedRemove: "从已捕获中移除", ownedAdd: "标记为已捕获", loadError: "无法加载数据：", description: "关于 Pocket Mortys。一款基于《瑞克和莫蒂》的移动角色扮演游戏，围绕收集和战斗展开。于 2016 年 1 月 13 日发布。" } },
+  ja: { common: { saveChanges: "変更を保存", unsaved: "未保存の変更", saving: "保存中…", retrySave: "再保存", saveFailed: "保存できませんでした。もう一度お試しください。" }, filters: { scaleLabel: "カードサイズ", scaleLarge: "大", scaleMedium: "中", scaleSmall: "小", packLogo: "パックロゴ" }, settings: { accentTitle: "アクセントカラー", accentDesc: "画面と強調表示の色。デフォルトは赤です。", accentBlue: "青", accentPurple: "紫", accentTeal: "ターコイズ", accentAmber: "アンバー", accentPink: "ピンク" }, pokedex: { search: "ポケモンを検索…", list: "ポケモン一覧", card: "ポケモンカード", regions: "地方", generationOrder: "世代順", games: "ゲームで登場", checking: "利用状況を確認中…", loadingGames: "ゲームカタログを読み込み中…", nationalNumber: "全国図鑑番号", region: "地方", cards: "TCG Pocketカード", stats: "ステータス", moves: "わざ", evolution: "進化", knownMoves: "確認済みのわざ", evolutionChain: "進化系統", previousCards: "前のカード", nextCards: "次のカード", dataNote: "確認済みの図鑑データを読み込むと、身長・体重・基礎ステータスが表示されます。", movesNote: "このポケモンの確認済みわざ一覧は、まだプロジェクトのローカルデータに接続されていません。", evolutionNote: "進化データには別の情報源が必要です。推測による関係は表示しません。" }, profile: { chooseAvatar: "アバターを選択", close: "閉じる", avatarSearch: "ポケモンを検索" }, pocket: { search: "名前または番号で検索…", searchAria: "Pocket Mortysを検索", caught: "捕獲済み", missing: "未捕獲", noResults: "見つかりません。", type: "タイプ", rarity: "レア度", ownedRemove: "捕獲済みから削除", ownedAdd: "捕獲済みにする", loadError: "データを読み込めませんでした：", description: "Pocket Mortysについて。『リック・アンド・モーティ』を題材にした、クリーチャーを集めて戦うモバイルRPGです。2016年1月13日リリース。" } },
+  fr: { common: { saveChanges: "Enregistrer les modifications", unsaved: "Modifications non enregistrées", saving: "Enregistrement…", retrySave: "Réessayer", saveFailed: "Échec de l’enregistrement. Réessayez." }, filters: { scaleLabel: "Taille des cartes", scaleLarge: "Grandes", scaleMedium: "Moyennes", scaleSmall: "Petites", packLogo: "Logo du pack" }, settings: { accentTitle: "Couleur d’accent", accentDesc: "Couleur de l’interface et des éléments mis en avant. Rouge par défaut.", accentBlue: "Bleu", accentPurple: "Violet", accentTeal: "Turquoise", accentAmber: "Ambre", accentPink: "Rose" }, pokedex: { search: "Rechercher un Pokémon…", list: "Liste des Pokémon", card: "Fiche du Pokémon", regions: "Régions", generationOrder: "Ordre des générations", games: "Disponible dans les jeux", checking: "Vérification de la disponibilité…", loadingGames: "Chargement du catalogue des jeux…", nationalNumber: "Numéro national", region: "Région", cards: "Cartes TCG Pocket", stats: "Statistiques", moves: "Attaques", evolution: "Évolution", knownMoves: "Attaques connues", evolutionChain: "Chaîne d’évolution", previousCards: "Cartes précédentes", nextCards: "Cartes suivantes", dataNote: "La taille, le poids et les statistiques de base apparaîtront après le chargement de données Pokédex vérifiées.", movesNote: "La liste vérifiée des attaques n’est pas encore connectée aux données locales du projet.", evolutionNote: "Les données d’évolution nécessitent une source distincte. Aucun lien supposé ne sera ajouté." }, profile: { chooseAvatar: "Choisir un avatar", close: "Fermer", avatarSearch: "Rechercher un Pokémon" }, pocket: { search: "Rechercher par nom ou numéro…", searchAria: "Rechercher dans Pocket Mortys", caught: "Attrapé", missing: "Manquant", noResults: "Aucun résultat.", type: "Type", rarity: "Rareté", ownedRemove: "Retirer des attrapés", ownedAdd: "Marquer comme attrapé", loadError: "Impossible de charger les données : ", description: "À propos de Pocket Mortys. Un RPG mobile inspiré de Rick et Morty, consacré à la collection et aux combats de créatures. Sorti le 13 janvier 2016." } },
+  pt: { common: { saveChanges: "Guardar alterações", unsaved: "Alterações não guardadas", saving: "A guardar…", retrySave: "Tentar guardar novamente", saveFailed: "Não foi possível guardar. Tente novamente." }, filters: { scaleLabel: "Tamanho das cartas", scaleLarge: "Grandes", scaleMedium: "Médias", scaleSmall: "Pequenas", packLogo: "Logótipo do pacote" }, settings: { accentTitle: "Cor de destaque", accentDesc: "Cor da interface e dos destaques. Vermelho é o padrão.", accentBlue: "Azul", accentPurple: "Roxo", accentTeal: "Turquesa", accentAmber: "Âmbar", accentPink: "Rosa" }, pokedex: { search: "Pesquisar Pokémon…", list: "Lista de Pokémon", card: "Ficha do Pokémon", regions: "Regiões", generationOrder: "Ordem das gerações", games: "Disponível nos jogos", checking: "A verificar disponibilidade…", loadingGames: "A carregar catálogo de jogos…", nationalNumber: "Número nacional", region: "Região", cards: "Cartas TCG Pocket", stats: "Estatísticas", moves: "Movimentos", evolution: "Evolução", knownMoves: "Movimentos conhecidos", evolutionChain: "Cadeia evolutiva", previousCards: "Cartas anteriores", nextCards: "Cartas seguintes", dataNote: "Altura, peso e estatísticas base serão mostrados após carregar dados Pokédex verificados.", movesNote: "A lista verificada de movimentos ainda não está ligada aos dados locais do projeto.", evolutionNote: "Os dados de evolução precisam de uma fonte separada. Não serão inseridas relações presumidas." }, profile: { chooseAvatar: "Escolher avatar", close: "Fechar", avatarSearch: "Pesquisar Pokémon" }, pocket: { search: "Pesquisar por nome ou número…", searchAria: "Pesquisar Pocket Mortys", caught: "Apanhado", missing: "Em falta", noResults: "Nada encontrado.", type: "Tipo", rarity: "Raridade", ownedRemove: "Remover dos apanhados", ownedAdd: "Marcar como apanhado", loadError: "Não foi possível carregar os dados: ", description: "Sobre Pocket Mortys. Um RPG móvel baseado em Rick e Morty, focado na coleção e em batalhas de criaturas. Lançado em 13 de janeiro de 2016." } },
+  es: { common: { saveChanges: "Guardar cambios", unsaved: "Cambios sin guardar", saving: "Guardando…", retrySave: "Reintentar guardado", saveFailed: "No se pudo guardar. Inténtalo de nuevo." }, filters: { scaleLabel: "Tamaño de cartas", scaleLarge: "Grandes", scaleMedium: "Medianas", scaleSmall: "Pequeñas", packLogo: "Logotipo del sobre" }, settings: { accentTitle: "Color de acento", accentDesc: "Color de la interfaz y los resaltados. El rojo es el predeterminado.", accentBlue: "Azul", accentPurple: "Morado", accentTeal: "Turquesa", accentAmber: "Ámbar", accentPink: "Rosa" }, pokedex: { search: "Buscar Pokémon…", list: "Lista de Pokémon", card: "Ficha del Pokémon", regions: "Regiones", generationOrder: "Orden de generaciones", games: "Disponible en juegos", checking: "Comprobando disponibilidad…", loadingGames: "Cargando catálogo de juegos…", nationalNumber: "Número nacional", region: "Región", cards: "Cartas de TCG Pocket", stats: "Estadísticas", moves: "Movimientos", evolution: "Evolución", knownMoves: "Movimientos conocidos", evolutionChain: "Cadena evolutiva", previousCards: "Cartas anteriores", nextCards: "Cartas siguientes", dataNote: "La altura, el peso y las estadísticas base aparecerán al cargar datos verificados de la Pokédex.", movesNote: "La lista verificada de movimientos aún no está conectada a los datos locales del proyecto.", evolutionNote: "Los datos de evolución requieren otra fuente. No se añadirán relaciones supuestas." }, profile: { chooseAvatar: "Elegir avatar", close: "Cerrar", avatarSearch: "Buscar Pokémon" }, pocket: { search: "Buscar por nombre o número…", searchAria: "Buscar en Pocket Mortys", caught: "Atrapado", missing: "Falta", noResults: "No se encontraron resultados.", type: "Tipo", rarity: "Rareza", ownedRemove: "Quitar de atrapados", ownedAdd: "Marcar como atrapado", loadError: "No se pudieron cargar los datos: ", description: "Sobre Pocket Mortys. Un RPG móvil basado en Rick y Morty, centrado en coleccionar y combatir criaturas. Se lanzó el 13 de enero de 2016." } },
+  it: { common: { saveChanges: "Salva modifiche", unsaved: "Modifiche non salvate", saving: "Salvataggio…", retrySave: "Riprova salvataggio", saveFailed: "Salvataggio non riuscito. Riprova." }, filters: { scaleLabel: "Dimensione carte", scaleLarge: "Grandi", scaleMedium: "Medie", scaleSmall: "Piccole", packLogo: "Logo del pacchetto" }, settings: { accentTitle: "Colore accento", accentDesc: "Colore dell’interfaccia e delle evidenziazioni. Il rosso è predefinito.", accentBlue: "Blu", accentPurple: "Viola", accentTeal: "Turchese", accentAmber: "Ambra", accentPink: "Rosa" }, pokedex: { search: "Cerca Pokémon…", list: "Elenco Pokémon", card: "Scheda Pokémon", regions: "Regioni", generationOrder: "Ordine delle generazioni", games: "Disponibile nei giochi", checking: "Verifica disponibilità…", loadingGames: "Caricamento catalogo giochi…", nationalNumber: "Numero nazionale", region: "Regione", cards: "Carte TCG Pocket", stats: "Statistiche", moves: "Mosse", evolution: "Evoluzione", knownMoves: "Mosse conosciute", evolutionChain: "Catena evolutiva", previousCards: "Carte precedenti", nextCards: "Carte successive", dataNote: "Altezza, peso e statistiche base saranno mostrati dopo il caricamento di dati Pokédex verificati.", movesNote: "L’elenco verificato delle mosse non è ancora collegato ai dati locali del progetto.", evolutionNote: "I dati evolutivi richiedono una fonte separata. Non verranno inserite relazioni ipotetiche." }, profile: { chooseAvatar: "Scegli avatar", close: "Chiudi", avatarSearch: "Cerca Pokémon" }, pocket: { search: "Cerca per nome o numero…", searchAria: "Cerca in Pocket Mortys", caught: "Catturato", missing: "Mancante", noResults: "Nessun risultato.", type: "Tipo", rarity: "Rarità", ownedRemove: "Rimuovi dai catturati", ownedAdd: "Segna come catturato", loadError: "Impossibile caricare i dati: ", description: "Informazioni su Pocket Mortys. Un RPG mobile basato su Rick e Morty, incentrato sulla raccolta e sulle battaglie tra creature. Uscito il 13 gennaio 2016." } },
+  tr: { common: { saveChanges: "Değişiklikleri kaydet", unsaved: "Kaydedilmemiş değişiklikler", saving: "Kaydediliyor…", retrySave: "Kaydetmeyi yeniden dene", saveFailed: "Kaydedilemedi. Tekrar deneyin." }, filters: { scaleLabel: "Kart boyutu", scaleLarge: "Büyük", scaleMedium: "Orta", scaleSmall: "Küçük", packLogo: "Paket logosu" }, settings: { accentTitle: "Vurgu rengi", accentDesc: "Arayüz ve vurgu rengi. Varsayılan kırmızıdır.", accentBlue: "Mavi", accentPurple: "Mor", accentTeal: "Turkuaz", accentAmber: "Amber", accentPink: "Pembe" }, pokedex: { search: "Pokémon ara…", list: "Pokémon listesi", card: "Pokémon kartı", regions: "Bölgeler", generationOrder: "Nesil sırası", games: "Oyunlarda mevcut", checking: "Kullanılabilirlik kontrol ediliyor…", loadingGames: "Oyun kataloğu yükleniyor…", nationalNumber: "Ulusal numara", region: "Bölge", cards: "TCG Pocket kartları", stats: "İstatistikler", moves: "Hareketler", evolution: "Evrim", knownMoves: "Bilinen hareketler", evolutionChain: "Evrim zinciri", previousCards: "Önceki kartlar", nextCards: "Sonraki kartlar", dataNote: "Boy, kilo ve temel istatistikler doğrulanmış Pokédex verileri yüklendikten sonra gösterilir.", movesNote: "Doğrulanmış hareket listesi henüz projenin yerel verilerine bağlı değil.", evolutionNote: "Evrim verileri ayrı bir kaynak gerektirir. Varsayılan ilişkiler eklenmeyecek." }, profile: { chooseAvatar: "Avatar seç", close: "Kapat", avatarSearch: "Pokémon ara" }, pocket: { search: "Ada veya numaraya göre ara…", searchAria: "Pocket Mortys ara", caught: "Yakalandı", missing: "Eksik", noResults: "Sonuç bulunamadı.", type: "Tür", rarity: "Nadirlik", ownedRemove: "Yakalananlardan çıkar", ownedAdd: "Yakalandı olarak işaretle", loadError: "Veriler yüklenemedi: ", description: "Pocket Mortys hakkında. Rick and Morty tabanlı, yaratıkları toplama ve savaştırmaya odaklanan bir mobil RPG. 13 Ocak 2016'da yayımlandı." } },
+};
+
 export function getCurrentLanguage() {
   return state.ui.language || DEFAULT_LANGUAGE;
 }
@@ -1849,7 +1921,11 @@ export function t(key, params) {
   const lang = getCurrentLanguage();
   const dict = I18N[lang] || I18N[DEFAULT_LANGUAGE];
   const fallback = I18N[DEFAULT_LANGUAGE];
+  const extra = EXTRA_I18N[lang] || EXTRA_I18N.en;
   const value = key.split(".").reduce((acc, part) => acc && acc[part], dict)
+    ?? key.split(".").reduce((acc, part) => acc && acc[part], extra)
+    ?? key.split(".").reduce((acc, part) => acc && acc[part], EXTRA_I18N.en)
+    ?? key.split(".").reduce((acc, part) => acc && acc[part], I18N.en)
     ?? key.split(".").reduce((acc, part) => acc && acc[part], fallback);
   if (typeof value === "function") {
     return value(params || {});

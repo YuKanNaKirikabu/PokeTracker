@@ -1,4 +1,4 @@
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { setBrandSubtitle, setPageTitle, setPokedexSearchVisible } from "../core/ui.js";
 import { attachCardEvents } from "../features/cards.js";
@@ -47,15 +47,15 @@ export function renderPokedex() {
       <span class="pokedex-item-chevron" aria-hidden="true">›</span>
     </button>`;
   }).join("");
-  const regionNames = ["Канто","Джото","Хоэнн","Синно","Юнова","Калос","Алола","Галар","Палдея"];
+  const regionNames = ["Kanto","Johto","Hoenn","Sinnoh","Unova","Kalos","Alola","Galar","Paldea"];
   app.innerHTML = `<section class="pokedex-page">
     
     <div class="pokedex-workspace">
-      <aside class="pokedex-sidebar"><div class="pokedex-sidebar-head"><label class="pokedex-inline-search"><span aria-hidden="true">⌕</span><input id="pokedexListSearch" type="search" placeholder="Поиск покемонов…" autocomplete="off" aria-label="Поиск покемонов"></label></div><div class="pokedex-list" role="listbox" aria-label="Список покемонов">${listHtml}</div></aside>
-      <section class="pokedex-center" aria-label="Карточка покемона"><div id="pokedexDetailMount" class="pokedex-detail"><p class="pokedex-empty">${t("common.loading")}</p></div></section>
+      <aside class="pokedex-sidebar"><div class="pokedex-sidebar-head"><label class="pokedex-inline-search"><span aria-hidden="true">⌕</span><input id="pokedexListSearch" type="search" placeholder="${t("pokedex.search")}" autocomplete="off" aria-label="${t("pokedex.search")}"></label></div><div class="pokedex-list" role="listbox" aria-label="${t("pokedex.list")}">${listHtml}</div></aside>
+      <section class="pokedex-center" aria-label="${t("pokedex.card")}"><div id="pokedexDetailMount" class="pokedex-detail"><p class="pokedex-empty">${t("common.loading")}</p></div></section>
       <aside class="pokedex-world">
-        <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◎</span><div><h2>Регионы</h2><p>Порядок по поколениям</p></div></div><div class="pokedex-region-grid" id="pokedexRegions">${regionNames.map((name,i)=>`<div class="pokedex-region-chip" data-region="${name}" data-order="${i}"><span class="region-index">${String(i+1).padStart(2,"0")}</span><span>${name}</span></div>`).join("")}</div></section>
-        <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◉</span><div><h2>Доступно в играх</h2><p id="pokedexGamesCount">Проверка доступности…</p></div></div><div class="pokedex-games-grid" id="pokedexGames"><div class="pokedex-loading">Загружаем каталог игр…</div></div></section>
+        <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◎</span><div><h2>${t("pokedex.regions")}</h2><p>${t("pokedex.generationOrder")}</p></div></div><div class="pokedex-region-grid" id="pokedexRegions">${regionNames.map((name,i)=>`<div class="pokedex-region-chip" data-region="${name}" data-order="${i}"><span class="region-index">${String(i+1).padStart(2,"0")}</span><span>${name}</span></div>`).join("")}</div></section>
+        <section class="pokedex-world-panel"><div class="pokedex-panel-heading"><span class="panel-symbol">◉</span><div><h2>${t("pokedex.games")}</h2><p id="pokedexGamesCount">${t("pokedex.checking")}</p></div></div><div class="pokedex-games-grid" id="pokedexGames"><div class="pokedex-loading">${t("pokedex.loadingGames")}</div></div></section>
       </aside>
     </div>
   </section>`;
@@ -129,7 +129,7 @@ async function renderPokedexWorld(entry, regionNames) {
         if (!exists) continue;
         const title = String(dex.title || "").toLowerCase();
         const found = regionOrder.find(region => title.includes(region.ru.toLowerCase()) || title.includes(region.en));
-        if (found) availableRegions.add(found.ru);
+        if (found) availableRegions.add(found.en);
       }
     }
     regions.querySelectorAll(".pokedex-region-chip").forEach(chip => {
@@ -141,9 +141,9 @@ async function renderPokedexWorld(entry, regionNames) {
     if (!document.getElementById("pokedexGames")) return;
     gamesRoot.innerHTML = games.map(game => `<div class="pokedex-game-chip ${game.available?"available":"unavailable"}" title="${game.title}"><span class="game-chip-icons">${(game.icons||[]).slice(0,2).map(icon=>`<img src="${icon.src}" alt="" loading="lazy">`).join("")}</span><span class="game-chip-name">${game.title}</span></div>`).join("");
     const count = document.getElementById("pokedexGamesCount");
-    if (count) count.textContent = `${games.filter(game=>game.available).length} из ${games.length} игр`;
+    if (count) count.textContent = t("common.gamesAvailable", { found: games.filter(game=>game.available).length, total: games.length });
   } catch {
-    gamesRoot.innerHTML = `<p class="pokedex-loading">Каталог игр временно недоступен.</p>`;
+    gamesRoot.innerHTML = `<p class="pokedex-loading">${t("common.gamesUnavailable")}</p>`;
   }
 }
 

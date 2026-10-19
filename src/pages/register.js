@@ -1,5 +1,5 @@
 import { authenticate } from "../core/auth.js";
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 
 export function renderRegister() {
   document.body.classList.add("register-page");
@@ -51,7 +51,7 @@ export function renderRegister() {
         await loadDataFromFile();
       });
       const { normalizeUiSettings, applyTheme } = await import("../core/theme.js");
-      const { applyTranslations } = await import("../core/i18n.js");
+      const { applyTranslations } = await import("../core/i18n.js?v=20261019-4");
       normalizeUiSettings();
       applyTheme();
       applyTranslations();

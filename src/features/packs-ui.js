@@ -1,4 +1,4 @@
-import { formatCardsCount } from "../core/i18n.js";
+import { formatCardsCount } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { getPackTiles } from "../core/packs.js";
 

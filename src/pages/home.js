@@ -1,5 +1,5 @@
-﻿import { compilerPages } from "../config/compiler-pages.js";
-import { t } from "../core/i18n.js";
+import { compilerPages } from "../config/compiler-pages.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { mountCompilerWidget } from "../widgets/compiler-widget/compiler-widget.js";
 
 export function renderHome() {
@@ -43,9 +43,12 @@ export function renderHome() {
   const compilerContainer = app.querySelector("[data-compiler-widget]");
   if (compilerContainer) {
     mountCompilerWidget(compilerContainer, compilerPages, {
-      statusText: "PokeTracker Docs: READY",
-      sidebarTitle: "Project Files",
-      initialPageId: "project",
+    statusText: t("docs.status"),
+    sidebarTitle: t("docs.files"),
+    explorerLabel: t("docs.explorer"),
+    txtTabsLabel: t("docs.txtTabs"),
+    openFilesLabel: t("docs.openFiles"),
+    initialPageId: "project",
     });
   }
 }

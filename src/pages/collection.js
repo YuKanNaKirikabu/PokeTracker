@@ -1,12 +1,10 @@
-import { t } from "../core/i18n.js";
-import { saveDataToFile } from "../core/storage.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { getCardsForPack, getPackPrimaryMedia, getTopLevelPacks } from "../core/packs.js";
 import { attachCardImageFallbacks, formatCardId, renderCardGrid, toggleOwned } from "../features/cards.js";
 
 const collectionPendingRemoved = new Set();
 const collectionOpenPacks = new Set();
-let collectionSaveRefreshHandler = null;
 
 function getOrderedPacks() {
   return getTopLevelPacks();
@@ -24,7 +22,7 @@ function renderGroupedByPacks(cards) {
         <div class="pack-block pack-accordion ${isOpen ? "is-open" : ""}" data-pack-block="${pack.id}">
           <button class="pack-accordion-header" data-pack-toggle="${pack.id}" type="button" aria-expanded="${isOpen ? "true" : "false"}">
             <span class="pack-accordion-logo-wrap">${logo ? '<img src="' + logo + '" alt="' + display + '" loading="lazy" decoding="async" />' : ""}</span>
-            <span class="pack-accordion-heading"><span class="pack-accordion-kicker">PACK COLLECTION</span><span class="pack-accordion-title">${display}</span><span class="pack-accordion-count">${packCards.length} карт</span></span>
+            <span class="pack-accordion-heading">                        <span class="pack-accordion-kicker">${t("collection.title")}</span><span class="pack-accordion-title">${display}</span><span class="pack-accordion-count">${t("common.cardsCount",{count:packCards.length})}</span></span>
             <span class="pack-accordion-chevron" aria-hidden="true">▾</span>
           </button>
           <div class="pack-accordion-divider"></div>
@@ -119,50 +117,9 @@ export function renderCollection() {
         <div class="toggle ${groupMode === "packs" ? "active" : ""}" data-mode="packs">${t("collection.togglePacks")}</div>
         <div class="toggle ${groupMode === "all" ? "active" : ""}" data-mode="all">${t("collection.toggleAll")}</div>
       </div>
-      <div class="collection-save-row"><button type="button" class="game-pokedex-save-btn left collection-save-btn" id="collectionSaveBtn" disabled>Сохранить изменения</button><span class="collection-save-status" id="collectionSaveStatus" aria-live="polite"></span></div>
       ${content || `<div class="placeholder">${t("collection.empty")}</div>`}
     </section>
   `;
-
-  const saveButton = app.querySelector("#collectionSaveBtn");
-  const saveStatus = app.querySelector("#collectionSaveStatus");
-  const refreshSaveButton = () => {
-    const dirty = Boolean(state.ui.cardsDirty);
-    if (saveButton) {
-      saveButton.disabled = !dirty || !state.user;
-      saveButton.classList.toggle("is-dirty", dirty);
-    }
-    if (saveStatus) saveStatus.textContent = dirty ? "Есть несохранённые изменения" : "";
-  };
-  refreshSaveButton();
-  saveButton?.addEventListener("click", async () => {
-    if (!state.user) {
-      location.hash = "#/register?mode=login";
-      return;
-    }
-    saveButton.disabled = true;
-    saveButton.textContent = "Сохранение…";
-    if (saveStatus) saveStatus.textContent = "";
-    try {
-      await saveDataToFile();
-      state.ui.cardsDirty = false;
-      collectionPendingRemoved.clear();
-      window.dispatchEvent(new CustomEvent("cardsdatasaved"));
-      renderCollection();
-    } catch (error) {
-      console.error("Не удалось сохранить коллекцию:", error);
-      if (saveStatus) saveStatus.textContent = "Не удалось сохранить. Повтори попытку.";
-      saveButton.disabled = false;
-      saveButton.textContent = "Повторить сохранение";
-    }
-  });
-  if (collectionSaveRefreshHandler) {
-    window.removeEventListener("cardsdatachanged", collectionSaveRefreshHandler);
-    window.removeEventListener("cardsdatasaved", collectionSaveRefreshHandler);
-  }
-  collectionSaveRefreshHandler = refreshSaveButton;
-  window.addEventListener("cardsdatachanged", collectionSaveRefreshHandler);
-  window.addEventListener("cardsdatasaved", collectionSaveRefreshHandler);
 
   document.querySelectorAll(".toggle").forEach((toggle) => {
     toggle.addEventListener("click", () => {

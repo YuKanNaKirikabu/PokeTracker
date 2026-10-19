@@ -1,7 +1,7 @@
 import {
     CARD_TYPE_FILTERS,
 } from "../config/packs.js";
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import {
     formatCardCode,
@@ -118,7 +118,7 @@ export function applyFilters(cards) {
 }
 
 export function renderFilters(extraGroups = "", options = {}) {
-  const { showApplyButton = false, showSearch = true, showCollectionSave = false, leadingMedia = "" } = options;
+  const { showApplyButton = false, showSearch = true, leadingMedia = "" } = options;
   const arrows = {
     asc: "▲",
     desc: "▼",
@@ -188,7 +188,6 @@ export function renderFilters(extraGroups = "", options = {}) {
         </div>
       </div>
       <div class="filter-actions">
-        ${showCollectionSave ? `<button class="toggle-btn filter-collection-save" id="collectionSaveBtn" type="button" disabled>${t("gamePokedex.save")}</button><span class="collection-save-status" id="collectionSaveStatus" aria-live="polite"></span>` : ""}
         ${showApplyButton ? `<button class="toggle-btn filter-apply" id="filtersApply" type="button">${t("common.apply")}</button>` : ""}
         <button class="toggle-btn filter-reset" id="filtersReset" type="button">${t("common.reset")}</button>
       </div>

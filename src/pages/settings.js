@@ -1,17 +1,9 @@
-import { applyTranslations, getCurrentLanguage, LANGUAGE_OPTIONS, t } from "../core/i18n.js";
+import { applyTranslations, getCurrentLanguage, LANGUAGE_OPTIONS, t } from "../core/i18n.js?v=20261019-4";
 import { DEFAULT_LANGUAGE, DEFAULT_THEME, state } from "../core/state.js";
 import { saveDataToFile, saveSettingsToFile } from "../core/storage.js";
 import { applyTheme, normalizeUiSettings } from "../core/theme.js";
 import { setPageTitle } from "../core/ui.js";
-import { renderRoute } from "../router.js";
-
-function setSettingsDirty(isDirty) {
-  state.ui.settingsDirty = isDirty;
-  const button = document.getElementById("settingsSaveBtn");
-  if (!button) return;
-  button.disabled = !isDirty || !state.user;
-  button.classList.toggle("is-dirty", isDirty);
-}
+import { renderRoute } from "../router.js?v=20261019-4";
 
 export function renderSettings() {
   const app = document.getElementById("app");
@@ -24,7 +16,8 @@ export function renderSettings() {
   const themeLightClass = theme === "light" ? "primary" : "secondary";
   const language = getCurrentLanguage();
   const accentColor = state.ui.accentColor || "#ed2340";
-  const accentOptions = [{value:"#ed2340",label:"Pokéball"},{value:"#4f8cff",label:"Синий"},{value:"#8b5cf6",label:"Фиолетовый"},{value:"#16a085",label:"Бирюзовый"},{value:"#f59e0b",label:"Янтарный"},{value:"#ec4899",label:"Розовый"}];
+  const redLabels = { ru: "Красный", en: "Red", de: "Rot", cs: "Červená", "zh-Hans": "红色", ja: "赤", fr: "Rouge", pt: "Vermelho", "es-MX": "Rojo", es: "Rojo", it: "Rosso", tr: "Kırmızı" };
+  const accentOptions = [{value:"#ed2340",label:redLabels[language] || "Red"},{value:"#4f8cff",label:t("settings.accentBlue")},{value:"#8b5cf6",label:t("settings.accentPurple")},{value:"#16a085",label:t("settings.accentTeal")},{value:"#f59e0b",label:t("settings.accentAmber")},{value:"#ec4899",label:t("settings.accentPink")}];
   app.innerHTML = `
     <div class="settings-container">
       <div class="settings-section">
@@ -37,9 +30,9 @@ export function renderSettings() {
       </div>
 
       <div class="settings-section settings-accent-section">
-        <h2>Акцентный цвет</h2>
+        <h2>${t("settings.accentTitle")}</h2>
         <div class="accent-options">${accentOptions.map(option => `<button type="button" class="accent-option ${option.value === accentColor ? "active" : ""}" data-accent-color="${option.value}" aria-label="${option.label}" title="${option.label}" style="--swatch:${option.value}"><span></span><small>${option.label}</small></button>`).join("")}</div>
-        <p class="settings-desc">Цвет интерфейса и выделения. Красный используется по умолчанию.</p>
+        <p class="settings-desc">${t("settings.accentDesc")}</p>
       </div>
 
       <div class="settings-section">
@@ -70,9 +63,6 @@ export function renderSettings() {
         <p class="settings-desc">${t("settings.resetDesc")}</p>
       </div>
 
-      <button class="game-pokedex-save-btn left" id="settingsSaveBtn" type="button" disabled>
-        ${t("gamePokedex.save")}
-      </button>
     </div>
   `;
 
@@ -82,7 +72,7 @@ export function renderSettings() {
       const mode = button.getAttribute("data-pack-home-mode");
       if (!mode) return;
       state.ui.packsHomeMode = mode;
-      setSettingsDirty(true);
+      saveSettingsToFile().catch((error) => console.error("Settings save failed:", error));
       renderSettings();
     });
   });
@@ -93,7 +83,7 @@ export function renderSettings() {
       if (!nextTheme) return;
       state.ui.theme = nextTheme;
       applyTheme();
-      setSettingsDirty(true);
+      saveSettingsToFile().catch((error) => console.error("Settings save failed:", error));
       renderSettings();
     });
   });
@@ -102,7 +92,7 @@ export function renderSettings() {
     button.addEventListener("click", () => {
       state.ui.accentColor = button.dataset.accentColor;
       applyTheme();
-      setSettingsDirty(true);
+      saveSettingsToFile().catch((error) => console.error("Settings save failed:", error));
       renderSettings();
     });
   });
@@ -113,26 +103,10 @@ export function renderSettings() {
       if (!nextLanguage) return;
       state.ui.language = nextLanguage;
       applyTranslations();
-      setSettingsDirty(true);
+      saveSettingsToFile().catch((error) => console.error("Settings save failed:", error));
       renderRoute();
     });
   });
-
-  const saveButton = app.querySelector("#settingsSaveBtn");
-  saveButton?.addEventListener("click", async () => {
-    if (!state.user) {
-      location.hash = "#/register?mode=login";
-      return;
-    }
-    try {
-      await saveSettingsToFile();
-      setSettingsDirty(false);
-    } catch (error) {
-      window.alert(`Не удалось сохранить настройки: ${error.message}`);
-    }
-  });
-
-  setSettingsDirty(Boolean(state.ui.settingsDirty));
 
   const resetButton = app.querySelector("[data-reset]");
   resetButton?.addEventListener("click", async () => {

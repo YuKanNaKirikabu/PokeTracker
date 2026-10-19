@@ -5,7 +5,7 @@ import {
     POKEDEX_RAW,
     POKEDEX_TRAINER_INCLUDES,
 } from "../config/pokedex.js";
-import { getCurrentLanguage, t } from "../core/i18n.js";
+import { getCurrentLanguage, t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { formatCardCode, formatCardId, renderCardTypeBadge } from "./cards.js";
 
@@ -423,15 +423,15 @@ export function formatDexNumber(number) {
 }
 
 export function getPokedexRegion(number) {
-  if (number >= 1 && number <= 151) return "Канто";
-  if (number >= 152 && number <= 251) return "Джото";
-  if (number >= 252 && number <= 386) return "Хоэнн";
-  if (number >= 387 && number <= 493) return "Синно";
-  if (number >= 494 && number <= 649) return "Юнова";
-  if (number >= 650 && number <= 721) return "Калос";
-  if (number >= 722 && number <= 809) return "Алола";
-  if (number >= 810 && number <= 898) return "Галар / Хисуи";
-  return "Палдея";
+  if (number >= 1 && number <= 151) return "Kanto";
+  if (number >= 152 && number <= 251) return "Johto";
+  if (number >= 252 && number <= 386) return "Hoenn";
+  if (number >= 387 && number <= 493) return "Sinnoh";
+  if (number >= 494 && number <= 649) return "Unova";
+  if (number >= 650 && number <= 721) return "Kalos";
+  if (number >= 722 && number <= 809) return "Alola";
+  if (number >= 810 && number <= 898) return "Galar / Hisui";
+  return "Paldea";
 }
 
 export function getPokemonCardMatches(nameEn) {
@@ -673,7 +673,7 @@ export function renderPokedexDetail(entry) {
   const gender = resolvePokedexGender(desc);
   const descriptionText = gender === "male" ? desc.male : gender === "female" ? desc.female : desc.common;
   const cards = getPokemonCardMatches(entry.nameEn);
-  const statsPanel = `<div class="pokedex-data-grid"><div class="pokedex-data-cell"><span>Национальный номер</span><strong>#${formatDexNumber(entry.number)}</strong></div><div class="pokedex-data-cell"><span>Регион</span><strong>${region}</strong></div><div class="pokedex-data-cell"><span>Тип</span><strong>${types.join(" / ")}</strong></div><div class="pokedex-data-cell"><span>Карты TCG Pocket</span><strong>${cards.length}</strong></div></div><p class="pokedex-data-note">Рост, вес и базовые характеристики будут показаны здесь после загрузки проверенных данных Pokédex.</p>`;
+  const statsPanel = `<div class="pokedex-data-grid"><div class="pokedex-data-cell"><span>${t("pokedex.nationalNumber")}</span><strong>#${formatDexNumber(entry.number)}</strong></div><div class="pokedex-data-cell"><span>${t("pokedex.region")}</span><strong>${region}</strong></div><div class="pokedex-data-cell"><span>${t("filters.type")}</span><strong>${types.join(" / ")}</strong></div><div class="pokedex-data-cell"><span>${t("pokedex.cards")}</span><strong>${cards.length}</strong></div></div><p class="pokedex-data-note">${t("pokedex.dataNote")}</p>`;
   return `
     <div class="pokedex-detail">
       <div class="pokedex-detail-header">
@@ -684,20 +684,20 @@ export function renderPokedexDetail(entry) {
           <div class="pokedex-detail-kicker">POKÉMON DATABASE</div>
         </div>
       </div>
-      <section class="pokedex-overview-description"><div class="pokedex-description-heading"><span class="pokedex-section-mark"></span><h3>Описание</h3></div><p>${descriptionText || t("pokedex.descriptionFallback")}</p></section>
-      <nav class="pokedex-detail-tabs" role="tablist" aria-label="Информация о покемоне">
-        <button type="button" class="active" data-dex-tab="cards" role="tab" aria-selected="true">Карты TCG Pocket</button>
-        <button type="button" data-dex-tab="stats" role="tab" aria-selected="false">Характеристики</button>
-        <button type="button" data-dex-tab="moves" role="tab" aria-selected="false">Приёмы</button>
-        <button type="button" data-dex-tab="evolution" role="tab" aria-selected="false">Эволюции</button>
+      <section class="pokedex-overview-description"><div class="pokedex-description-heading"><span class="pokedex-section-mark"></span><h3>${t("pokedex.descriptionTitle")}</h3></div><p>${descriptionText || t("pokedex.descriptionFallback")}</p></section>
+      <nav class="pokedex-detail-tabs" role="tablist" aria-label="${t("pokedex.card")}">
+        <button type="button" class="active" data-dex-tab="cards" role="tab" aria-selected="true">${t("pokedex.cards")}</button>
+        <button type="button" data-dex-tab="stats" role="tab" aria-selected="false">${t("pokedex.stats")}</button>
+        <button type="button" data-dex-tab="moves" role="tab" aria-selected="false">${t("pokedex.moves")}</button>
+        <button type="button" data-dex-tab="evolution" role="tab" aria-selected="false">${t("pokedex.evolution")}</button>
       </nav>
       <section class="pokedex-tab-panel" data-dex-panel="cards">
-        <div class="pokedex-cards-header"><h3>Карты TCG Pocket <span class="pokedex-tab-count">${cards.length}</span></h3><div class="pokedex-scroll-controls"><button class="scroll-btn" id="pokedexScrollPrev" type="button" aria-label="Предыдущие карты">‹</button><button class="scroll-btn" id="pokedexScrollNext" type="button" aria-label="Следующие карты">›</button></div></div>
+        <div class="pokedex-cards-header"><h3>${t("pokedex.cards")} <span class="pokedex-tab-count">${cards.length}</span></h3><div class="pokedex-scroll-controls"><button class="scroll-btn" id="pokedexScrollPrev" type="button" aria-label="${t("pokedex.previousCards")}">‹</button><button class="scroll-btn" id="pokedexScrollNext" type="button" aria-label="${t("pokedex.nextCards")}">›</button></div></div>
         ${renderPokedexCards(cards)}
       </section>
-      <section class="pokedex-tab-panel" data-dex-panel="stats" hidden><h3 class="pokedex-tab-heading">Характеристики</h3>${statsPanel}</section>
-      <section class="pokedex-tab-panel" data-dex-panel="moves" hidden><h3 class="pokedex-tab-heading">Известные приёмы</h3><p class="pokedex-data-note">Достоверный список приёмов для этого покемона ещё не подключён к локальным данным проекта.</p></section>
-      <section class="pokedex-tab-panel" data-dex-panel="evolution" hidden><h3 class="pokedex-tab-heading">Эволюционная цепочка</h3><p class="pokedex-data-note">Эволюции и предыдущие формы требуют отдельного источника данных. Здесь не будут подставляться предположительные связи.</p></section>
+      <section class="pokedex-tab-panel" data-dex-panel="stats" hidden><h3 class="pokedex-tab-heading">${t("pokedex.stats")}</h3>${statsPanel}</section>
+      <section class="pokedex-tab-panel" data-dex-panel="moves" hidden><h3 class="pokedex-tab-heading">${t("pokedex.knownMoves")}</h3><p class="pokedex-data-note">${t("pokedex.movesNote")}</p></section>
+      <section class="pokedex-tab-panel" data-dex-panel="evolution" hidden><h3 class="pokedex-tab-heading">${t("pokedex.evolutionChain")}</h3><p class="pokedex-data-note">${t("pokedex.evolutionNote")}</p></section>
     </div>
   `;
 }

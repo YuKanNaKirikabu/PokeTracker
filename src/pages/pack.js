@@ -1,8 +1,8 @@
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { setPokedexSearchVisible } from "../core/ui.js";
 import { getPack, getPackPrimaryMedia, getSubpacks, resolveSubpack, filterPackCards } from "../core/packs.js";
-import { attachCardEvents, attachCollectionSaveButton, formatCardId, renderCardGrid } from "../features/cards.js";
+import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 import { applyFilters, attachFilterEvents, renderAllPackGroup, renderFilters } from "../features/filters.js";
 
 function renderSubpackSelector(pack, activeSubpack, count) {
@@ -57,10 +57,10 @@ function renderPackHeaderContext(media) {
 function renderPackScaleControl() {
   const control = document.getElementById("packScaleControl");
   if (!control) return;
-  const labels = { lg: "Крупные", md: "Средние", sm: "Мелкие" };
+  const labels = { lg: t("filters.scaleLarge"), md: t("filters.scaleMedium"), sm: t("filters.scaleSmall") };
   control.innerHTML = `
-    <span class="pack-scale-label">Размер карт</span>
-    <div class="scale-group" id="packScaleGroup" role="group" aria-label="Размер карт">
+    <span class="pack-scale-label">${t("filters.scaleLabel")}</span>
+    <div class="scale-group" id="packScaleGroup" role="group" aria-label="${t("filters.scaleLabel")}">
       ${Object.entries(labels).map(([value, label]) => `
         <button class="scale-btn ${state.filters.scale === value ? "active" : ""}" data-scale="${value}" type="button" aria-label="${label}" title="${label}">${label}</button>
       `).join("")}
@@ -84,13 +84,12 @@ export function renderPack(packTitle, subpackValue) {
     const ownedCount = state.data.cards.filter((card) => state.owned.has(formatCardId(card))).length;
     app.innerHTML = `
       <section class="pack-page">
-        ${renderFilters(`<div class="filter-group filter-context-group"><div class="filter-context-title"><strong>${t("pack.allTitle")}</strong><span>${ownedCount}/${state.data.cards.length}</span></div>${renderAllPackGroup()}</div>`, { showApplyButton: true, showCollectionSave: true, showSearch: false })}
+        ${renderFilters(`<div class="filter-group filter-context-group"><div class="filter-context-title"><strong>${t("pack.allTitle")}</strong><span>${ownedCount}/${state.data.cards.length}</span></div>${renderAllPackGroup()}</div>`, { showApplyButton: true, showSearch: false })}
         <div>${renderCardGrid(cards)}</div>
       </section>`;
     renderPackHeaderContext("");
     renderPackScaleControl();
     attachFilterEvents(() => renderPack("ALL"), { deferApply: true });
-    attachCollectionSaveButton(app);
     attachCardEvents(() => renderPack("ALL"), { rerenderOnToggle: false });
     attachHeaderPackSearch(() => renderPack("ALL"));
     attachMobileFilterToggle();
@@ -110,12 +109,12 @@ export function renderPack(packTitle, subpackValue) {
   const selector = renderSubpackSelector(pack, activeSubpack, `${ownedCount}/${visibleCards.length}`);
   const media = renderPackMedia(pack, activeSubpack);
   const leadingMedia = media
-    ? `<div class="filter-group filter-pack-media" aria-label="Логотип пака">${media}</div>`
+    ? `<div class="filter-group filter-pack-media" aria-label="${t("filters.packLogo")}">${media}</div>`
     : "";
 
   app.innerHTML = `
     <section class="pack-page">
-      ${renderFilters(selector, { showApplyButton: true, showCollectionSave: true, showSearch: false, leadingMedia })}
+      ${renderFilters(selector, { showApplyButton: true, showSearch: false, leadingMedia })}
       <div>
         ${renderCardGrid(cards)}
       </div>
@@ -123,7 +122,6 @@ export function renderPack(packTitle, subpackValue) {
   renderPackHeaderContext(renderPackMedia(pack, activeSubpack));
   renderPackScaleControl();
   attachFilterEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { deferApply: true });
-  attachCollectionSaveButton(app);
   attachMobileFilterToggle();
   attachSubpackEvents(pack, activeSubpack);
   attachCardEvents(() => renderPack(pack.id, activeSubpack?.id || activeSubpack?.display), { rerenderOnToggle: false });

@@ -1,4 +1,4 @@
-﻿import { t } from "./i18n.js";
+import { t } from "./i18n.js?v=20261019-4";
 import { logout } from "./auth.js";
 import { state } from "./state.js";
 import { getPokedexIconPath, getPokedexList } from "../features/pokedex.js";

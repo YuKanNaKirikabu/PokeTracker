@@ -1,19 +1,19 @@
-import { applyTranslations, t } from "./core/i18n.js";
+import { applyTranslations, t } from "./core/i18n.js?v=20261019-4";
 import { state } from "./core/state.js";
-import { setActiveNav, setBrandMode, setPageTitle, setPokedexSearchVisible, updateBrandLink } from "./core/ui.js";
-import { renderCollection } from "./pages/collection.js";
-import { renderGamePokedex } from "./pages/game-pokedex.js";
-import { renderHome } from "./pages/home.js";
+import { setActiveNav, setBrandMode, setPageTitle, setPokedexSearchVisible, updateBrandLink } from "./core/ui.js?v=20261019-4";
+import { renderCollection } from "./pages/collection.js?v=20261019-4";
+import { renderGamePokedex } from "./pages/game-pokedex.js?v=20261019-4";
+import { renderHome } from "./pages/home.js?v=20261019-4";
 import { renderMobileHome } from "./pages/mobile.js";
-import { renderPack } from "./pages/pack.js";
+import { renderPack } from "./pages/pack.js?v=20261019-4";
 import { renderPlaceholder } from "./pages/placeholder.js";
-import { renderPokedex } from "./pages/pokedex.js";
-import { renderNintPokedexesHome, renderProjects } from "./pages/projects.js";
-import { renderSettings } from "./pages/settings.js";
-import { renderAuthRequired, renderProfile } from "./pages/profile.js";
-import { renderRegister } from "./pages/register.js";
-import { renderWishlist } from "./pages/wishlist.js";
-import { renderPocketMortys } from "./pages/pocket-mortys.js?v=20261019-1";
+import { renderPokedex } from "./pages/pokedex.js?v=20261019-4";
+import { renderNintPokedexesHome, renderProjects } from "./pages/projects.js?v=20261019-4";
+import { renderSettings } from "./pages/settings.js?v=20261019-4";
+import { renderAuthRequired, renderProfile } from "./pages/profile.js?v=20261019-4";
+import { renderRegister } from "./pages/register.js?v=20261019-4";
+import { renderWishlist } from "./pages/wishlist.js?v=20261019-4";
+import { renderPocketMortys } from "./pages/pocket-mortys.js?v=20261019-4";
 
 export function renderRoute() {
   const packHeaderContext = document.getElementById("packHeaderContext");

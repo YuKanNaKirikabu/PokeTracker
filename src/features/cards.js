@@ -2,8 +2,8 @@ import {
     ENERGY_TYPES,
     TRAINER_TYPES,
 } from "../config/packs.js";
-import { t } from "../core/i18n.js";
 import { state } from "../core/state.js";
+import { saveDataToFile } from "../core/storage.js";
 
 export function formatCardId(card) {
   return `${card.pack}-${card.number}`;
@@ -58,8 +58,9 @@ export function toggleOwned(cardId) {
       state.wishlist.delete(cardId);
     }
   }
-  state.ui.cardsDirty = true;
+  state.ui.cardsDirty = false;
   window.dispatchEvent(new CustomEvent("cardsdatachanged"));
+  saveDataToFile().catch((error) => console.error("Collection save failed:", error));
 }
 
 export function toggleShowcase(cardId) {
@@ -78,47 +79,11 @@ export function toggleWishlist(cardId) {
   } else {
     state.wishlist.add(cardId);
   }
-  state.ui.cardsDirty = true;
+  state.ui.cardsDirty = false;
   window.dispatchEvent(new CustomEvent("cardsdatachanged"));
+  saveDataToFile().catch((error) => console.error("Wishlist save failed:", error));
 }
 
-export function attachCollectionSaveButton(root = document) {
-  const button = root.querySelector("#collectionSaveBtn");
-  if (!button || button.dataset.saveBound === "true") return;
-  const status = root.querySelector("#collectionSaveStatus");
-  const defaultLabel = button.textContent;
-  const refresh = () => {
-    const dirty = Boolean(state.ui.cardsDirty);
-    button.disabled = !dirty || !state.user;
-    if (!button.disabled || !dirty) button.textContent = defaultLabel;
-    button.classList.toggle("is-dirty", dirty);
-    if (status) status.textContent = dirty ? "Есть несохранённые изменения" : "";
-  };
-  button.dataset.saveBound = "true";
-  button.addEventListener("click", async () => {
-    if (!state.user) {
-      location.hash = "#/register?mode=login";
-      return;
-    }
-    button.disabled = true;
-    button.textContent = "Сохранение…";
-    try {
-      const { saveDataToFile } = await import("../core/storage.js");
-      await saveDataToFile();
-      state.ui.cardsDirty = false;
-      window.dispatchEvent(new CustomEvent("cardsdatasaved"));
-      refresh();
-    } catch (error) {
-      console.error("Не удалось сохранить коллекцию:", error);
-      button.disabled = false;
-      button.textContent = "Повторить сохранение";
-      if (status) status.textContent = "Не удалось сохранить. Повтори попытку.";
-    }
-  });
-  window.addEventListener("cardsdatachanged", refresh);
-  window.addEventListener("cardsdatasaved", refresh);
-  refresh();
-}
 
 export function renderCardGrid(cards, options = {}) {
   const {

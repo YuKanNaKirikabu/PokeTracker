@@ -44,6 +44,9 @@ export function mountCompilerWidget(container, pages, options = {}) {
 
   const statusText = options.statusText || "PokeTracker Docs: READY";
   const sidebarTitle = options.sidebarTitle || "Project Files";
+  const explorerLabel = options.explorerLabel || "Explorer";
+  const txtTabsLabel = options.txtTabsLabel || "TXT tabs";
+  const openFilesLabel = options.openFilesLabel || "Open files";
   const initialPageId = options.initialPageId && safePages.some((p) => p.id === options.initialPageId)
     ? options.initialPageId
     : safePages[0].id;
@@ -99,15 +102,15 @@ export function mountCompilerWidget(container, pages, options = {}) {
       </div>
 
       <div class="compiler-widget-body">
-        <aside class="compiler-widget-sidebar" aria-label="Explorer">
+        <aside class="compiler-widget-sidebar" aria-label="${escapeHtml(explorerLabel)}">
           <p class="compiler-widget-title">${escapeHtml(sidebarTitle)}</p>
-          <ul class="compiler-widget-file-list" role="tablist" aria-label="TXT tabs">
+          <ul class="compiler-widget-file-list" role="tablist" aria-label="${escapeHtml(txtTabsLabel)}">
             ${fileButtons}
           </ul>
         </aside>
 
         <div class="compiler-widget-editor">
-          <div class="compiler-widget-tabs" role="tablist" aria-label="Open files">
+          <div class="compiler-widget-tabs" role="tablist" aria-label="${escapeHtml(openFilesLabel)}">
             ${topTabs}
           </div>
           ${panels}

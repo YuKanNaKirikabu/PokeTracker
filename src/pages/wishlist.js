@@ -1,7 +1,7 @@
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { state } from "../core/state.js";
 import { getCardsForPack, getPackPrimaryMedia, getTopLevelPacks } from "../core/packs.js";
-import { attachCardEvents, attachCollectionSaveButton, formatCardId, renderCardGrid } from "../features/cards.js";
+import { attachCardEvents, formatCardId, renderCardGrid } from "../features/cards.js";
 
 function getOrderedPacks() {
   return getTopLevelPacks();
@@ -84,7 +84,6 @@ export function renderWishlist() {
         <div class="toggle ${groupMode === "packs" ? "active" : ""}" data-mode="packs">${t("wishlist.togglePacks")}</div>
         <div class="toggle ${groupMode === "all" ? "active" : ""}" data-mode="all">${t("wishlist.toggleAll")}</div>
       </div>
-      <div class="collection-save-row"><button type="button" class="game-pokedex-save-btn left collection-save-btn" id="collectionSaveBtn" disabled>Сохранить изменения</button><span class="collection-save-status" id="collectionSaveStatus" aria-live="polite"></span></div>
       ${content || `<div class="placeholder">${t("wishlist.empty")}</div>`}
     </section>
   `;
@@ -103,5 +102,4 @@ export function renderWishlist() {
   if (cards.length) {
     attachCardEvents(renderWishlist, { rerenderOnToggle: false });
   }
-  attachCollectionSaveButton(app);
 }

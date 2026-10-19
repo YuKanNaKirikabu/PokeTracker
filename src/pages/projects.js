@@ -1,5 +1,5 @@
 import { GAME_POKEDEXES } from "../config/pokedex.js";
-import { t } from "../core/i18n.js";
+import { t } from "../core/i18n.js?v=20261019-4";
 import { setBrandSubtitle, setPageTitle } from "../core/ui.js";
 import { loadGameDexCatalog } from "../features/pokedex.js";
 import { state } from "../core/state.js";
@@ -39,7 +39,6 @@ export function renderProjects() {
   setPageTitle(t("projects.title"));
   app.innerHTML = `
     <section>
-      <h1 class="section-title">${t("projects.title")}</h1>
       <p class="section-subtitle">${t("projects.desc")}</p>
       <div class="choice-grid">
         <a class="choice-card" href="#/projects/pokedexes">
@@ -54,7 +53,7 @@ export function renderProjects() {
             <img src="https://storage.yandexcloud.net/poketracker/Images/PocketMortys/Logo/Logo.webp" alt="Pocket Mortys" loading="lazy" decoding="async" />
           </div>
           <div class="choice-title">Pocket Mortys</div>
-          <div class="choice-desc">Коллекция и характеристики Морти</div>
+          <div class="choice-desc">${t("projects.pocketMortysDesc")}</div>
         </a>
       </div>
     </section>
@@ -69,7 +68,7 @@ export async function renderNintPokedexesHome() {
   try {
     if (!GAME_POKEDEXES.length) await loadGameDexCatalog();
   } catch (error) {
-    app.innerHTML = `<section class="placeholder"><h1 class="section-title">${t("projects.pokedexesTitle")}</h1><p>Не удалось загрузить GameDex.json.</p><p>${String(error.message || error)}</p></section>`;
+    app.innerHTML = `<section class="placeholder"><h1 class="section-title">${t("projects.pokedexesTitle")}</h1><p>${t("common.gameDataError")}</p><p>${String(error.message || error)}</p></section>`;
     return;
   }
   const favorites = await getFavoriteGamePokedexes();
